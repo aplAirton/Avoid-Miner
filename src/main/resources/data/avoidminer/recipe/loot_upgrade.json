@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "GTG", "GMG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "T": "minecraft:ghast_tear"
+  },
+  "result": { "id": "avoidminer:loot_upgrade", "count": 1 }
+}

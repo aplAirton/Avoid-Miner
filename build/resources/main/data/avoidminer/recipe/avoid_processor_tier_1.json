@@ -5,7 +5,7 @@
     "N": "minecraft:bricks",
     "P": "minecraft:iron_pickaxe",
     "S": "minecraft:iron_shovel",
-    "C": "avoidminer:mining_core",
+    "C": "avoidminer:processing_core",
     "A": "minecraft:iron_axe",
     "B": "minecraft:blast_furnace"
   },

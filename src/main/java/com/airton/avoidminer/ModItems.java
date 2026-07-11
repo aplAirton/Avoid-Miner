@@ -1,6 +1,8 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.item.GuideBookItem;
+import com.airton.avoidminer.lootr.MobCardItem;
+import com.airton.avoidminer.lootr.MobCardType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -194,7 +196,70 @@ public class ModItems {
                 }
             });
 
+    public static final DeferredItem<BlockItem> MAGNETITE_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_ORE);
+    public static final DeferredItem<Item> RAW_MAGNETITE = ITEMS.registerSimpleItem("raw_magnetite");
+    public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
+
+    public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
+            props -> new Item(props) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.processing_core"));
+                }
+            });
+
     public static final DeferredItem<Item> BLANK_UPGRADE_PATTERN = ITEMS.registerSimpleItem("blank_upgrade_pattern");
+
+    // Cartões de mob - um item por MobCardType. Cada cartão rastreia kills via
+    // CustomData (Kills, 0..requiredKills). Quando completo, ganha foil (encantado).
+    public static final DeferredItem<MobCardItem> SKELETON_CARD = ITEMS.registerItem("skeleton_card",
+            props -> new MobCardItem(MobCardType.SKELETON, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> WITHER_SKELETON_CARD = ITEMS.registerItem("wither_skeleton_card",
+            props -> new MobCardItem(MobCardType.WITHER_SKELETON, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> CREEPER_CARD = ITEMS.registerItem("creeper_card",
+            props -> new MobCardItem(MobCardType.CREEPER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> ZOMBIE_CARD = ITEMS.registerItem("zombie_card",
+            props -> new MobCardItem(MobCardType.ZOMBIE, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> SPIDER_CARD = ITEMS.registerItem("spider_card",
+            props -> new MobCardItem(MobCardType.SPIDER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> WITCH_CARD = ITEMS.registerItem("witch_card",
+            props -> new MobCardItem(MobCardType.WITCH, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> PIGLIN_CARD = ITEMS.registerItem("piglin_card",
+            props -> new MobCardItem(MobCardType.PIGLIN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> ENDER_DRAGON_CARD = ITEMS.registerItem("ender_dragon_card",
+            props -> new MobCardItem(MobCardType.ENDER_DRAGON, props.stacksTo(1)));
+
+    // Referência ordenada usada pela HUD, JEI e máquina.
+    public static final DeferredItem<?>[] MOB_CARDS = {
+            SKELETON_CARD, WITHER_SKELETON_CARD, CREEPER_CARD, ZOMBIE_CARD,
+            SPIDER_CARD, WITCH_CARD, PIGLIN_CARD, ENDER_DRAGON_CARD
+    };
+
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
             props -> new GuideBookItem(props.stacksTo(1)));
+
+    public static final DeferredItem<BlockItem> AVOID_LOOTR = ITEMS.registerSimpleBlockItem(ModBlocks.AVOID_LOOTR);
+
+    // Upgrades específicos da Lootr
+    public static final DeferredItem<Item> RARITY_UPGRADE = ITEMS.registerItem("rarity_upgrade",
+            props -> new Item(props.stacksTo(1)) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.rarity_upgrade"));
+                }
+            });
+
+    public static final DeferredItem<Item> LOOT_UPGRADE = ITEMS.registerItem("loot_upgrade",
+            props -> new Item(props.stacksTo(1)) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.loot_upgrade"));
+                }
+            });
+
+    /** Retorna o nível de saque (1/2/3) de um LOOT_UPGRADE, 0 se não for. */
+    public static int lootUpgradeLevel(ItemStack stack) {
+        if (stack.is(LOOT_UPGRADE.get())) return 1; // FIXME? distinct tiers?
+        return 0;
+    }
 }

@@ -31,16 +31,16 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     private static final int SEPARATOR_Y = 84;
     private static final int GROUP_LABEL_Y = 81;
 
-    private static final int SLOT_BORDER = 0xFF3A2A10;
-    private static final int SLOT_BORDER_LT = 0xFF4A3A20;
-    private static final int SLOT_BORDER_DK = 0xFF050301;
-    private static final int SLOT_INNER = 0xFF0C0804;
-    private static final int ACCENT = 0xFFCC8833;
-    private static final int ACCENT_DIM = 0xFF664422;
+    private static final int SLOT_BORDER = 0xFF373737;
+    private static final int SLOT_BORDER_LT = 0xFF555555;
+    private static final int SLOT_BORDER_DK = 0xFF111111;
+    private static final int SLOT_INNER = 0xFF8B8B8B;
+    private static final int ACCENT = 0xFFD0874C;
+    private static final int ACCENT_DIM = 0xFF804020;
 
     private static final int TEXT_WHITE = 0xFFFFFFFF;
-    private static final int TEXT_DIM = 0xFFCCAA88;
-    private static final int TEXT_DISABLED = 0xFF554433;
+    private static final int TEXT_DIM = 0xFFC6C6C6;
+    private static final int TEXT_DISABLED = 0xFF555555;
 
     private int tickCounter = 0;
 
@@ -78,7 +78,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int left = gx + MAIN_LEFT;
         int right = gx + MAIN_RIGHT;
         extractor.fill(left, gy + 4, left + 2, gy + 13, ACCENT);
-        extractor.fill(left + 2, gy + 4, right, gy + 13, 0xFF33220E);
+        extractor.fill(left + 2, gy + 4, right, gy + 13, 0xFF3C3C3C);
 
         Component label = Component.translatable("screen.avoidminer.processing");
         int labelW = font.width(label);
@@ -108,13 +108,13 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
 
     private void drawSectionSeparator(GuiGraphicsExtractor extractor, int gx, int gy, int y) {
         extractor.fill(gx + MAIN_LEFT, gy + y, gx + MAIN_RIGHT, gy + y + 1, SLOT_BORDER);
-        extractor.fill(gx + MAIN_LEFT, gy + y + 1, gx + MAIN_RIGHT, gy + y + 2, 0xFF0A0604);
+        extractor.fill(gx + MAIN_LEFT, gy + y + 1, gx + MAIN_RIGHT, gy + y + 2, 0xFF333333);
     }
 
     // Dois slots de melhoria com lugar marcado: E = Energia, S = Velocidade
     private void drawUpgradeArea(GuiGraphicsExtractor extractor, int gx, int gy) {
         extractor.text(font, Component.translatable("screen.avoidminer.upgrades"),
-                gx + ProcessorMenu.MAIN_X, gy + GROUP_LABEL_Y + 6, 0xFF9A7744);
+                gx + ProcessorMenu.MAIN_X, gy + GROUP_LABEL_Y + 6, TEXT_DIM);
 
         drawMarkedUpgradeSlot(extractor, gx + ProcessorMenu.UPG_ENERGY_X, gy + ProcessorMenu.UPG_Y, "E",
                 menu.getEnergyUpgradeTier() > 0);
@@ -131,7 +131,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         extractor.fill(sx + 17, sy, sx + 18, sy + 17, frame);
         if (!filled) {
             int lw = font.width(letter);
-            extractor.text(font, Component.literal(letter), sx + 9 - lw / 2, sy + 5, 0xFF6A5230);
+            extractor.text(font, Component.literal(letter), sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
         }
     }
 
@@ -148,9 +148,9 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int barW = ProcessorMenu.T1_ARROW_W;
         int barH = ProcessorMenu.T1_ARROW_ROW_H;
 
-        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF120806);
+        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF3C3C3C);
         // ponta da seta
-        extractor.fill(sx + barW - 4, sy - 2, sx + barW - 3, sy + barH + 2, 0xFF221208);
+        extractor.fill(sx + barW - 4, sy - 2, sx + barW - 3, sy + barH + 2, 0xFF555555);
 
         if (maxProgress > 0 && progress > 0) {
             int fillW = Math.clamp((int) ((long) progress * barW / Math.max(1, maxProgress)), 1, barW);
@@ -162,7 +162,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
                 extractor.fill(sx + shimmer, sy + 2, sx + shimmer + 3, sy + barH - 2, 0x44FFFFFF);
             }
         } else {
-            extractor.fill(sx + 4, sy + barH / 2 - 1, sx + barW - 6, sy + barH / 2 + 1, 0xFF221208);
+            extractor.fill(sx + 4, sy + barH / 2 - 1, sx + barW - 6, sy + barH / 2 + 1, 0xFF555555);
         }
     }
 
@@ -170,7 +170,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int barW = 18;
         int barH = ProcessorMenu.ARROW_H;
 
-        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF120806);
+        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF3C3C3C);
 
         if (maxProgress > 0 && progress > 0) {
             int fillH = Math.clamp((int) ((long) progress * barH / Math.max(1, maxProgress)), 1, barH);
@@ -189,9 +189,9 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
             }
         } else {
             // seta apagada apontando para baixo
-            extractor.fill(sx + 7, sy + 3, sx + 11, sy + 8, 0xFF221208);
-            extractor.fill(sx + 5, sy + 8, sx + 13, sy + 10, 0xFF221208);
-            extractor.fill(sx + 7, sy + 10, sx + 11, sy + 12, 0xFF221208);
+            extractor.fill(sx + 7, sy + 3, sx + 11, sy + 8, 0xFF555555);
+            extractor.fill(sx + 5, sy + 8, sx + 13, sy + 10, 0xFF555555);
+            extractor.fill(sx + 7, sy + 10, sx + 11, sy + 12, 0xFF555555);
         }
     }
 
@@ -218,7 +218,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         if (menu.isBurning()) {
             int sx = gx + FUEL_X;
             int sy = gy + FUEL_Y;
-            extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, 0x33CC8833);
+            extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, 0x33D0874C);
         }
     }
 
@@ -234,19 +234,11 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
 
         drawPanelDivider(extractor, px, gy + 26);
 
-        extractor.text(font, Component.translatable("screen.avoidminer.input"), px, gy + 31, TEXT_DISABLED);
-        extractor.text(font, Component.translatable("screen.avoidminer.input.count", menu.getInputCount()),
-                px, gy + 41, ACCENT);
-        extractor.text(font, Component.translatable("screen.avoidminer.ticks_per_item", menu.getMaxProgress()),
-                px, gy + 51, TEXT_DIM);
-
-        drawPanelDivider(extractor, px, gy + 61);
-
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"), px, gy + 65, TEXT_DISABLED);
+        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"), px, gy + 32, TEXT_DISABLED);
 
         int cardH = 18;
         int cardGap = 2;
-        int cardYStart = gy + 75;
+        int cardYStart = gy + 42;
         drawUpgradeCard(extractor, px, cardYStart,
                 Component.translatable("screen.avoidminer.upgrade.energy"),
                 menu.getEnergyUpgradeTier(),
@@ -264,12 +256,12 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         Component status = blocked
                 ? Component.translatable("status.avoidminer.full")
                 : Component.translatable(burning ? "status.avoidminer.running" : "status.avoidminer.idle");
-        int statusColor = blocked ? 0xFFFF5555 : burning ? 0xFF55FF55 : 0xFFAA5544;
+        int statusColor = blocked ? 0xFFFF5555 : burning ? 0xFF55FF55 : TEXT_DIM;
         extractor.text(font, status, px, statusY + 11, statusColor);
 
         extractor.text(font, Component.translatable("screen.avoidminer.cost"), px, statusY + 23, TEXT_DIM);
         extractor.text(font, Component.translatable("screen.avoidminer.cost_per_item", energyCostPerItem()),
-                px, statusY + 33, 0xFFDDBB88);
+                px, statusY + 33, TEXT_DIM);
     }
 
     // Custo total por item processado: ticks base x multiplicador de energia
@@ -283,8 +275,8 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
 
     private void drawUpgradeCard(GuiGraphicsExtractor extractor, int px, int cardY, Component typeName, int tier, String effect) {
         int cardH = 18;
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + cardH, 0x88332211);
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + 1, 0x88664422);
+        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + cardH, 0x66333333);
+        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + 1, 0x66555555);
 
         if (tier <= 0) {
             extractor.text(font, Component.translatable("screen.avoidminer.upgrade.tier.none", typeName),
@@ -297,7 +289,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     }
 
     private void drawPanelDivider(GuiGraphicsExtractor extractor, int px, int y) {
-        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x44664422);
+        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x44555555);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.menu.AvoidMinerMenu;
+import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
@@ -19,4 +20,7 @@ public class ModMenuTypes {
     // enviado pelo servidor para montar o menu com o tier correto.
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessorMenu>> PROCESSOR = MENUS.register("processor",
             () -> IMenuTypeExtension.create(ProcessorMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<LootrMenu>> LOOTR = MENUS.register("lootr",
+            () -> new MenuType<>(LootrMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

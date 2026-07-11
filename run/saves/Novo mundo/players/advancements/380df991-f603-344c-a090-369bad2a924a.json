@@ -7,7 +7,9 @@
   },
   "minecraft:adventure/adventuring_time": {
     "criteria": {
-      "minecraft:snowy_taiga": "2026-07-10 20:26:25 -0300"
+      "minecraft:frozen_ocean": "2026-07-11 18:26:30 -0300",
+      "minecraft:snowy_taiga": "2026-07-10 20:26:25 -0300",
+      "minecraft:snowy_beach": "2026-07-11 18:26:27 -0300"
     },
     "done": false
   },
@@ -401,15 +403,27 @@
     },
     "done": true
   },
-  "minecraft:recipes/misc/gold_ingot_from_blasting_raw_gold": {
+  "minecraft:recipes/misc/lapis_lazuli_from_smelting_lapis_ore": {
     "criteria": {
-      "has_raw_gold": "2026-07-11 17:14:51 -0300"
+      "has_lapis_ore": "2026-07-11 17:14:03 -0300"
     },
     "done": true
   },
   "minecraft:recipes/misc/gold_ingot_from_smelting_gold_ore": {
     "criteria": {
       "has_gold_ore": "2026-07-11 17:14:41 -0300"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_ingot_from_blasting_gold_ore": {
+    "criteria": {
+      "has_gold_ore": "2026-07-11 17:14:41 -0300"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_ingot_from_blasting_raw_gold": {
+    "criteria": {
+      "has_raw_gold": "2026-07-11 17:14:51 -0300"
     },
     "done": true
   },
@@ -425,15 +439,33 @@
     },
     "done": true
   },
-  "minecraft:recipes/misc/gold_ingot_from_blasting_gold_ore": {
+  "minecraft:recipes/misc/iron_nugget_from_smelting": {
     "criteria": {
-      "has_gold_ore": "2026-07-11 17:14:41 -0300"
+      "has_iron_pickaxe": "2026-07-11 18:47:45 -0300"
     },
     "done": true
   },
-  "minecraft:recipes/misc/lapis_lazuli_from_smelting_lapis_ore": {
+  "minecraft:story/iron_tools": {
     "criteria": {
-      "has_lapis_ore": "2026-07-11 17:14:03 -0300"
+      "iron_pickaxe": "2026-07-11 18:47:45 -0300"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/torch": {
+    "criteria": {
+      "has_stone_pickaxe": "2026-07-11 18:47:47 -0300"
+    },
+    "done": true
+  },
+  "minecraft:story/upgrade_tools": {
+    "criteria": {
+      "stone_pickaxe": "2026-07-11 18:47:47 -0300"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_blasting": {
+    "criteria": {
+      "has_iron_pickaxe": "2026-07-11 18:47:45 -0300"
     },
     "done": true
   },

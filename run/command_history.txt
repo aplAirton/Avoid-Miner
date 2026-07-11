@@ -10,3 +10,24 @@
 /time pause
 /time set minecraft:day
 /time pause
+/fill 99 68 -223
+/fill 99 68 -223 145 70 -265 air replace
+/fill 99 70 -223 145 0 -265 air replace
+/fill 99 70 -223 145 50 -265 air replace
+/fill 99 70 -223 145 65 -265 air replace
+/fill 99 50 -223 145 65 -265 air replace
+/fill 99 50 -223 145 35 -265 air replace
+/fill 99 20 -223 145 35 -265 air replace
+/fill 99 20 -223 145 5 -265 air replace
+/fill 99 0 -223 145 5 -265 air replace
+/fill 99 0 -223 145 -15 -265 air replace minecraft:stone
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate
+/fill 99 0 -223 145 -15 -265 air replace minecraft:tuff
+/fill 99 0 -223 145 -15 -265 air replace minecraft:diamond_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_diamond_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_gold_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_redstone_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:oak_planks
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_iron_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_lapis_ore
+/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_copper_ore

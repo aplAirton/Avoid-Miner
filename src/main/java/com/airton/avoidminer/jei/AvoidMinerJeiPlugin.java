@@ -1,7 +1,9 @@
 package com.airton.avoidminer.jei;
 
 import com.airton.avoidminer.ModBlocks;
+import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
+import com.airton.avoidminer.lootr.MobCardType;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -26,6 +28,7 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new AvoidMinerCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new ProcessorJeiCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new LootrJeiCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -61,9 +64,32 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.nether"));
             }
         }
+
+        // Upgrade drops (nether mode, ~0.5% per cycle)
+        minerRecipes.add(new AvoidMinerJeiRecipe(machines[0], 1,
+                new ItemStack(ModItems.UPGRADE_TIER_2.get()), 0.005, 1.0, "screen.avoidminer.mode.nether"));
+        minerRecipes.add(new AvoidMinerJeiRecipe(machines[1], 2,
+                new ItemStack(ModItems.UPGRADE_TIER_3.get()), 0.005, 1.0, "screen.avoidminer.mode.nether"));
+
         registration.addRecipes(AvoidMinerCategory.TYPE, minerRecipes);
 
         registration.addRecipes(ProcessorJeiCategory.TYPE, ProcessorJeiCategory.generateRecipes());
+
+        List<LootrJeiRecipe> lootrRecipes = new ArrayList<>();
+        for (MobCardType type : MobCardType.values()) {
+            ItemStack card = switch (type) {
+                case SKELETON -> new ItemStack(ModItems.SKELETON_CARD.get());
+                case WITHER_SKELETON -> new ItemStack(ModItems.WITHER_SKELETON_CARD.get());
+                case CREEPER -> new ItemStack(ModItems.CREEPER_CARD.get());
+                case ZOMBIE -> new ItemStack(ModItems.ZOMBIE_CARD.get());
+                case SPIDER -> new ItemStack(ModItems.SPIDER_CARD.get());
+                case WITCH -> new ItemStack(ModItems.WITCH_CARD.get());
+                case PIGLIN -> new ItemStack(ModItems.PIGLIN_CARD.get());
+                case ENDER_DRAGON -> new ItemStack(ModItems.ENDER_DRAGON_CARD.get());
+            };
+            lootrRecipes.add(new LootrJeiRecipe(type, card));
+        }
+        registration.addRecipes(LootrJeiCategory.TYPE, lootrRecipes);
     }
 
     @Override
@@ -75,5 +101,7 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_1.get()));
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_2.get()));
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_3.get()));
+
+        registration.addCraftingStation(LootrJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_LOOTR.get()));
     }
 }

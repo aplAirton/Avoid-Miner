@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera as texturas de GUI (288x206) do Avoid Miner e do Processor."""
+"""Gera as texturas de GUI (288x206) do Avoid Miner, Processor e Lootr."""
 from PIL import Image, ImageDraw
 
 W, H = 288, 206
@@ -35,6 +35,18 @@ THEMES = {
         "slot_lt":   (58, 42, 22, 255),
         "slot_dk":   (5, 3, 1, 255),
         "frame":     (58, 42, 16, 255),
+    },
+    "lootr": {
+        "bg":        (18, 12, 22, 255),
+        "panel":     (24, 14, 30, 255),
+        "main":      (20, 12, 26, 255),
+        "right":     (22, 12, 28, 255),
+        "border_lt": (72, 40, 88, 255),
+        "border_dk": (4, 2, 6, 255),
+        "slot_bg":   (10, 6, 14, 255),
+        "slot_lt":   (56, 30, 68, 255),
+        "slot_dk":   (4, 2, 5, 255),
+        "frame":     (56, 30, 60, 255),
     },
 }
 
@@ -107,9 +119,16 @@ def gen_processor(path):
     img.save(path)
 
 
+def gen_lootr(path):
+    # slots desenhados dinamicamente; apenas fundo + inventario + combustivel no texto
+    img, d, t = base("lootr")
+    img.save(path)
+
+
 if __name__ == "__main__":
     import sys
     out = sys.argv[1]
     gen_miner(f"{out}/avoid_miner.png")
     gen_processor(f"{out}/avoid_processor.png")
+    gen_lootr(f"{out}/avoid_lootr.png")
     print("ok")

@@ -1,0 +1,4 @@
+{
+  "model": { "type": "model", "model": "avoidminer:item/processing_core" },
+  "properties": { "hand_animation_on_swap": true }
+}

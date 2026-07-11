@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["DMD", "ILI", "DCD"],
+  "key": {
+    "D": "minecraft:diamond_block",
+    "M": "avoidminer:magnetite_ingot",
+    "I": "minecraft:netherite_ingot",
+    "L": "avoidminer:processing_core",
+    "C": "minecraft:nether_star"
+  },
+  "result": { "id": "avoidminer:avoid_lootr", "count": 1 }
+}

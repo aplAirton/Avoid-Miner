@@ -61,9 +61,18 @@ public class ProcessorBlockEntity extends BlockEntity {
         public int getTotalSlots() { return getSpeedUpgradeSlot() + 1; }
     }
 
+    // Preenchido de forma preguiçosa: o primeiro uso acontece sempre depois do
+    // registro dos itens (necessário porque o mapa referencia itens do próprio mod)
     private static final Map<Item, ItemStack> RECIPES = new LinkedHashMap<>();
 
-    static {
+    private static Map<Item, ItemStack> recipes() {
+        if (RECIPES.isEmpty()) {
+            buildRecipes();
+        }
+        return RECIPES;
+    }
+
+    private static void buildRecipes() {
         addRecipe(Items.COAL_ORE, Items.COAL, 4);
         addRecipe(Items.DEEPSLATE_COAL_ORE, Items.COAL, 4);
         addRecipe(Items.IRON_ORE, Items.RAW_IRON, 3);
@@ -83,6 +92,8 @@ public class ProcessorBlockEntity extends BlockEntity {
         addRecipe(Items.NETHER_QUARTZ_ORE, Items.QUARTZ, 6);
         addRecipe(Items.NETHER_GOLD_ORE, Items.GOLD_NUGGET, 12);
         addRecipe(Items.ANCIENT_DEBRIS, Items.NETHERITE_SCRAP, 2);
+        RECIPES.put(com.airton.avoidminer.ModItems.MAGNETITE_ORE.get().asItem(),
+                new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 3));
     }
 
     private static void addRecipe(Item inputItem, Item outputItem, int outputCount) {
@@ -90,18 +101,18 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     public static Map<Item, ItemStack> getRecipeMap() {
-        return RECIPES;
+        return recipes();
     }
 
     @Nullable
     public static ItemStack getRecipeResult(ItemStack input) {
         if (input.isEmpty()) return null;
-        ItemStack result = RECIPES.get(input.getItem());
+        ItemStack result = recipes().get(input.getItem());
         return result == null ? null : result.copy();
     }
 
     public static boolean isProcessable(ItemStack stack) {
-        return !stack.isEmpty() && RECIPES.containsKey(stack.getItem());
+        return !stack.isEmpty() && recipes().containsKey(stack.getItem());
     }
 
     private final Tier tier;

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["DED", "SPS", "DAD"],
   "key": {
-    "D": "minecraft:ender_eye",
+    "D": "avoidminer:magnetite_ingot",
     "E": "minecraft:redstone",
     "S": "minecraft:sculk_sensor",
     "P": "minecraft:diamond_pickaxe",

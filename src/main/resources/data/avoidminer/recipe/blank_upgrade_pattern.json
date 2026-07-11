@@ -3,7 +3,7 @@
   "pattern": ["LLL", "RDR", "LLL"],
   "key": {
     "L": "minecraft:paper",
-    "D": "minecraft:diamond",
+    "D": "avoidminer:magnetite_ingot",
     "R": "minecraft:redstone"
   },
   "result": { "id": "avoidminer:blank_upgrade_pattern", "count": 1 }

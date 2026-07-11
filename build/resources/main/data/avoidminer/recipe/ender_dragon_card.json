@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "EBE", "GTG"],
+  "key": {
+    "G": "minecraft:netherite_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "E": "minecraft:end_crystal",
+    "B": "minecraft:dragon_breath",
+    "T": "minecraft:nether_star"
+  },
+  "result": { "id": "avoidminer:ender_dragon_card", "count": 1 }
+}

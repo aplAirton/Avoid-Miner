@@ -1,0 +1,192 @@
+---- Minecraft Crash Report ----
+// You should try our sister game, Minceraft!
+
+Time: 2026-07-11 19:58:31
+Description: Unexpected error
+
+java.lang.IllegalArgumentException: The stack count must be 1
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.event.EventHooks.lambda$onCreativeModeTabBuildContents$0(EventHooks.java:1118) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTab$Output.accept(CreativeModeTab.java:414) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.ModCreativeTabs.lambda$static$2(ModCreativeTabs.java:39) ~[main/:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.event.EventHooks.onCreativeModeTabBuildContents(EventHooks.java:1116) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTab.buildContents(CreativeModeTab.java:135) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.lambda$buildAllTabContents$1(CreativeModeTabs.java:2119) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:197) ~[?:?] {}
+	at java.base/java.util.Iterator.forEachRemaining(Iterator.java:133) ~[?:?] {}
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1939) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632) ~[?:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.buildAllTabContents(CreativeModeTabs.java:2119) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.tryRebuildTabContents(CreativeModeTabs.java:2128) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen.tryRebuildTabContents(CreativeModeInventoryScreen.java:153) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen.<init>(CreativeModeInventoryScreen.java:126) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.InventoryScreen.init(InventoryScreen.java:55) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.Screen.init(Screen.java:331) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.setScreen(Minecraft.java:1189) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.handleKeybinds(Minecraft.java:2049) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.tick(Minecraft.java:1905) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.runTick(Minecraft.java:1308) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.run(Minecraft.java:937) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.main.Main.main(Main.java:246) [minecraft-patched-26.1.2.78.jar:?] {}
+	at net.neoforged.fml.startup.Client.main(Client.java:19) [loader-11.0.15.jar:11.0] {}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?] {}
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.event.EventHooks.lambda$onCreativeModeTabBuildContents$0(EventHooks.java:1118) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTab$Output.accept(CreativeModeTab.java:414) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.ModCreativeTabs.lambda$static$2(ModCreativeTabs.java:39) ~[main/:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.event.EventHooks.onCreativeModeTabBuildContents(EventHooks.java:1116) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTab.buildContents(CreativeModeTab.java:135) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.lambda$buildAllTabContents$1(CreativeModeTabs.java:2119) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:197) ~[?:?] {}
+	at java.base/java.util.Iterator.forEachRemaining(Iterator.java:133) ~[?:?] {}
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1939) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153) ~[?:?] {}
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176) ~[?:?] {}
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265) ~[?:?] {}
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632) ~[?:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.buildAllTabContents(CreativeModeTabs.java:2119) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.item.CreativeModeTabs.tryRebuildTabContents(CreativeModeTabs.java:2128) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen.tryRebuildTabContents(CreativeModeInventoryScreen.java:153) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen.<init>(CreativeModeInventoryScreen.java:126) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.inventory.InventoryScreen.init(InventoryScreen.java:55) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.Screen.init(Screen.java:331) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.setScreen(Minecraft.java:1189) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.handleKeybinds(Minecraft.java:2049) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+-- Uptime --
+Details:
+	JVM uptime: 21.619s
+	Wall uptime: 16.915s
+	High-res time: 21.045s
+	Client ticks: 291 ticks / 14.550s
+Stacktrace:
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.fillReport(Minecraft.java:2472) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.emergencySaveAndCrash(Minecraft.java:992) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.run(Minecraft.java:960) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.main.Main.main(Main.java:246) [minecraft-patched-26.1.2.78.jar:?] {}
+	at net.neoforged.fml.startup.Client.main(Client.java:19) [loader-11.0.15.jar:11.0] {}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?] {}
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?] {}
+
+
+-- Affected level --
+Details:
+	All players: 1 total; LocalPlayer{name=Dev, id=87, pos=(98.31210330605285, 71.0, -231.05604524047885), mode=CREATIVE, permission=owner}
+	Chunk stats: 1521, 1057
+	Level dimension: minecraft:overworld
+	Level time: 6509 game time, 6509 day time
+	Level spawn location: World: (96,69,-224), Section: (at 0,5,0 in 6,4,-14; chunk contains blocks 96,-64,-224 to 111,319,-209), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,-64,-512 to 511,319,-1)
+	Server brand: neoforge
+	Server type: Integrated singleplayer server
+	Tracked entity count: 188
+	Client weather: Raining: false, thundering: false
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: Yes
+	Packs: vanilla, mod_resources, mod/neoforge, mod/jei, mod/avoidminer
+
+-- System Details --
+Details:
+	Minecraft Version: 26.1.2
+	Minecraft Version ID: 26.1.2
+	Operating System: Mac OS X (aarch64) version 26.5.1
+	Java Version: 25.0.3, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 219268496 bytes (209 MiB) / 952107008 bytes (908 MiB) up to 4294967296 bytes (4096 MiB)
+	Memory (heap): init: 256MiB, used: 695MiB, committed: 908MiB, max: 4096MiB
+	Memory (non-head): init: 007MiB, used: 215MiB, committed: 225MiB, max: 000MiB
+	CPUs: 10
+	Processor Vendor: Apple Inc.
+	Processor Name: Apple M4
+	Identifier: Apple Inc. Family 0x1b588bb3 Model 0 Stepping 0
+	Microarchitecture: ARM64 SoC: Firestorm + Icestorm
+	Frequency (GHz): 0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 10
+	Number of logical CPUs: 10
+	Graphics card #0 name: Apple M4
+	Graphics card #0 vendor: Apple (0x106b)
+	Graphics card #0 VRAM (MiB): 0.00
+	Graphics card #0 deviceId: unknown
+	Graphics card #0 versionInfo: unknown
+	Memory slot #0 capacity (MiB): 0.00
+	Memory slot #0 clockSpeed (GHz): 0.00
+	Memory slot #0 type: unknown
+	Virtual memory max (MiB): 18432.00
+	Virtual memory used (MiB): 13721.63
+	Swap memory total (MiB): 2048.00
+	Swap memory used (MiB): 458.19
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 10212.61, total: 233752.44
+	Space in storage for workdir (MiB): available: 10212.61, total: 233752.44
+	JVM Flags: 0 total; 
+	Debug Flags: 0 total; 
+	Launched Version: 26.1.2.78
+	Backend library: LWJGL version 3.4.1+2
+	Backend API: Apple M4 GL version 4.1 Metal - 90.5, Apple
+	Window size: 1506x874
+	GFLW Platform: cocoa
+	Render Extensions: GL_EXT_texture_filter_anisotropic
+	GL debug messages: <debugging unavailable>
+	Is Modded: Definitely; Client brand changed to 'neoforge'; Server brand changed to 'neoforge'
+	Universe: 400921fb54442d18
+	Type: Integrated Server
+	GPU Warnings: version: Metal
+	Transparency: regular
+	Render Distance: 16/16 chunks
+	Resource Packs: vanilla, mod_resources, mod/neoforge (incompatible), mod/jei (incompatible), mod/avoidminer
+	Sound Cache: 1534392 bytes in 10 buffers
+	Current Language: pt_br
+	Locale: pt_BR
+	System encoding: UTF-8
+	File encoding: UTF-8
+	CPU: 10x Apple M4
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Dev'/87, l='ServerLevel[Novo mundo]', x=98.31, y=71.00, z=-231.06]]
+	Active Data Packs: vanilla, mod_data, mod/neoforge, mod/jei (incompatible), mod/avoidminer
+	Available Data Packs: minecart_improvements, redstone_experiments, trade_rebalance, vanilla, mod/avoidminer, mod/jei (incompatible), mod/neoforge, mod_data
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	World Seed: 2842844181225060453
+	Suppressed Exceptions: ~~NONE~~
+	Class Processors: 
+		00,00%: neoforge:neoforge_dev_dist_cleaner
+		00,00%: neoforge:computing_frames (marker)
+		00,00%: neoforge:runtime_enum_extender
+		04,10%: neoforge:access_transformer
+		00,04%: neoforge:mixin
+		00,00%: neoforge:simple_processors_default (marker)
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.biome.biome
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.block.flowerpotblock
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.levelgen.structure.structure
+		00,26%: neoforge.coremods:method_redirector
+	Mod List: 
+		main                                              |Avoid Miner                   |avoidminer                    |1.0.0               |Manifest: NOSIGNATURE
+		jei-26.1.2-neoforge-29.14.0.43.jar                |Just Enough Items             |jei                           |29.14.0.43          |Manifest: fec9b3e31dd3546738bffae991e0297fda478bbbcea9457a3a5e95479f989bf3
+		minecraft-patched-26.1.2.78.jar                   |Minecraft                     |minecraft                     |26.1.2              |Manifest: NOSIGNATURE
+		neoforge-26.1.2.78-universal.jar                  |NeoForge                      |neoforge                      |26.1.2.78           |Manifest: NOSIGNATURE
+	Crash Report UUID: 7d535275-3afe-42b5-9581-7c35c7ac5ca0
+	FML: 11.0.15
+	NeoForge: 26.1.2.78

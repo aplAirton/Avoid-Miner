@@ -1,11 +1,13 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.block.AvoidMinerBlock;
+import com.airton.avoidminer.block.LootrBlock;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.SoundType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -47,4 +49,18 @@ public class ModBlocks {
             () -> BlockBehaviour.Properties.of()
                     .strength(3.5f)
                     .requiresCorrectToolForDrops());
+
+    public static final DeferredBlock<Block> MAGNETITE_ORE = BLOCKS.registerBlock("magnetite_ore",
+            Block::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.0f, 3.0f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.NETHER_ORE));
+
+    public static final DeferredBlock<Block> AVOID_LOOTR = BLOCKS.registerBlock("avoid_lootr",
+            LootrBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(4.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.NETHERITE_BLOCK));
 }

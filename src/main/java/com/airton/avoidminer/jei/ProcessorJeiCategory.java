@@ -24,35 +24,30 @@ public class ProcessorJeiCategory extends AbstractRecipeCategory<ProcessorJeiRec
     public ProcessorJeiCategory(IGuiHelper guiHelper) {
         super(TYPE, Component.translatable("avoidminers.jei.processor.category"),
                 guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_3.get())),
-                140, 50);
+                100, 40);
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ProcessorJeiRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 10, 16)
+        builder.addSlot(RecipeIngredientRole.INPUT, 10, 12)
                 .add(recipe.input());
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 16)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 70, 12)
                 .add(recipe.output());
     }
 
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, ProcessorJeiRecipe recipe, IFocusGroup focuses) {
-        builder.addText(Component.translatable("avoidminers.jei.processor.multiplier", recipe.multiplier()), 60, 10)
-                .setPosition(40, 2);
-        builder.addAnimatedRecipeArrow(200).setPosition(38, 16);
+        builder.addAnimatedRecipeArrow(200).setPosition(32, 12);
     }
 
     public static List<ProcessorJeiRecipe> generateRecipes() {
         List<ProcessorJeiRecipe> recipes = new ArrayList<>();
-
         for (Map.Entry<net.minecraft.world.item.Item, ItemStack> entry : ProcessorBlockEntity.getRecipeMap().entrySet()) {
             ItemStack input = new ItemStack(entry.getKey());
             ItemStack output = entry.getValue().copy();
-            String mult = "x" + output.getCount();
-            recipes.add(new ProcessorJeiRecipe(input, output, mult));
+            recipes.add(new ProcessorJeiRecipe(input, output));
         }
-
         return recipes;
     }
 }

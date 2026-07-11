@@ -19,40 +19,30 @@ public class AvoidMinerCategory extends AbstractRecipeCategory<AvoidMinerJeiReci
     public AvoidMinerCategory(IGuiHelper guiHelper) {
         super(TYPE, Component.translatable("avoidminer.jei.category"),
                 guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.AVOID_MINER_TIER_3.get())),
-                140, 50);
+                100, 36);
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AvoidMinerJeiRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 1, 16)
+        builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 1, 10)
                 .add(recipe.machine());
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 60, 16)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 70, 10)
                 .add(recipe.output())
                 .addRichTooltipCallback((slot, tooltip) -> {
+                    int combined = (int) Math.round(recipe.dropChance() * recipe.successChance() * 100);
+                    tooltip.add(Component.translatable("avoidminer.jei.combined_chance", combined));
                     int dropPct = (int) Math.round(recipe.dropChance() * 100);
                     int succPct = (int) Math.round(recipe.successChance() * 100);
-                    int combined = (int) Math.round(recipe.dropChance() * recipe.successChance() * 100);
-                    tooltip.add(Component.translatable("avoidminer.jei.weight", dropPct));
-                    tooltip.add(Component.translatable("avoidminer.jei.base_chance", succPct));
-                    tooltip.add(Component.translatable("avoidminer.jei.per_cycle", combined));
+                    tooltip.add(Component.translatable("avoidminer.jei.detail_chance", dropPct, succPct));
                 });
     }
 
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, AvoidMinerJeiRecipe recipe, IFocusGroup focuses) {
-        int dropPct = (int) Math.round(recipe.dropChance() * 100);
-        int succPct = (int) Math.round(recipe.successChance() * 100);
-        int combined = (int) Math.round(recipe.dropChance() * recipe.successChance() * 100);
-
-        builder.addText(Component.translatable("avoidminer.jei.tier_mode", recipe.tier(), Component.translatable(recipe.worldMode())), 80, 10)
-                .setPosition(20, 2);
-        builder.addText(Component.translatable("avoidminer.jei.weight", dropPct), 60, 10)
-                .setPosition(80, 8);
-        builder.addText(Component.translatable("avoidminer.jei.chance", succPct), 60, 10)
-                .setPosition(80, 20);
-        builder.addText(Component.translatable("avoidminer.jei.cycle_result", combined), 60, 10)
-                .setPosition(80, 32);
-        builder.addAnimatedRecipeArrow(200).setPosition(28, 16);
+        Component modeLabel = Component.translatable(recipe.worldMode());
+        builder.addText(Component.translatable("avoidminer.jei.tier_mode_short", recipe.tier(), modeLabel), 90, 9)
+                .setPosition(25, 1);
+        builder.addAnimatedRecipeArrow(200).setPosition(30, 10);
     }
 }
