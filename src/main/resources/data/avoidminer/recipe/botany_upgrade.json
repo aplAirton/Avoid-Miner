@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["DOJ", "MPA", "BSC"],
+  "key": {
+    "D": "minecraft:dark_oak_sapling",
+    "O": "minecraft:oak_sapling",
+    "J": "minecraft:jungle_sapling",
+    "M": "minecraft:mangrove_propagule",
+    "P": "avoidminer:blank_upgrade_pattern",
+    "A": "minecraft:acacia_sapling",
+    "B": "minecraft:birch_sapling",
+    "S": "minecraft:spruce_sapling",
+    "C": "minecraft:cherry_sapling"
+  },
+  "result": { "id": "avoidminer:botany_upgrade", "count": 1 }
+}

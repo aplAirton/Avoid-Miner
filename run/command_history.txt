@@ -1,0 +1,12 @@
+/gamemode creative
+/gamemode survival
+/gamemode creative
+/time pause
+/time set 0
+/time set 200
+/time set 600
+/gamemode survival
+/gamemode creative
+/time pause
+/time set minecraft:day
+/time pause

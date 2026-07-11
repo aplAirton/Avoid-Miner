@@ -1,0 +1,4 @@
+{
+  "model": { "type": "model", "model": "avoidminer:item/mining_upgrade_tier_2" },
+  "properties": { "hand_animation_on_swap": true }
+}

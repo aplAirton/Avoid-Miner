@@ -1,0 +1,31 @@
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+description='''
+A functional mining block that generates resources (diamond, emerald, redstone, lapis lazuli, coal)
+every second while consuming vanilla fuels. Features a 27-slot inventory interface.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="jei"
+    type="optional"
+    side="CLIENT"
+    versionRange="[29.2.0,)"
+    ordering="AFTER"

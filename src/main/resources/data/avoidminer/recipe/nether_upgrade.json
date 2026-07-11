@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GCG", "SPO", "GCG"],
+  "key": {
+    "G": "minecraft:ghast_tear",
+    "C": "minecraft:crying_obsidian",
+    "S": "minecraft:soul_sand",
+    "P": "avoidminer:blank_upgrade_pattern",
+    "O": "minecraft:soul_soil"
+  },
+  "result": { "id": "avoidminer:nether_upgrade", "count": 1 }
+}

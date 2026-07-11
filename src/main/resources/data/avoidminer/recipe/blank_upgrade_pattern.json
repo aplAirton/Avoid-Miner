@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["LLL", "LDL", "LLL"],
+  "key": {
+    "L": "minecraft:paper",
+    "D": "minecraft:diamond"
+  },
+  "result": { "id": "avoidminer:blank_upgrade_pattern", "count": 1 }
+}

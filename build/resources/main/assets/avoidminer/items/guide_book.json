@@ -1,0 +1,4 @@
+{
+  "model": { "type": "model", "model": "avoidminer:item/guide_book" },
+  "properties": { "hand_animation_on_swap": true }
+}

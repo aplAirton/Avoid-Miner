@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["UPU", "S2A", "UBU"],
+  "key": {
+    "U": "avoidminer:upgrade_tier_3",
+    "P": "minecraft:netherite_pickaxe",
+    "S": "minecraft:netherite_shovel",
+    "2": "avoidminer:avoid_miner_tier_2",
+    "A": "minecraft:netherite_axe",
+    "B": "minecraft:netherite_pickaxe"
+  },
+  "result": { "id": "avoidminer:avoid_miner_tier_3", "count": 1 }
+}

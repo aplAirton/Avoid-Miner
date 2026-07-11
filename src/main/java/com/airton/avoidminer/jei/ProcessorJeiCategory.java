@@ -1,0 +1,60 @@
+package com.airton.avoidminer.jei;
+
+import com.airton.avoidminer.ModBlocks;
+import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class ProcessorJeiCategory extends AbstractRecipeCategory<ProcessorJeiRecipe> {
+    public static final IRecipeType<ProcessorJeiRecipe> TYPE =
+            IRecipeType.create(Identifier.parse("avoidminer:processor"), ProcessorJeiRecipe.class);
+
+    public ProcessorJeiCategory(IGuiHelper guiHelper) {
+        super(TYPE, Component.translatable("avoidminers.jei.processor.category"),
+                guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_3.get())),
+                140, 50);
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, ProcessorJeiRecipe recipe, IFocusGroup focuses) {
+        builder.addSlot(RecipeIngredientRole.INPUT, 10, 16)
+                .add(recipe.input());
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 16)
+                .add(recipe.output());
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, ProcessorJeiRecipe recipe, IFocusGroup focuses) {
+        builder.addText(Component.translatable("avoidminers.jei.processor.multiplier", recipe.multiplier()), 60, 10)
+                .setPosition(40, 2);
+        builder.addAnimatedRecipeArrow(200).setPosition(38, 16);
+    }
+
+    public static List<ProcessorJeiRecipe> generateRecipes() {
+        List<ProcessorJeiRecipe> recipes = new ArrayList<>();
+
+        Map<ItemStack, ItemStack> recipeMap = ProcessorBlockEntity.getRecipeMap();
+        for (Map.Entry<ItemStack, ItemStack> entry : recipeMap.entrySet()) {
+            ItemStack input = entry.getKey().copy();
+            ItemStack output = entry.getValue().copy();
+            int outCount = output.getCount();
+            String mult = "x" + outCount;
+            recipes.add(new ProcessorJeiRecipe(input, output, mult));
+        }
+
+        return recipes;
+    }
+}

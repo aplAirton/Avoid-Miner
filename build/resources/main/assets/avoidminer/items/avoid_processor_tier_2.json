@@ -1,0 +1,4 @@
+{
+  "model": { "type": "model", "model": "avoidminer:block/avoid_processor_tier_2" },
+  "properties": { "hand_animation_on_swap": true, "oversized_in_gui": false, "swap_animation_scale": 1.0 }
+}

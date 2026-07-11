@@ -1,0 +1,31 @@
+license="All Rights Reserved"
+
+[[mods]]
+modId="avoidminer"
+version="1.0.0"
+displayName="Avoid Miner"
+description='''
+A functional mining block that generates resources (diamond, emerald, redstone, lapis lazuli, coal)
+every second while consuming vanilla fuels. Features a 27-slot inventory interface.
+'''
+
+[[dependencies.avoidminer]]
+    modId="neoforge"
+    type="required"
+    versionRange="[26.1.2.78,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.avoidminer]]
+    modId="minecraft"
+    type="required"
+    versionRange="[26.1.2]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.avoidminer]]
+    modId="jei"
+    type="optional"
+    side="CLIENT"
+    versionRange="[29.2.0,)"
+    ordering="AFTER"

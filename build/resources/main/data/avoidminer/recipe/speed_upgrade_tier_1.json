@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CSC", "SPS", "CFC"],
+  "key": {
+    "C": "minecraft:clock",
+    "S": "minecraft:sugar",
+    "P": "avoidminer:blank_upgrade_pattern",
+    "F": "minecraft:feather"
+  },
+  "result": { "id": "avoidminer:speed_upgrade_tier_1", "count": 1 }
+}

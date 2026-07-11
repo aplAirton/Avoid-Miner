@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["DED", "SPS", "DAD"],
+  "key": {
+    "D": "minecraft:ender_eye",
+    "E": "minecraft:redstone",
+    "S": "minecraft:sculk_sensor",
+    "P": "minecraft:diamond_pickaxe",
+    "A": "minecraft:amethyst_shard"
+  },
+  "result": { "id": "avoidminer:mining_core", "count": 1 }
+}

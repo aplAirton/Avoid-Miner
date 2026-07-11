@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["NPN", "SCA", "NBN"],
+  "key": {
+    "N": "minecraft:nether_bricks",
+    "P": "minecraft:diamond_pickaxe",
+    "S": "minecraft:diamond_shovel",
+    "C": "avoidminer:avoid_processor_tier_1",
+    "A": "minecraft:diamond_axe",
+    "B": "minecraft:blast_furnace"
+  },
+  "result": { "id": "avoidminer:avoid_processor_tier_2", "count": 1 }
+}

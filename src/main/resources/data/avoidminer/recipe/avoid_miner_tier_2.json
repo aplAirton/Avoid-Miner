@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["UPU", "S1A", "UBU"],
+  "key": {
+    "U": "avoidminer:upgrade_tier_2",
+    "P": "minecraft:diamond_pickaxe",
+    "S": "minecraft:diamond_shovel",
+    "1": "avoidminer:avoid_miner_tier_1",
+    "A": "minecraft:diamond_axe",
+    "B": "minecraft:diamond_block"
+  },
+  "result": { "id": "avoidminer:avoid_miner_tier_2", "count": 1 }
+}

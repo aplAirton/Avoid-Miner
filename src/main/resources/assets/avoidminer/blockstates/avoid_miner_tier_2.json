@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "avoidminer:block/avoid_miner_tier_2" },
+    "lit=true": { "model": "avoidminer:block/avoid_miner_tier_2_on" }
+  }
+}
