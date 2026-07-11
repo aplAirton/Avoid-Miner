@@ -46,12 +46,10 @@ public class ProcessorJeiCategory extends AbstractRecipeCategory<ProcessorJeiRec
     public static List<ProcessorJeiRecipe> generateRecipes() {
         List<ProcessorJeiRecipe> recipes = new ArrayList<>();
 
-        Map<ItemStack, ItemStack> recipeMap = ProcessorBlockEntity.getRecipeMap();
-        for (Map.Entry<ItemStack, ItemStack> entry : recipeMap.entrySet()) {
-            ItemStack input = entry.getKey().copy();
+        for (Map.Entry<net.minecraft.world.item.Item, ItemStack> entry : ProcessorBlockEntity.getRecipeMap().entrySet()) {
+            ItemStack input = new ItemStack(entry.getKey());
             ItemStack output = entry.getValue().copy();
-            int outCount = output.getCount();
-            String mult = "x" + outCount;
+            String mult = "x" + output.getCount();
             recipes.add(new ProcessorJeiRecipe(input, output, mult));
         }
 

@@ -1,0 +1,124 @@
+---- Minecraft Network Protocol Error Report ----
+// All lines are down!
+
+Time: 2026-07-11 12:27:37
+Description: Packet handling error
+
+java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 10
+	at java.base/java.util.Arrays$ArrayList.set(Arrays.java:4230) ~[?:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.core.NonNullList.set(NonNullList.java:69) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.StacksResourceHandler.set(StacksResourceHandler.java:128) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.item.ResourceHandlerSlot.setStackCopy(ResourceHandlerSlot.java:49) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.world.inventory.StackCopySlot.set(StackCopySlot.java:60) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.inventory.AbstractContainerMenu.initializeContents(AbstractContainerMenu.java:635) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.multiplayer.ClientPacketListener.handleContainerContent(ClientPacketListener.java:1459) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket.handle(ClientboundContainerSetContentPacket.java:31) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket.handle(ClientboundContainerSetContentPacket.java:11) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.PacketProcessor$ListenerAndPacket.handle(PacketProcessor.java:64) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.PacketProcessor.processQueuedPackets(PacketProcessor.java:50) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.runTick(Minecraft.java:1291) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.run(Minecraft.java:937) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.main.Main.main(Main.java:246) [minecraft-patched-26.1.2.78.jar:?] {}
+	at net.neoforged.fml.startup.Client.main(Client.java:19) [loader-11.0.15.jar:11.0] {}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?] {}
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at java.base/java.util.Arrays$ArrayList.set(Arrays.java:4230) ~[?:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.core.NonNullList.set(NonNullList.java:69) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.StacksResourceHandler.set(StacksResourceHandler.java:128) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.item.ResourceHandlerSlot.setStackCopy(ResourceHandlerSlot.java:49) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.world.inventory.StackCopySlot.set(StackCopySlot.java:60) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.inventory.AbstractContainerMenu.initializeContents(AbstractContainerMenu.java:635) ~[minecraft-patched-26.1.2.78.jar:?] {}
+-- Incoming Packet --
+Details:
+	Type: clientbound/minecraft:container_set_content
+	Is Terminal: false
+	Is Skippable: false
+Stacktrace:
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.protocol.PacketUtils.fillCrashReport(PacketUtils.java:41) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl.storeDisconnectionReport(ClientCommonPacketListenerImpl.java:138) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl.onPacketError(ClientCommonPacketListenerImpl.java:124) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.PacketProcessor$ListenerAndPacket.handle(PacketProcessor.java:70) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.network.PacketProcessor.processQueuedPackets(PacketProcessor.java:50) [minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.runTick(Minecraft.java:1291) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.run(Minecraft.java:937) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.main.Main.main(Main.java:246) [minecraft-patched-26.1.2.78.jar:?] {}
+	at net.neoforged.fml.startup.Client.main(Client.java:19) [loader-11.0.15.jar:11.0] {}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?] {}
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?] {}
+
+
+-- Connection --
+Details:
+	Protocol: play
+	Flow: CLIENTBOUND
+	Is Local: true
+	Server type: <none>
+	Server brand: neoforge
+
+-- System Details --
+Details:
+	Minecraft Version: 26.1.2
+	Minecraft Version ID: 26.1.2
+	Operating System: Mac OS X (aarch64) version 26.5.1
+	Java Version: 25.0.3, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 684127488 bytes (652 MiB) / 1803550720 bytes (1720 MiB) up to 4294967296 bytes (4096 MiB)
+	Memory (heap): init: 256MiB, used: 1065MiB, committed: 1720MiB, max: 4096MiB
+	Memory (non-head): init: 007MiB, used: 220MiB, committed: 223MiB, max: 000MiB
+	CPUs: 10
+	Processor Vendor: Apple Inc.
+	Processor Name: Apple M4
+	Identifier: Apple Inc. Family 0x1b588bb3 Model 0 Stepping 0
+	Microarchitecture: ARM64 SoC: Firestorm + Icestorm
+	Frequency (GHz): 0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 10
+	Number of logical CPUs: 10
+	Graphics card #0 name: Apple M4
+	Graphics card #0 vendor: Apple (0x106b)
+	Graphics card #0 VRAM (MiB): 0.00
+	Graphics card #0 deviceId: unknown
+	Graphics card #0 versionInfo: unknown
+	Memory slot #0 capacity (MiB): 0.00
+	Memory slot #0 clockSpeed (GHz): 0.00
+	Memory slot #0 type: unknown
+	Virtual memory max (MiB): 18432.00
+	Virtual memory used (MiB): 13719.42
+	Swap memory total (MiB): 2048.00
+	Swap memory used (MiB): 669.94
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 10657.08, total: 233752.44
+	Space in storage for workdir (MiB): available: 10657.08, total: 233752.44
+	JVM Flags: 0 total; 
+	Debug Flags: 0 total; 
+	Class Processors: 
+		00,00%: neoforge:neoforge_dev_dist_cleaner
+		00,00%: neoforge:computing_frames (marker)
+		00,00%: neoforge:runtime_enum_extender
+		04,08%: neoforge:access_transformer
+		00,04%: neoforge:mixin
+		00,00%: neoforge:simple_processors_default (marker)
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.biome.biome
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.block.flowerpotblock
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.levelgen.structure.structure
+		00,26%: neoforge.coremods:method_redirector
+	Mod List: 
+		main                                              |Avoid Miner                   |avoidminer                    |1.0.0               |Manifest: NOSIGNATURE
+		jei-26.1.2-neoforge-29.14.0.43.jar                |Just Enough Items             |jei                           |29.14.0.43          |Manifest: fec9b3e31dd3546738bffae991e0297fda478bbbcea9457a3a5e95479f989bf3
+		minecraft-patched-26.1.2.78.jar                   |Minecraft                     |minecraft                     |26.1.2              |Manifest: NOSIGNATURE
+		neoforge-26.1.2.78-universal.jar                  |NeoForge                      |neoforge                      |26.1.2.78           |Manifest: NOSIGNATURE
+	Crash Report UUID: ec0e67d9-d6fc-4fd3-9463-f230ee5bb65c
+	FML: 11.0.15
+	NeoForge: 26.1.2.78

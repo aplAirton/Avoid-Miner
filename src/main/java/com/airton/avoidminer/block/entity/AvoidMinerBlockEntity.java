@@ -70,6 +70,11 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                 int upgradeTier = UpgradeType.tierFromStack(stack);
                 int maxTier = getTier().ordinal() + 1;
                 if (upgradeTier > maxTier) return false;
+                ItemResource current = getResource(slot);
+                if (!current.isEmpty()) {
+                    UpgradeType currentType = UpgradeType.fromStack(current.toStack(1));
+                    if (currentType == type) return false;
+                }
                 for (int i = UPGRADE_SLOT_START; i < WORLD_SLOT; i++) {
                     if (i == slot) continue;
                     ItemResource other = getResource(i);
@@ -452,7 +457,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
 
             if (be.progress >= be.getEffectiveTicks()) {
                 be.progress = 0;
-                float chance = tier.successChance * be.getMiningMultiplier();
+                float chance = Math.min(1.0f, tier.successChance * be.getMiningMultiplier());
                 if (level.getRandom().nextFloat() < chance) {
                     be.generateResource(tier);
                 }

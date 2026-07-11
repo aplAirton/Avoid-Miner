@@ -3,7 +3,7 @@
   "pattern": ["GEG", "EPE", "GEG"],
   "key": {
     "G": "minecraft:gold_ingot",
-    "E": "minecraft:emerald",
+    "E": "minecraft:emerald_block",
     "P": "avoidminer:mining_upgrade_tier_1"
   },
   "result": { "id": "avoidminer:mining_upgrade_tier_2", "count": 1 }

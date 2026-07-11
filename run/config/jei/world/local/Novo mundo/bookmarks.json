@@ -1,0 +1,6 @@
+[
+  {"version":3},
+  {"ingredient":{"id":"avoidminer:silk_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:copper_nugget"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:guide_book"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+]

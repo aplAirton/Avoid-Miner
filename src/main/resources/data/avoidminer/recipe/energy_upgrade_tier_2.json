@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["LGL", "GPG", "LGL"],
+  "pattern": ["RCR", "CPC", "RCR"],
   "key": {
-    "L": "minecraft:lapis_lazuli",
-    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "C": "minecraft:copper_ingot",
     "P": "avoidminer:energy_upgrade_tier_1"
   },
   "result": { "id": "avoidminer:energy_upgrade_tier_2", "count": 1 }

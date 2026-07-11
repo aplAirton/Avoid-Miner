@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["DBD", "BPB", "DBD"],
+  "pattern": ["BCB", "CPC", "BCB"],
   "key": {
-    "D": "minecraft:diamond",
     "B": "minecraft:redstone_block",
+    "C": "minecraft:copper_block",
     "P": "avoidminer:energy_upgrade_tier_2"
   },
   "result": { "id": "avoidminer:energy_upgrade_tier_3", "count": 1 }

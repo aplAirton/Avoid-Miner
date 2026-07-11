@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -24,88 +25,83 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
 public class ProcessorBlockEntity extends BlockEntity {
     public static final int FUEL_SLOT = 0;
+    public static final int MAX_INPUTS = 5;
+    public static final int UPGRADE_COUNT = 2;
 
     public enum Tier {
-        TIER_1(1, 2, 4000, 100, 1),
-        TIER_2(3, 2, 8000, 300, 2),
-        TIER_3(6, 3, 12000, 500, 3);
+        TIER_1(1, 4000, 100, 1),
+        TIER_2(3, 8000, 80, 2),
+        TIER_3(5, 12000, 60, 3);
 
         public final int inputCount;
-        public final int upgradeCount;
         public final int energyCapacity;
         public final int ticksPerProcess;
         public final int tierLevel;
 
-        Tier(int inputCount, int upgradeCount, int energyCapacity, int ticksPerProcess, int tierLevel) {
+        Tier(int inputCount, int energyCapacity, int ticksPerProcess, int tierLevel) {
             this.inputCount = inputCount;
-            this.upgradeCount = upgradeCount;
             this.energyCapacity = energyCapacity;
             this.ticksPerProcess = ticksPerProcess;
             this.tierLevel = tierLevel;
         }
 
-        public int getOutputStart() { return FUEL_SLOT + 1 + inputCount; }
-        public int getUpgradeStart() { return getOutputStart() + 27; }
-        public int getTotalSlots() { return getUpgradeStart() + upgradeCount; }
-
         public int getInputStart() { return FUEL_SLOT + 1; }
         public int getInputEnd() { return getInputStart() + inputCount - 1; }
-        public int getOutputEnd() { return getOutputStart() + 26; }
-        public int getUpgradeEnd() { return getUpgradeStart() + upgradeCount - 1; }
+        public int getOutputStart() { return getInputStart() + inputCount; }
+        public int getOutputEnd() { return getOutputStart() + inputCount - 1; }
+        public int getEnergyUpgradeSlot() { return getOutputEnd() + 1; }
+        public int getSpeedUpgradeSlot() { return getOutputEnd() + 2; }
+        public int getTotalSlots() { return getSpeedUpgradeSlot() + 1; }
     }
 
-    private static final Map<ItemStack, ItemStack> RECIPES = new HashMap<>();
+    private static final Map<Item, ItemStack> RECIPES = new LinkedHashMap<>();
 
     static {
-        addRecipe(Items.DIAMOND_ORE, Items.DIAMOND, 2);
-        addRecipe(Items.DEEPSLATE_DIAMOND_ORE, Items.DIAMOND, 2);
+        addRecipe(Items.COAL_ORE, Items.COAL, 4);
+        addRecipe(Items.DEEPSLATE_COAL_ORE, Items.COAL, 4);
         addRecipe(Items.IRON_ORE, Items.RAW_IRON, 3);
         addRecipe(Items.DEEPSLATE_IRON_ORE, Items.RAW_IRON, 3);
         addRecipe(Items.COPPER_ORE, Items.RAW_COPPER, 6);
         addRecipe(Items.DEEPSLATE_COPPER_ORE, Items.RAW_COPPER, 6);
-        addRecipe(Items.COAL_ORE, Items.COAL, 4);
-        addRecipe(Items.DEEPSLATE_COAL_ORE, Items.COAL, 4);
+        addRecipe(Items.GOLD_ORE, Items.RAW_GOLD, 2);
+        addRecipe(Items.DEEPSLATE_GOLD_ORE, Items.RAW_GOLD, 2);
         addRecipe(Items.REDSTONE_ORE, Items.REDSTONE, 4);
         addRecipe(Items.DEEPSLATE_REDSTONE_ORE, Items.REDSTONE, 4);
         addRecipe(Items.LAPIS_ORE, Items.LAPIS_LAZULI, 8);
         addRecipe(Items.DEEPSLATE_LAPIS_ORE, Items.LAPIS_LAZULI, 8);
-        addRecipe(Items.NETHER_QUARTZ_ORE, Items.QUARTZ, 6);
-        addRecipe(Items.GOLD_ORE, Items.RAW_GOLD, 2);
-        addRecipe(Items.DEEPSLATE_GOLD_ORE, Items.RAW_GOLD, 2);
         addRecipe(Items.EMERALD_ORE, Items.EMERALD, 2);
         addRecipe(Items.DEEPSLATE_EMERALD_ORE, Items.EMERALD, 2);
+        addRecipe(Items.DIAMOND_ORE, Items.DIAMOND, 2);
+        addRecipe(Items.DEEPSLATE_DIAMOND_ORE, Items.DIAMOND, 2);
+        addRecipe(Items.NETHER_QUARTZ_ORE, Items.QUARTZ, 6);
         addRecipe(Items.NETHER_GOLD_ORE, Items.GOLD_NUGGET, 12);
         addRecipe(Items.ANCIENT_DEBRIS, Items.NETHERITE_SCRAP, 2);
     }
 
-    private static void addRecipe(ItemStack input, ItemStack output) {
-        RECIPES.put(input, output);
+    private static void addRecipe(Item inputItem, Item outputItem, int outputCount) {
+        RECIPES.put(inputItem, new ItemStack(outputItem, outputCount));
     }
 
-    private static void addRecipe(net.minecraft.world.item.Item inputItem, net.minecraft.world.item.Item outputItem, int outputCount) {
-        RECIPES.put(new ItemStack(inputItem), new ItemStack(outputItem, outputCount));
-    }
-
-    public static Map<ItemStack, ItemStack> getRecipeMap() {
+    public static Map<Item, ItemStack> getRecipeMap() {
         return RECIPES;
     }
 
     @Nullable
     public static ItemStack getRecipeResult(ItemStack input) {
         if (input.isEmpty()) return null;
-        for (Map.Entry<ItemStack, ItemStack> entry : RECIPES.entrySet()) {
-            if (entry.getKey().is(input.getItem())) {
-                return entry.getValue().copy();
-            }
-        }
-        return null;
+        ItemStack result = RECIPES.get(input.getItem());
+        return result == null ? null : result.copy();
+    }
+
+    public static boolean isProcessable(ItemStack stack) {
+        return !stack.isEmpty() && RECIPES.containsKey(stack.getItem());
     }
 
     private final Tier tier;
@@ -116,51 +112,48 @@ public class ProcessorBlockEntity extends BlockEntity {
     private final ResourceHandler<ItemResource> sideHandler;
 
     private int energyBuffer;
-    private int progress;
+    private final int[] progress = new int[MAX_INPUTS];
     private float energyFraction;
+
+    // Data layout: 0=energy, 1=capacity, 2=effectiveTicks, 3=tierLevel, 4=inputCount,
+    // 5=baseTicks, 6..10=progress per column, 11=stalled, 12=energyUpgTier, 13=speedUpgTier
+    public static final int DATA_PROGRESS = 6;
+    public static final int DATA_STALLED = DATA_PROGRESS + MAX_INPUTS;
+    public static final int DATA_ENERGY_UPG = DATA_STALLED + 1;
+    public static final int DATA_SPEED_UPG = DATA_ENERGY_UPG + 1;
+    public static final int DATA_SIZE = DATA_SPEED_UPG + 1;
 
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
-            return switch (index) {
-                case 0 -> energyBuffer;
-                case 1 -> tier.energyCapacity;
-                case 2 -> progress;
-                case 3 -> getEffectiveTicks();
-                case 4 -> upgradeTypeId(tier.getUpgradeStart());
-                case 5 -> upgradeTierId(tier.getUpgradeStart());
-                case 6 -> tier.upgradeCount >= 2 ? upgradeTypeId(tier.getUpgradeStart() + 1) : 0;
-                case 7 -> tier.upgradeCount >= 2 ? upgradeTierId(tier.getUpgradeStart() + 1) : 0;
-                case 8 -> tier.upgradeCount >= 3 ? upgradeTypeId(tier.getUpgradeStart() + 2) : 0;
-                case 9 -> tier.upgradeCount >= 3 ? upgradeTierId(tier.getUpgradeStart() + 2) : 0;
-                case 10 -> tier.upgradeCount;
-                case 11 -> tier.tierLevel;
-                case 12 -> getEnergyCostPerProcess();
-                case 13 -> isOutputFull() ? 1 : 0;
-                default -> 0;
-            };
+            if (index == 0) return energyBuffer;
+            if (index == 1) return tier.energyCapacity;
+            if (index == 2) return getEffectiveTicks();
+            if (index == 3) return tier.tierLevel;
+            if (index == 4) return tier.inputCount;
+            if (index == 5) return tier.ticksPerProcess;
+            if (index >= DATA_PROGRESS && index < DATA_PROGRESS + MAX_INPUTS) {
+                return progress[index - DATA_PROGRESS];
+            }
+            if (index == DATA_STALLED) return isAnyOutputBlocked() ? 1 : 0;
+            if (index == DATA_ENERGY_UPG) return upgradeTierAt(tier.getEnergyUpgradeSlot());
+            if (index == DATA_SPEED_UPG) return upgradeTierAt(tier.getSpeedUpgradeSlot());
+            return 0;
         }
 
         @Override
         public void set(int index, int value) {
-            switch (index) {
-                case 0 -> energyBuffer = value;
-                case 2 -> progress = value;
+            if (index == 0) energyBuffer = value;
+            if (index >= DATA_PROGRESS && index < DATA_PROGRESS + MAX_INPUTS) {
+                progress[index - DATA_PROGRESS] = value;
             }
         }
 
         @Override
-        public int getCount() { return 14; }
+        public int getCount() { return DATA_SIZE; }
     };
 
-    private int upgradeTypeId(int slot) {
-        ItemResource r = itemHandler.getResource(slot);
-        if (r.isEmpty()) return 0;
-        UpgradeType t = UpgradeType.fromStack(r.toStack(1));
-        return t == null ? 0 : t.ordinal() + 1;
-    }
-
-    private int upgradeTierId(int slot) {
+    private int upgradeTierAt(int slot) {
         ItemResource r = itemHandler.getResource(slot);
         if (r.isEmpty()) return 0;
         return UpgradeType.tierFromStack(r.toStack(1));
@@ -183,10 +176,7 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     public Tier getTier() {
-        if (level != null) {
-            return getTierFromBlock(level.getBlockState(worldPosition));
-        }
-        return Tier.values()[Math.clamp(tierId - 1, 0, 2)];
+        return tier;
     }
 
     private ItemStacksResourceHandler createItemHandler() {
@@ -200,29 +190,22 @@ public class ProcessorBlockEntity extends BlockEntity {
             public boolean isValid(int slot, ItemResource resource) {
                 if (resource.isEmpty()) return false;
                 ItemStack stack = resource.toStack(1);
-                Tier t = getTier();
                 if (slot == FUEL_SLOT) {
                     return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
                 }
-                if (slot >= t.getInputStart() && slot <= t.getInputEnd()) {
-                    return getRecipeResult(stack) != null;
+                if (slot >= tier.getInputStart() && slot <= tier.getInputEnd()) {
+                    return isProcessable(stack);
                 }
-                if (slot >= t.getOutputStart() && slot <= t.getOutputEnd()) {
+                if (slot >= tier.getOutputStart() && slot <= tier.getOutputEnd()) {
                     return false;
                 }
-                if (slot >= t.getUpgradeStart() && slot <= t.getUpgradeEnd()) {
-                    UpgradeType type = UpgradeType.fromStack(stack);
-                    if (type == null) return false;
-                    if (type == UpgradeType.MINING) return false;
-                    for (int i = t.getUpgradeStart(); i <= t.getUpgradeEnd(); i++) {
-                        if (i == slot) continue;
-                        ItemResource other = getResource(i);
-                        if (!other.isEmpty()) {
-                            UpgradeType otherType = UpgradeType.fromStack(other.toStack(1));
-                            if (otherType == type) return false;
-                        }
-                    }
-                    return true;
+                if (slot == tier.getEnergyUpgradeSlot()) {
+                    return UpgradeType.fromStack(stack) == UpgradeType.ENERGY
+                            && UpgradeType.tierFromStack(stack) <= tier.tierLevel;
+                }
+                if (slot == tier.getSpeedUpgradeSlot()) {
+                    return UpgradeType.fromStack(stack) == UpgradeType.SPEED
+                            && UpgradeType.tierFromStack(stack) <= tier.tierLevel;
                 }
                 return false;
             }
@@ -230,7 +213,6 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     private ResourceHandler<ItemResource> createBottomHandler() {
-        Tier t = tier;
         return new ResourceHandler<>() {
             @Override public int size() { return itemHandler.size(); }
             @Override public ItemResource getResource(int index) { return itemHandler.getResource(index); }
@@ -239,8 +221,7 @@ public class ProcessorBlockEntity extends BlockEntity {
             @Override public boolean isValid(int index, ItemResource resource) { return itemHandler.isValid(index, resource); }
             @Override public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) { return 0; }
             @Override public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-                Tier t2 = getTier();
-                if (index >= t2.getOutputStart() && index <= t2.getOutputEnd()) {
+                if (index >= tier.getOutputStart() && index <= tier.getOutputEnd()) {
                     return itemHandler.extract(index, resource, amount, transaction);
                 }
                 return 0;
@@ -256,20 +237,15 @@ public class ProcessorBlockEntity extends BlockEntity {
             @Override public long getCapacityAsLong(int index, ItemResource resource) { return itemHandler.getCapacityAsLong(index, resource); }
             @Override public boolean isValid(int index, ItemResource resource) { return itemHandler.isValid(index, resource); }
             @Override public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-                Tier t = getTier();
                 if (index == FUEL_SLOT) return itemHandler.insert(index, resource, amount, transaction);
-                if (index >= t.getInputStart() && index <= t.getInputEnd()) return itemHandler.insert(index, resource, amount, transaction);
+                if (index >= tier.getInputStart() && index <= tier.getInputEnd()) return itemHandler.insert(index, resource, amount, transaction);
                 return 0;
             }
             @Override public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) { return 0; }
         };
     }
 
-    public int getEnergyCostPerProcess() {
-        return tier.ticksPerProcess;
-    }
-
-    private ItemStack getUpgradeStack(int slot) {
+    private ItemStack getStackIn(int slot) {
         ItemResource resource = itemHandler.getResource(slot);
         int amount = itemHandler.getAmountAsInt(slot);
         if (resource.isEmpty() || amount <= 0) return ItemStack.EMPTY;
@@ -277,85 +253,103 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     private float getEnergyMultiplier() {
-        float mult = 1.0f;
-        Tier t = getTier();
-        for (int i = t.getUpgradeStart(); i <= t.getUpgradeEnd(); i++) {
-            ItemStack stack = getUpgradeStack(i);
-            if (UpgradeType.fromStack(stack) == UpgradeType.ENERGY) {
-                int tierVal = UpgradeType.tierFromStack(stack);
-                mult = switch (tierVal) { case 1 -> 0.8f; case 2 -> 0.7f; case 3 -> 0.6f; default -> 1.0f; };
-            }
-        }
-        return mult;
+        ItemStack stack = getStackIn(tier.getEnergyUpgradeSlot());
+        if (UpgradeType.fromStack(stack) != UpgradeType.ENERGY) return 1.0f;
+        return switch (UpgradeType.tierFromStack(stack)) {
+            case 1 -> 0.8f; case 2 -> 0.7f; case 3 -> 0.6f; default -> 1.0f;
+        };
     }
 
     private float getSpeedMultiplier() {
-        float mult = 1.0f;
-        Tier t = getTier();
-        for (int i = t.getUpgradeStart(); i <= t.getUpgradeEnd(); i++) {
-            ItemStack stack = getUpgradeStack(i);
-            if (UpgradeType.fromStack(stack) == UpgradeType.SPEED) {
-                int tierVal = UpgradeType.tierFromStack(stack);
-                mult = switch (tierVal) { case 1 -> 1.5f; case 2 -> 1.7f; case 3 -> 2.0f; default -> 1.0f; };
-            }
-        }
-        return mult;
+        ItemStack stack = getStackIn(tier.getSpeedUpgradeSlot());
+        if (UpgradeType.fromStack(stack) != UpgradeType.SPEED) return 1.0f;
+        return switch (UpgradeType.tierFromStack(stack)) {
+            case 1 -> 1.5f; case 2 -> 1.7f; case 3 -> 2.0f; default -> 1.0f;
+        };
     }
 
     private int getEffectiveTicks() {
         return Math.max(1, (int) (tier.ticksPerProcess / getSpeedMultiplier()));
     }
 
-    private boolean isOutputFull() {
-        Tier t = getTier();
-        for (int i = t.getOutputStart(); i <= t.getOutputEnd(); i++) {
-            if (itemHandler.getResource(i).isEmpty() || itemHandler.getAmountAsInt(i) <= 0) {
-                return false;
-            }
-        }
-        return true;
+    private boolean canOutputAccept(int outputSlot, ItemStack result) {
+        ItemResource slotResource = itemHandler.getResource(outputSlot);
+        int slotAmount = itemHandler.getAmountAsInt(outputSlot);
+        if (slotResource.isEmpty()) return true;
+        return slotResource.equals(ItemResource.of(result))
+                && slotAmount + result.getCount() <= result.getMaxStackSize();
     }
 
-    private boolean hasAnyInput() {
-        Tier t = getTier();
-        for (int i = t.getInputStart(); i <= t.getInputEnd(); i++) {
-            ItemResource r = itemHandler.getResource(i);
-            if (!r.isEmpty() && itemHandler.getAmountAsInt(i) > 0) return true;
+    private boolean isAnyOutputBlocked() {
+        for (int i = 0; i < tier.inputCount; i++) {
+            int inputSlot = tier.getInputStart() + i;
+            int outputSlot = tier.getOutputStart() + i;
+            ItemResource inputRes = itemHandler.getResource(inputSlot);
+            if (!inputRes.isEmpty() && itemHandler.getAmountAsInt(inputSlot) > 0) {
+                ItemStack result = getRecipeResult(inputRes.toStack(1));
+                if (result != null && !canOutputAccept(outputSlot, result)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, ProcessorBlockEntity be) {
         Tier tier = be.getTier();
-        boolean wasBurning = be.isBurning();
         boolean dirty = false;
 
         if (level.hasNeighborSignal(pos)) {
-            if (wasBurning) {
+            if (state.getValue(ProcessorBlock.LIT)) {
                 level.setBlock(pos, state.setValue(ProcessorBlock.LIT, false), 3);
             }
             return;
         }
 
-        boolean outputFull = be.isOutputFull();
-        boolean hasInput = be.hasAnyInput();
+        float energyMult = be.getEnergyMultiplier();
+        float speedMult = be.getSpeedMultiplier();
+        int maxProgress = be.getEffectiveTicks();
 
-        if (!outputFull && hasInput && be.energyBuffer > 0) {
-            float rawCostPerTick = 1 * be.getEnergyMultiplier() * be.getSpeedMultiplier();
-            be.energyFraction += rawCostPerTick;
-            int cost = (int) be.energyFraction;
-            be.energyFraction -= cost;
-            be.energyBuffer = Math.max(0, be.energyBuffer - cost);
-            be.progress++;
-            dirty = true;
+        boolean anyProcessing = false;
 
-            if (be.progress >= be.getEffectiveTicks()) {
-                be.progress = 0;
-                be.processAllInputs();
+        for (int i = 0; i < tier.inputCount; i++) {
+            int inputSlot = tier.getInputStart() + i;
+            int outputSlot = tier.getOutputStart() + i;
+
+            ItemResource inputRes = be.itemHandler.getResource(inputSlot);
+            int inputAmount = be.itemHandler.getAmountAsInt(inputSlot);
+
+            if (inputRes.isEmpty() || inputAmount <= 0) {
+                if (be.progress[i] != 0) { be.progress[i] = 0; dirty = true; }
+                continue;
+            }
+
+            ItemStack result = getRecipeResult(inputRes.toStack(1));
+            if (result == null || !be.canOutputAccept(outputSlot, result)) {
+                if (be.progress[i] != 0) { be.progress[i] = 0; dirty = true; }
+                continue;
+            }
+
+            if (be.energyBuffer > 0) {
+                // Custo por tick = 1 * energyMult * speedMult; custo total por processo
+                // independe da velocidade (speed encurta o ciclo na mesma proporção)
+                float rawCostPerTick = energyMult * speedMult;
+                be.energyFraction += rawCostPerTick;
+                int cost = (int) be.energyFraction;
+                be.energyFraction -= cost;
+                be.energyBuffer = Math.max(0, be.energyBuffer - cost);
+                be.progress[i]++;
+                dirty = true;
+                anyProcessing = true;
+
+                if (be.progress[i] >= maxProgress) {
+                    be.progress[i] = 0;
+                    be.processOneInput(inputSlot, outputSlot, result);
+                }
             }
         }
 
-        if (!outputFull && be.energyBuffer <= tier.energyCapacity - 1) {
+        if (be.energyBuffer <= tier.energyCapacity - 1) {
             ItemResource fuelResource = be.itemHandler.getResource(FUEL_SLOT);
             int fuelAmount = be.itemHandler.getAmountAsInt(FUEL_SLOT);
             if (!fuelResource.isEmpty() && fuelAmount > 0) {
@@ -372,12 +366,7 @@ public class ProcessorBlockEntity extends BlockEntity {
             }
         }
 
-        if (!outputFull && !be.isBurning() && be.progress != 0) {
-            be.progress = 0;
-            dirty = true;
-        }
-
-        boolean burningNow = be.isBurning() && !outputFull && hasInput;
+        boolean burningNow = anyProcessing && be.energyBuffer > 0;
         if (state.getValue(ProcessorBlock.LIT) != burningNow) {
             level.setBlock(pos, state.setValue(ProcessorBlock.LIT, burningNow), 3);
         }
@@ -385,39 +374,19 @@ public class ProcessorBlockEntity extends BlockEntity {
         if (dirty) be.setChanged();
     }
 
-    private void processAllInputs() {
-        Tier t = getTier();
-        for (int slot = t.getInputStart(); slot <= t.getInputEnd(); slot++) {
-            processInput(slot);
-        }
-    }
-
-    private void processInput(int slot) {
-        ItemResource inputResource = itemHandler.getResource(slot);
-        int inputAmount = itemHandler.getAmountAsInt(slot);
-        if (inputResource.isEmpty() || inputAmount <= 0) return;
-
-        ItemStack inputStack = inputResource.toStack(1);
-        ItemStack result = getRecipeResult(inputStack);
-        if (result == null) return;
-
-        itemHandler.set(slot, inputResource, inputAmount - 1);
+    private void processOneInput(int inputSlot, int outputSlot, ItemStack result) {
+        ItemResource inputResource = itemHandler.getResource(inputSlot);
+        int inputAmount = itemHandler.getAmountAsInt(inputSlot);
+        itemHandler.set(inputSlot, inputResource, inputAmount - 1);
 
         ItemResource resultResource = ItemResource.of(result);
-        int toPlace = result.getCount();
-        Tier t = getTier();
-        for (int i = t.getOutputStart(); i <= t.getOutputEnd() && toPlace > 0; i++) {
-            ItemResource slotResource = itemHandler.getResource(i);
-            int slotAmount = itemHandler.getAmountAsInt(i);
-            if (slotResource.isEmpty()) {
-                itemHandler.set(i, resultResource, Math.min(toPlace, result.getMaxStackSize()));
-                toPlace -= Math.min(toPlace, result.getMaxStackSize());
-            } else if (slotResource.equals(resultResource) && slotAmount < result.getMaxStackSize()) {
-                int canAdd = result.getMaxStackSize() - slotAmount;
-                int add = Math.min(canAdd, toPlace);
-                itemHandler.set(i, resultResource, slotAmount + add);
-                toPlace -= add;
-            }
+        ItemResource slotResource = itemHandler.getResource(outputSlot);
+        int slotAmount = itemHandler.getAmountAsInt(outputSlot);
+        if (slotResource.isEmpty()) {
+            itemHandler.set(outputSlot, resultResource, Math.min(result.getCount(), result.getMaxStackSize()));
+        } else if (slotResource.equals(resultResource)) {
+            int add = Math.min(result.getMaxStackSize() - slotAmount, result.getCount());
+            itemHandler.set(outputSlot, resultResource, slotAmount + add);
         }
         setChanged();
     }
@@ -429,14 +398,13 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     public MenuProvider getMenuProvider() {
-        Tier t = getTier();
-        String key = switch (t) {
+        String key = switch (tier) {
             case TIER_1 -> "container.avoidminer.avoid_processor_tier_1";
             case TIER_2 -> "container.avoidminer.avoid_processor_tier_2";
             case TIER_3 -> "container.avoidminer.avoid_processor_tier_3";
         };
         return new SimpleMenuProvider(
-                (id, playerInventory, player) -> new ProcessorMenu(id, playerInventory, itemHandler, data, t),
+                (id, playerInventory, player) -> new ProcessorMenu(id, playerInventory, itemHandler, data, tier),
                 Component.translatable(key)
         );
     }
@@ -452,10 +420,13 @@ public class ProcessorBlockEntity extends BlockEntity {
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.putInt("Energy", energyBuffer);
-        output.putInt("Progress", progress);
+        for (int i = 0; i < MAX_INPUTS; i++) {
+            output.putInt("Progress" + i, progress[i]);
+        }
         output.putFloat("EnergyFraction", energyFraction);
         output.putInt("Tier", tier.tierLevel);
         output.putInt("SlotCount", tier.getTotalSlots());
+        output.putInt("LayoutVersion", 2);
         itemHandler.serialize(output.child("Inventory"));
     }
 
@@ -463,19 +434,76 @@ public class ProcessorBlockEntity extends BlockEntity {
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         energyBuffer = input.getIntOr("Energy", 0);
-        progress = input.getIntOr("Progress", 0);
+        for (int i = 0; i < MAX_INPUTS; i++) {
+            progress[i] = input.getIntOr("Progress" + i, 0);
+        }
         energyFraction = input.getFloatOr("EnergyFraction", 0.0f);
-        tierId = input.getIntOr("Tier", 1);
+        tierId = input.getIntOr("Tier", tier.tierLevel);
         int oldCount = input.getIntOr("SlotCount", 0);
         if (oldCount == 0) oldCount = tier.getTotalSlots();
-        ItemStacksResourceHandler tmp = new ItemStacksResourceHandler(oldCount);
+        int layoutVersion = input.getIntOr("LayoutVersion", 1);
+
+        ItemStacksResourceHandler tmp = new ItemStacksResourceHandler(Math.max(oldCount, tier.getTotalSlots()));
         tmp.deserialize(input.childOrEmpty("Inventory"));
-        int slots = Math.min(tmp.size(), tier.getTotalSlots());
-        for (int i = 0; i < slots; i++) {
-            ItemResource r = tmp.getResource(i);
-            int a = tmp.getAmountAsInt(i);
-            if (!r.isEmpty() && a > 0) {
-                itemHandler.set(i, r, a);
+
+        if (layoutVersion >= 2 && oldCount == tier.getTotalSlots()) {
+            for (int i = 0; i < tier.getTotalSlots(); i++) {
+                ItemResource r = tmp.getResource(i);
+                int a = tmp.getAmountAsInt(i);
+                if (!r.isEmpty() && a > 0) itemHandler.set(i, r, a);
+            }
+        } else {
+            migrateLegacyInventory(tmp, oldCount);
+        }
+    }
+
+    // Layout antigo (v1): fuel, N entradas, N saídas, M upgrades — com N/M diferentes dos atuais
+    // (T3 tinha 6 entradas e 3 upgrades). Reencaixa cada seção no layout novo.
+    private void migrateLegacyInventory(ItemStacksResourceHandler old, int oldCount) {
+        int oldInputs, oldUpgrades;
+        switch (oldCount) {
+            case 5 -> { oldInputs = 1; oldUpgrades = 2; }
+            case 9 -> { oldInputs = 3; oldUpgrades = 2; }
+            case 16 -> { oldInputs = 6; oldUpgrades = 3; }
+            default -> { oldInputs = Math.max(0, (oldCount - 1 - UPGRADE_COUNT) / 2); oldUpgrades = Math.max(0, oldCount - 1 - oldInputs * 2); }
+        }
+
+        ItemResource fuel = old.getResource(FUEL_SLOT);
+        int fuelAmt = old.getAmountAsInt(FUEL_SLOT);
+        if (!fuel.isEmpty() && fuelAmt > 0) itemHandler.set(FUEL_SLOT, fuel, fuelAmt);
+
+        for (int i = 0; i < oldInputs; i++) {
+            placeMigrated(old.getResource(1 + i), old.getAmountAsInt(1 + i),
+                    i < tier.inputCount ? tier.getInputStart() + i : -1);
+        }
+        for (int i = 0; i < oldInputs; i++) {
+            placeMigrated(old.getResource(1 + oldInputs + i), old.getAmountAsInt(1 + oldInputs + i),
+                    i < tier.inputCount ? tier.getOutputStart() + i : -1);
+        }
+        for (int i = 0; i < oldUpgrades; i++) {
+            ItemResource r = old.getResource(1 + oldInputs * 2 + i);
+            int a = old.getAmountAsInt(1 + oldInputs * 2 + i);
+            if (r.isEmpty() || a <= 0) continue;
+            UpgradeType type = UpgradeType.fromStack(r.toStack(1));
+            int target = switch (type) {
+                case ENERGY -> tier.getEnergyUpgradeSlot();
+                case SPEED -> tier.getSpeedUpgradeSlot();
+                case null, default -> -1;
+            };
+            placeMigrated(r, a, target);
+        }
+    }
+
+    private void placeMigrated(ItemResource resource, int amount, int preferredSlot) {
+        if (resource.isEmpty() || amount <= 0) return;
+        if (preferredSlot >= 0 && itemHandler.getResource(preferredSlot).isEmpty()) {
+            itemHandler.set(preferredSlot, resource, amount);
+            return;
+        }
+        for (int i = tier.getOutputStart(); i <= tier.getOutputEnd(); i++) {
+            if (itemHandler.getResource(i).isEmpty()) {
+                itemHandler.set(i, resource, amount);
+                return;
             }
         }
     }
