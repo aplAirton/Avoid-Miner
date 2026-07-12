@@ -3,7 +3,6 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.BatteryBlock;
-import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.menu.BatteryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,8 +55,7 @@ public class BatteryBlockEntity extends BlockEntity {
             if (resource.isEmpty()) return false;
             ItemStack stack = resource.toStack(1);
             if (slot == FUEL_SLOT) {
-                return level != null && (stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0
-                        || stack.is(ModItems.ENERGY_LINK.get()));
+                return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
             }
             if (slot == CAPACITY_UPGRADE_SLOT) {
                 return stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())
@@ -187,23 +185,14 @@ public class BatteryBlockEntity extends BlockEntity {
             int fuelAmt = be.itemHandler.getAmountAsInt(FUEL_SLOT);
             if (!fuelRes.isEmpty() && fuelAmt > 0) {
                 ItemStack fuelStack = fuelRes.toStack(1);
-                if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
-                    int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, EnergyLinkItem.TRANSFER_PER_TICK);
-                    if (pulled > 0) {
-                        be.energyBuffer = Math.min(be.energyBuffer + pulled, capacity);
+                int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+                if (burnTime > 0) {
+                    int energy = Math.max(1, burnTime / 5);
+                    if (be.energyBuffer + energy <= capacity) {
+                        be.energyBuffer += energy;
+                        be.itemHandler.set(FUEL_SLOT, fuelRes, fuelAmt - 1);
                         be.chargingTicks = 8;
                         dirty = true;
-                    }
-                } else {
-                    int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
-                    if (burnTime > 0) {
-                        int energy = Math.max(1, burnTime / 5);
-                        if (be.energyBuffer + energy <= capacity) {
-                            be.energyBuffer += energy;
-                            be.itemHandler.set(FUEL_SLOT, fuelRes, fuelAmt - 1);
-                            be.chargingTicks = 8;
-                            dirty = true;
-                        }
                     }
                 }
             }
