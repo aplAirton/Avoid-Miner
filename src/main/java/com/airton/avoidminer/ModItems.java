@@ -215,6 +215,18 @@ public class ModItems {
             props -> new MobCardItem(MobCardType.WARDEN, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> WITHER_CARD = ITEMS.registerItem("wither_card",
             props -> new MobCardItem(MobCardType.WITHER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> BOGGED_CARD = ITEMS.registerItem("bogged_card",
+            props -> new MobCardItem(MobCardType.BOGGED, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> DROWNED_CARD = ITEMS.registerItem("drowned_card",
+            props -> new MobCardItem(MobCardType.DROWNED, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> HOGLIN_CARD = ITEMS.registerItem("hoglin_card",
+            props -> new MobCardItem(MobCardType.HOGLIN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> PHANTOM_CARD = ITEMS.registerItem("phantom_card",
+            props -> new MobCardItem(MobCardType.PHANTOM, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> PILLAGER_CARD = ITEMS.registerItem("pillager_card",
+            props -> new MobCardItem(MobCardType.PILLAGER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> STRAY_CARD = ITEMS.registerItem("stray_card",
+            props -> new MobCardItem(MobCardType.STRAY, props.stacksTo(1)));
 
     // Referência ordenada usada pela HUD, JEI e máquina.
     public static final DeferredItem<?>[] MOB_CARDS = {
@@ -223,7 +235,8 @@ public class ModItems {
             ENDERMAN_CARD, VILLAGER_CARD, BLAZE_CARD, PIG_CARD, COW_CARD,
             CHICKEN_CARD, SHEEP_CARD, BREEZE_CARD, GUARDIAN_CARD, ELDER_GUARDIAN_CARD,
             SLIME_CARD, VINDICATOR_CARD, EVOKER_CARD, GHAST_CARD, MAGMA_CUBE_CARD,
-            SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD, WITHER_CARD
+            SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD, WITHER_CARD,
+            BOGGED_CARD, DROWNED_CARD, HOGLIN_CARD, PHANTOM_CARD, PILLAGER_CARD, STRAY_CARD
     };
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",

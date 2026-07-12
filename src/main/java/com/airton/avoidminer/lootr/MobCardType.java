@@ -40,7 +40,13 @@ public enum MobCardType {
     SHULKER("shulker", EntityType.SHULKER, 10),
     ENDER_DRAGON("ender_dragon", EntityType.ENDER_DRAGON, 3),
     WITHER("wither", EntityType.WITHER, 3),
-    WARDEN("warden", EntityType.WARDEN, 5);
+    WARDEN("warden", EntityType.WARDEN, 5),
+    BOGGED("bogged", EntityType.BOGGED, 10),
+    DROWNED("drowned", EntityType.DROWNED, 10),
+    HOGLIN("hoglin", EntityType.HOGLIN, 5),
+    PHANTOM("phantom", EntityType.PHANTOM, 10),
+    PILLAGER("pillager", EntityType.PILLAGER, 10),
+    STRAY("stray", EntityType.STRAY, 10);
 
     public final String id;
     public final EntityType<?> entityType;
@@ -174,6 +180,30 @@ public enum MobCardType {
                 new LootEntry(Items.ECHO_SHARD, 0.02f, 1, 1, false),
                 new LootEntry(Items.DISC_FRAGMENT_5, 0.01f, 1, 1, false)
             );
+            case BOGGED -> List.of(
+                new LootEntry(Items.ARROW, 1.0f, 1, 2, true),
+                new LootEntry(Items.BONE, 0.8f, 1, 2, true),
+                new LootEntry(Items.TIPPED_ARROW, 0.15f, 1, 1, false)
+            );
+            case DROWNED -> List.of(
+                new LootEntry(Items.ROTTEN_FLESH, 1.0f, 1, 2, true),
+                new LootEntry(Items.COPPER_INGOT, 0.3f, 1, 1, false)
+            );
+            case HOGLIN -> List.of(
+                new LootEntry(Items.LEATHER, 1.0f, 1, 2, true),
+                new LootEntry(Items.PORKCHOP, 1.0f, 1, 2, true)
+            );
+            case PHANTOM -> List.of(
+                new LootEntry(Items.PHANTOM_MEMBRANE, 1.0f, 1, 1, true)
+            );
+            case PILLAGER -> List.of(
+                new LootEntry(Items.ARROW, 0.8f, 1, 2, true),
+                new LootEntry(Items.EMERALD, 0.3f, 1, 1, false)
+            );
+            case STRAY -> List.of(
+                new LootEntry(Items.BONE, 1.0f, 1, 2, true),
+                new LootEntry(Items.ARROW, 0.8f, 1, 2, true)
+            );
         };
     }
 
@@ -272,6 +302,25 @@ public enum MobCardType {
             case WARDEN -> List.of(
                 new RareEntry(BuiltInRegistries.ITEM.get(Identifier.parse("avoidminer:rarity_upgrade")).orElseThrow().value(), 0.01f),
                 new RareEntry(Items.WARDEN_SPAWN_EGG, 0.0015f)
+            );
+            case BOGGED -> List.of(
+                new RareEntry(Items.BOGGED_SPAWN_EGG, 0.0015f)
+            );
+            case DROWNED -> List.of(
+                new RareEntry(Items.TRIDENT, 0.02f),
+                new RareEntry(Items.DROWNED_SPAWN_EGG, 0.0015f)
+            );
+            case HOGLIN -> List.of(
+                new RareEntry(Items.HOGLIN_SPAWN_EGG, 0.0015f)
+            );
+            case PHANTOM -> List.of(
+                new RareEntry(Items.PHANTOM_SPAWN_EGG, 0.0015f)
+            );
+            case PILLAGER -> List.of(
+                new RareEntry(Items.PILLAGER_SPAWN_EGG, 0.0015f)
+            );
+            case STRAY -> List.of(
+                new RareEntry(Items.STRAY_SPAWN_EGG, 0.0015f)
             );
         };
     }

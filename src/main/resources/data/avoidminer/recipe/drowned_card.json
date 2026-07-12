@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "RCR", "GCG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "R": "minecraft:rotten_flesh",
+    "C": "minecraft:copper_ingot"
+  },
+  "result": { "id": "avoidminer:drowned_card", "count": 1 }
+}

@@ -234,5 +234,11 @@
   "screen.avoidminer.slot.letter.range": "R",
   "tooltip.avoidminer.slot.capacity_only": "Somente Melhoria de Capacidade",
   "tooltip.avoidminer.slot.range_only": "Somente Melhoria de Alcance",
-  "tooltip.avoidminer.slot.fuel": "Combustível ou Link de Energia"
+  "tooltip.avoidminer.slot.fuel": "Combustível ou Link de Energia",
+  "item.avoidminer.bogged_card": "Cartão de Bogged",
+  "item.avoidminer.drowned_card": "Cartão de Afogado",
+  "item.avoidminer.hoglin_card": "Cartão de Hoglin",
+  "item.avoidminer.phantom_card": "Cartão de Fantasma",
+  "item.avoidminer.pillager_card": "Cartão de Saqueador",
+  "item.avoidminer.stray_card": "Cartão de Vagaroso"
 }

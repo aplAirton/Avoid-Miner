@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "LPL", "GCG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "L": "minecraft:leather",
+    "P": "minecraft:porkchop",
+    "C": "minecraft:crimson_fungus"
+  },
+  "result": { "id": "avoidminer:hoglin_card", "count": 1 }
+}

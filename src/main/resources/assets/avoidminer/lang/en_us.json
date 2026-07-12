@@ -233,5 +233,11 @@
   "screen.avoidminer.slot.letter.range": "R",
   "tooltip.avoidminer.slot.capacity_only": "Capacity Upgrade only",
   "tooltip.avoidminer.slot.range_only": "Range Upgrade only",
-  "tooltip.avoidminer.slot.fuel": "Fuel or Energy Link"
+  "tooltip.avoidminer.slot.fuel": "Fuel or Energy Link",
+  "item.avoidminer.bogged_card": "Bogged Card",
+  "item.avoidminer.drowned_card": "Drowned Card",
+  "item.avoidminer.hoglin_card": "Hoglin Card",
+  "item.avoidminer.phantom_card": "Phantom Card",
+  "item.avoidminer.pillager_card": "Pillager Card",
+  "item.avoidminer.stray_card": "Stray Card"
 }

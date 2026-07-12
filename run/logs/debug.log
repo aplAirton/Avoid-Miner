@@ -636,3 +636,16 @@ WARNING: Could not find vertex shader attribute 'UV2' to match BindAttributeLoca
 [12jul.2026 16:02:23.739] [Render thread/INFO] [net.minecraft.client.renderer.DynamicUniformStorage/]: Resizing Chunk Sections UBO, capacity limit of 256 reached during a single frame. New capacity will be 512.
 [12jul.2026 16:02:24.471] [Render thread/DEBUG] [mezz.jei.common.config.file.ConfigSerializer/]: Skipping loading config file, it was just saved by us: /Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/run/config/jei/jei-mod-id-format.ini
 [12jul.2026 16:02:26.322] [Render thread/INFO] [net.minecraft.client.renderer.DynamicUniformStorage/]: Resizing Chunk Sections UBO, capacity limit of 512 reached during a single frame. New capacity will be 1024.
+[12jul.2026 16:07:18.525] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:12:18.579] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:17:18.524] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:22:18.527] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:24:54.537] [JEI Delayed Executor 0/DEBUG] [mezz.jei.gui.config.LookupHistoryJsonConfig/]: Saved lookup history config to file: /Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/run/config/jei/world/local/Novo mundo/lookupHistory.json
+[12jul.2026 16:25:31.223] [JEI Delayed Executor 0/DEBUG] [mezz.jei.gui.config.LookupHistoryJsonConfig/]: Saved lookup history config to file: /Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/run/config/jei/world/local/Novo mundo/lookupHistory.json
+[12jul.2026 16:25:57.883] [JEI Delayed Executor 0/DEBUG] [mezz.jei.gui.config.LookupHistoryJsonConfig/]: Saved lookup history config to file: /Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/run/config/jei/world/local/Novo mundo/lookupHistory.json
+[12jul.2026 16:27:18.540] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:32:18.543] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:37:18.564] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:38:35.621] [JEI Delayed Executor 0/DEBUG] [mezz.jei.gui.config.LookupHistoryJsonConfig/]: Saved lookup history config to file: /Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/run/config/jei/world/local/Novo mundo/lookupHistory.json
+[12jul.2026 16:42:18.542] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo
+[12jul.2026 16:47:18.545] [Server thread/DEBUG] [net.neoforged.neoforge.common.CommonHooks/WP]: Gathered mod list to write to world save Novo mundo

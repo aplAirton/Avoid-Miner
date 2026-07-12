@@ -112,6 +112,12 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 case ENDER_DRAGON -> new ItemStack(ModItems.ENDER_DRAGON_CARD.get());
                 case WARDEN -> new ItemStack(ModItems.WARDEN_CARD.get());
                 case WITHER -> new ItemStack(ModItems.WITHER_CARD.get());
+                case BOGGED -> new ItemStack(ModItems.BOGGED_CARD.get());
+                case DROWNED -> new ItemStack(ModItems.DROWNED_CARD.get());
+                case HOGLIN -> new ItemStack(ModItems.HOGLIN_CARD.get());
+                case PHANTOM -> new ItemStack(ModItems.PHANTOM_CARD.get());
+                case PILLAGER -> new ItemStack(ModItems.PILLAGER_CARD.get());
+                case STRAY -> new ItemStack(ModItems.STRAY_CARD.get());
             };
             lootrRecipes.add(new LootrJeiRecipe(type, card));
         }
