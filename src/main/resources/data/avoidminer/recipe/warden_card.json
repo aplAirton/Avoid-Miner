@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "ECE", "GSG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "E": "minecraft:echo_shard",
+    "C": "minecraft:sculk_catalyst",
+    "S": "minecraft:sculk_sensor"
+  },
+  "result": { "id": "avoidminer:warden_card", "count": 1 }
+}

@@ -8,5 +8,5 @@
     "B": "minecraft:breeze_rod",
     "T": "minecraft:ghast_tear"
   },
-  "result": { "id": "avoidminer:vex_card", "count": 1 }
+  "result": { "id": "avoidminer:breeze_card", "count": 1 }
 }

@@ -3,12 +3,14 @@ package com.airton.avoidminer.jei;
 import com.airton.avoidminer.ModBlocks;
 import com.airton.avoidminer.lootr.MobCardType;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -26,8 +28,9 @@ public class LootrJeiCategory extends AbstractRecipeCategory<LootrJeiRecipe> {
     private static final int CARD_Y = 16;
     private static final int ARROW_X = 20;
     private static final int ARROW_Y = 18;
-    private static final int OUTPUT_X = 45;
+    private static final int OUTPUT_X = 46;
     private static final int OUTPUT_Y = 3;
+    private static final int LINE_Y_OFFSET = 4;
 
     public LootrJeiCategory(IGuiHelper guiHelper) {
         super(TYPE, Component.translatable("avoidminer.jei.lootr.category"),
@@ -69,13 +72,14 @@ public class LootrJeiCategory extends AbstractRecipeCategory<LootrJeiRecipe> {
         }
 
         if (!rareDrops.isEmpty()) {
-            int normalRows = (normalDrops.size() + ROW_SIZE - 1) / ROW_SIZE;
+            int normalRows = Math.max(1, (normalDrops.size() + ROW_SIZE - 1) / ROW_SIZE);
             int rareY = OUTPUT_Y + normalRows * (SLOT_SIZE + GAP) + 10;
 
             for (int i = 0; i < rareDrops.size(); i++) {
                 var rare = rareDrops.get(i);
-                int x = OUTPUT_X + i * (SLOT_SIZE + GAP);
-                builder.addSlot(RecipeIngredientRole.OUTPUT, x, rareY)
+                int x = OUTPUT_X + (i % ROW_SIZE) * (SLOT_SIZE + GAP);
+                int y = rareY + (i / ROW_SIZE) * (SLOT_SIZE + GAP);
+                builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
                         .add(new ItemStack(rare.item()))
                         .addRichTooltipCallback((slot, tooltip) -> {
                             double pct = rare.chance() * 100;
@@ -89,5 +93,27 @@ public class LootrJeiCategory extends AbstractRecipeCategory<LootrJeiRecipe> {
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, LootrJeiRecipe recipe, IFocusGroup focuses) {
         builder.addAnimatedRecipeArrow(200).setPosition(ARROW_X, ARROW_Y);
+
+        if (!recipe.cardType().rareDrops().isEmpty()) {
+            int normalCount = recipe.cardType().normalDrops().size();
+            int normalRows = Math.max(1, (normalCount + ROW_SIZE - 1) / ROW_SIZE);
+            int lineY = OUTPUT_Y + normalRows * (SLOT_SIZE + GAP) + LINE_Y_OFFSET;
+            builder.addDrawable(new DividerDrawable(), OUTPUT_X, lineY);
+        }
+    }
+
+    private static final int DIVIDER_W = ROW_SIZE * (SLOT_SIZE + GAP) - GAP;
+
+    private record DividerDrawable() implements IDrawable {
+        @Override
+        public void draw(GuiGraphicsExtractor gui, int x, int y) {
+            gui.fill(x, y, x + DIVIDER_W, y + 1, 0xFF444444);
+        }
+
+        @Override
+        public int getWidth() { return DIVIDER_W; }
+
+        @Override
+        public int getHeight() { return 1; }
     }
 }

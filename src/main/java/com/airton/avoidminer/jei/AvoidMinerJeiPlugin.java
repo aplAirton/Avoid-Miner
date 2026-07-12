@@ -100,7 +100,7 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 case COW -> new ItemStack(ModItems.COW_CARD.get());
                 case CHICKEN -> new ItemStack(ModItems.CHICKEN_CARD.get());
                 case SHEEP -> new ItemStack(ModItems.SHEEP_CARD.get());
-                case VEX -> new ItemStack(ModItems.VEX_CARD.get());
+                case BREEZE -> new ItemStack(ModItems.BREEZE_CARD.get());
                 case GUARDIAN -> new ItemStack(ModItems.GUARDIAN_CARD.get());
                 case ELDER_GUARDIAN -> new ItemStack(ModItems.ELDER_GUARDIAN_CARD.get());
                 case SLIME -> new ItemStack(ModItems.SLIME_CARD.get());
@@ -111,6 +111,7 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 case SHULKER -> new ItemStack(ModItems.SHULKER_CARD.get());
                 case ENDER_DRAGON -> new ItemStack(ModItems.ENDER_DRAGON_CARD.get());
                 case WARDEN -> new ItemStack(ModItems.WARDEN_CARD.get());
+                case WITHER -> new ItemStack(ModItems.WITHER_CARD.get());
             };
             lootrRecipes.add(new LootrJeiRecipe(type, card));
         }

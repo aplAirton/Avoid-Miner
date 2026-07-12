@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "NBN", "GWG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "N": "minecraft:nether_star",
+    "B": "minecraft:wither_skeleton_skull",
+    "W": "minecraft:wither_rose"
+  },
+  "result": { "id": "avoidminer:wither_card", "count": 1 }
+}

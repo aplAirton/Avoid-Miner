@@ -191,8 +191,8 @@ public class ModItems {
             props -> new MobCardItem(MobCardType.CHICKEN, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> SHEEP_CARD = ITEMS.registerItem("sheep_card",
             props -> new MobCardItem(MobCardType.SHEEP, props.stacksTo(1)));
-    public static final DeferredItem<MobCardItem> VEX_CARD = ITEMS.registerItem("vex_card",
-            props -> new MobCardItem(MobCardType.VEX, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> BREEZE_CARD = ITEMS.registerItem("breeze_card",
+            props -> new MobCardItem(MobCardType.BREEZE, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> GUARDIAN_CARD = ITEMS.registerItem("guardian_card",
             props -> new MobCardItem(MobCardType.GUARDIAN, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> ELDER_GUARDIAN_CARD = ITEMS.registerItem("elder_guardian_card",
@@ -213,15 +213,17 @@ public class ModItems {
             props -> new MobCardItem(MobCardType.ENDER_DRAGON, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> WARDEN_CARD = ITEMS.registerItem("warden_card",
             props -> new MobCardItem(MobCardType.WARDEN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> WITHER_CARD = ITEMS.registerItem("wither_card",
+            props -> new MobCardItem(MobCardType.WITHER, props.stacksTo(1)));
 
     // Referência ordenada usada pela HUD, JEI e máquina.
     public static final DeferredItem<?>[] MOB_CARDS = {
             SKELETON_CARD, WITHER_SKELETON_CARD, CREEPER_CARD, ZOMBIE_CARD,
             SPIDER_CARD, WITCH_CARD, PIGLIN_CARD, PIGLIN_BRUTE_CARD,
             ENDERMAN_CARD, VILLAGER_CARD, BLAZE_CARD, PIG_CARD, COW_CARD,
-            CHICKEN_CARD, SHEEP_CARD, VEX_CARD, GUARDIAN_CARD, ELDER_GUARDIAN_CARD,
+            CHICKEN_CARD, SHEEP_CARD, BREEZE_CARD, GUARDIAN_CARD, ELDER_GUARDIAN_CARD,
             SLIME_CARD, VINDICATOR_CARD, EVOKER_CARD, GHAST_CARD, MAGMA_CUBE_CARD,
-            SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD
+            SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD, WITHER_CARD
     };
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",

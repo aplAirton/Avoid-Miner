@@ -29,7 +29,7 @@ public enum MobCardType {
     COW("cow", EntityType.COW, 5),
     CHICKEN("chicken", EntityType.CHICKEN, 5),
     SHEEP("sheep", EntityType.SHEEP, 5),
-    VEX("vex", EntityType.VEX, 10),
+    BREEZE("breeze", EntityType.BREEZE, 10),
     GUARDIAN("guardian", EntityType.GUARDIAN, 10),
     ELDER_GUARDIAN("elder_guardian", EntityType.ELDER_GUARDIAN, 5),
     SLIME("slime", EntityType.SLIME, 10),
@@ -39,6 +39,7 @@ public enum MobCardType {
     MAGMA_CUBE("magma_cube", EntityType.MAGMA_CUBE, 10),
     SHULKER("shulker", EntityType.SHULKER, 10),
     ENDER_DRAGON("ender_dragon", EntityType.ENDER_DRAGON, 3),
+    WITHER("wither", EntityType.WITHER, 3),
     WARDEN("warden", EntityType.WARDEN, 5);
 
     public final String id;
@@ -65,7 +66,8 @@ public enum MobCardType {
             );
             case WITHER_SKELETON -> List.of(
                 new LootEntry(Items.BONE, 1.0f, 1, 2, true),
-                new LootEntry(Items.COAL, 0.6f, 1, 1, true)
+                new LootEntry(Items.COAL, 0.6f, 1, 1, true),
+                new LootEntry(Items.WITHER_SKELETON_SKULL, 0.1f, 1, 1, false)
             );
             case CREEPER -> List.of(
                 new LootEntry(Items.GUNPOWDER, 1.0f, 1, 2, true)
@@ -126,8 +128,9 @@ public enum MobCardType {
                 new LootEntry(Items.MUTTON, 1.0f, 1, 2, true),
                 new LootEntry(Items.WHITE_WOOL, 0.5f, 1, 1, false)
             );
-            case VEX -> List.of(
-                new LootEntry(Items.IRON_NUGGET, 0.5f, 1, 3, true)
+            case BREEZE -> List.of(
+                new LootEntry(Items.BREEZE_ROD, 1.0f, 1, 2, true),
+                new LootEntry(Items.WIND_CHARGE, 0.5f, 1, 2, true)
             );
             case GUARDIAN -> List.of(
                 new LootEntry(Items.PRISMARINE_SHARD, 0.5f, 1, 2, true),
@@ -146,8 +149,8 @@ public enum MobCardType {
                 new LootEntry(Items.IRON_AXE, 0.1f, 1, 1, false)
             );
             case EVOKER -> List.of(
-                new LootEntry(Items.TOTEM_OF_UNDYING, 1.0f, 1, 1, false),
-                new LootEntry(Items.EMERALD, 0.5f, 1, 1, false)
+                new LootEntry(Items.TOTEM_OF_UNDYING, 0.25f, 1, 1, false),
+                new LootEntry(Items.EMERALD, 1.0f, 1, 2, false)
             );
             case GHAST -> List.of(
                 new LootEntry(Items.GHAST_TEAR, 0.5f, 1, 1, false),
@@ -162,11 +165,14 @@ public enum MobCardType {
             case ENDER_DRAGON -> List.of(
                 new LootEntry(Items.DRAGON_BREATH, 1.0f, 1, 2, true)
             );
+            case WITHER -> List.of(
+                new LootEntry(Items.NETHER_STAR, 1.0f, 1, 1, false)
+            );
             case WARDEN -> List.of(
                 new LootEntry(Items.SCULK, 1.0f, 1, 3, true),
                 new LootEntry(Items.SCULK_SENSOR, 0.3f, 1, 1, false),
-                new LootEntry(Items.ECHO_SHARD, 0.2f, 1, 1, false),
-                new LootEntry(Items.DISC_FRAGMENT_5, 0.1f, 1, 1, false)
+                new LootEntry(Items.ECHO_SHARD, 0.02f, 1, 1, false),
+                new LootEntry(Items.DISC_FRAGMENT_5, 0.01f, 1, 1, false)
             );
         };
     }
@@ -226,8 +232,9 @@ public enum MobCardType {
             case SHEEP -> List.of(
                 new RareEntry(Items.SHEEP_SPAWN_EGG, 0.0015f)
             );
-            case VEX -> List.of(
-                new RareEntry(Items.VEX_SPAWN_EGG, 0.0015f)
+            case BREEZE -> List.of(
+                new RareEntry(Items.BREEZE_SPAWN_EGG, 0.0015f),
+                new RareEntry(Items.HEAVY_CORE, 0.0005f)
             );
             case GUARDIAN -> List.of(
                 new RareEntry(Items.GUARDIAN_SPAWN_EGG, 0.0015f)
@@ -255,10 +262,15 @@ public enum MobCardType {
             );
             case ENDER_DRAGON -> List.of(
                 new RareEntry(Items.DRAGON_HEAD, 0.05f),
-                new RareEntry(Items.DRAGON_EGG, 0.005f)
+                new RareEntry(Items.DRAGON_EGG, 0.005f),
+                new RareEntry(Items.ELYTRA, 0.0005f)
+            );
+            case WITHER -> List.of(
+                new RareEntry(Items.WITHER_SKELETON_SKULL, 0.025f),
+                new RareEntry(Items.WITHER_SPAWN_EGG, 0.0015f)
             );
             case WARDEN -> List.of(
-                new RareEntry(BuiltInRegistries.ITEM.get(Identifier.parse("avoidminer:rarity_upgrade")).orElseThrow().value(), 0.05f),
+                new RareEntry(BuiltInRegistries.ITEM.get(Identifier.parse("avoidminer:rarity_upgrade")).orElseThrow().value(), 0.01f),
                 new RareEntry(Items.WARDEN_SPAWN_EGG, 0.0015f)
             );
         };
