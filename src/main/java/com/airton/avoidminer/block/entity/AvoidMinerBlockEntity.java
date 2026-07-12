@@ -62,28 +62,12 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                 return stack.is(ModItems.FORTUNE_UPGRADE.get()) || stack.is(ModItems.SILK_UPGRADE.get());
             }
             if (slot >= UPGRADE_SLOT_START && slot < WORLD_SLOT) {
+                // Slots dedicados por tipo: 0=Mineração, 1=Energia, 2=Velocidade
                 int upgradeSlotIndex = slot - UPGRADE_SLOT_START;
-                int allowedSlots = getUpgradeSlotCount();
-                if (upgradeSlotIndex >= allowedSlots) return false;
+                if (upgradeSlotIndex >= getUpgradeSlotCount()) return false;
                 UpgradeType type = UpgradeType.fromStack(stack);
-                if (type == null) return false;
-                int upgradeTier = UpgradeType.tierFromStack(stack);
-                int maxTier = getTier().ordinal() + 1;
-                if (upgradeTier > maxTier) return false;
-                ItemResource current = getResource(slot);
-                if (!current.isEmpty()) {
-                    UpgradeType currentType = UpgradeType.fromStack(current.toStack(1));
-                    if (currentType == type) return false;
-                }
-                for (int i = UPGRADE_SLOT_START; i < WORLD_SLOT; i++) {
-                    if (i == slot) continue;
-                    ItemResource other = getResource(i);
-                    if (!other.isEmpty()) {
-                        UpgradeType otherType = UpgradeType.fromStack(other.toStack(1));
-                        if (otherType == type) return false;
-                    }
-                }
-                return true;
+                if (type == null || type.ordinal() != upgradeSlotIndex) return false;
+                return UpgradeType.tierFromStack(stack) <= getTier().ordinal() + 1;
             }
             return false;
         }
@@ -636,6 +620,33 @@ public class AvoidMinerBlockEntity extends BlockEntity {
             int a = tmp.getAmountAsInt(i);
             if (!r.isEmpty() && a > 0) {
                 itemHandler.set(i, r, a);
+            }
+        }
+        normalizeUpgradeSlots();
+    }
+
+    // Saves anteriores tinham slots de melhoria genéricos; agora cada slot é
+    // dedicado a um tipo (Mineração/Energia/Velocidade). Move melhorias fora
+    // do lugar para seu slot dedicado, ou para uma saída vazia como fallback.
+    private void normalizeUpgradeSlots() {
+        for (int slot = UPGRADE_SLOT_START; slot < WORLD_SLOT; slot++) {
+            ItemResource r = itemHandler.getResource(slot);
+            if (r.isEmpty()) continue;
+            UpgradeType type = UpgradeType.fromStack(r.toStack(1));
+            int expected = type == null ? -1 : UPGRADE_SLOT_START + type.ordinal();
+            if (expected == slot) continue;
+            int amount = itemHandler.getAmountAsInt(slot);
+            itemHandler.set(slot, ItemResource.EMPTY, 0);
+            if (expected >= 0 && type.ordinal() < getUpgradeSlotCount()
+                    && itemHandler.getResource(expected).isEmpty()) {
+                itemHandler.set(expected, r, amount);
+                continue;
+            }
+            for (int out = OUTPUT_START; out < UPGRADE_SLOT_START; out++) {
+                if (itemHandler.getResource(out).isEmpty()) {
+                    itemHandler.set(out, r, amount);
+                    break;
+                }
             }
         }
     }

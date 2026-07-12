@@ -29,7 +29,6 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     private static final int FUEL_Y = ProcessorMenu.FUEL_Y;
 
     private static final int SEPARATOR_Y = 84;
-    private static final int GROUP_LABEL_Y = 81;
 
     private static final int SLOT_BORDER = 0xFF373737;
     private static final int SLOT_BORDER_LT = 0xFF555555;
@@ -111,18 +110,15 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         extractor.fill(gx + MAIN_LEFT, gy + y + 1, gx + MAIN_RIGHT, gy + y + 2, 0xFF333333);
     }
 
-    // Dois slots de melhoria com lugar marcado: E = Energia, S = Velocidade
+    // Dois slots de melhoria com lugar marcado (letra do tipo dedicado quando vazios)
     private void drawUpgradeArea(GuiGraphicsExtractor extractor, int gx, int gy) {
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"),
-                gx + ProcessorMenu.MAIN_X, gy + GROUP_LABEL_Y + 6, TEXT_DIM);
-
-        drawMarkedUpgradeSlot(extractor, gx + ProcessorMenu.UPG_ENERGY_X, gy + ProcessorMenu.UPG_Y, "E",
-                menu.getEnergyUpgradeTier() > 0);
-        drawMarkedUpgradeSlot(extractor, gx + ProcessorMenu.UPG_SPEED_X, gy + ProcessorMenu.UPG_Y, "S",
-                menu.getSpeedUpgradeTier() > 0);
+        drawMarkedUpgradeSlot(extractor, gx + ProcessorMenu.UPG_ENERGY_X, gy + ProcessorMenu.UPG_Y,
+                "screen.avoidminer.slot.letter.energy", menu.getEnergyUpgradeTier() > 0);
+        drawMarkedUpgradeSlot(extractor, gx + ProcessorMenu.UPG_SPEED_X, gy + ProcessorMenu.UPG_Y,
+                "screen.avoidminer.slot.letter.speed", menu.getSpeedUpgradeTier() > 0);
     }
 
-    private void drawMarkedUpgradeSlot(GuiGraphicsExtractor extractor, int sx, int sy, String letter, boolean filled) {
+    private void drawMarkedUpgradeSlot(GuiGraphicsExtractor extractor, int sx, int sy, String letterKey, boolean filled) {
         drawSlotBg(extractor, sx, sy);
         int frame = filled ? ACCENT : ACCENT_DIM;
         extractor.fill(sx - 1, sy - 1, sx + 18, sy, frame);
@@ -130,8 +126,9 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         extractor.fill(sx - 1, sy, sx, sy + 17, frame);
         extractor.fill(sx + 17, sy, sx + 18, sy + 17, frame);
         if (!filled) {
+            Component letter = Component.translatable(letterKey);
             int lw = font.width(letter);
-            extractor.text(font, Component.literal(letter), sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
+            extractor.text(font, letter, sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
         }
     }
 

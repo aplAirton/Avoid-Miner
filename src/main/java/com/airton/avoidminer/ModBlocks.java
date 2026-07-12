@@ -67,7 +67,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> AVOID_LOOTR = BLOCKS.registerBlock("avoid_lootr",
             LootrBlock::new,
             () -> BlockBehaviour.Properties.of()
-                    .strength(4.5f)
+                    .strength(3.5f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.NETHERITE_BLOCK));
 }

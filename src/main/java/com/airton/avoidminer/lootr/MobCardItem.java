@@ -9,6 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+
+import com.airton.avoidminer.item.UpgradeApplier;
 
 import java.util.function.Consumer;
 
@@ -76,6 +80,12 @@ public class MobCardItem extends Item {
     @Override
     public boolean isFoil(ItemStack stack) {
         return isCompleted(stack, cardType);
+    }
+
+    /** Agachado + clique direito na Avoid Lootr insere o cartão carregado direto no slot. */
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        return UpgradeApplier.tryApply(context);
     }
 
     /* ----------------------- helper de registro ---------------------- */

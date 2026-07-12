@@ -19,6 +19,8 @@ import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 public class LootrMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
+    // Geometria compartilhada com a LootrScreen (textura 288x206).
+    // Fileira y=90: cartão dourado à esquerda, chevrons, 3 melhorias dedicadas à direita.
     public static final int TEXTURE_W = 288;
     public static final int TEXTURE_H = 206;
     public static final int PANEL_W = 88;
@@ -27,7 +29,8 @@ public class LootrMenu extends AbstractContainerMenu {
     public static final int OUT_Y = 20;
     public static final int UPG_Y = 90;
     public static final int UPG_SPACING = 22;
-    public static final int CARD_X = 200;
+    public static final int UPG_X = 194;      // primeiro slot de melhoria (194/216/238)
+    public static final int CARD_X = 100;
     public static final int CARD_Y = 90;
     public static final int ENERGY_X = 268;
     public static final int ENERGY_Y = 18;
@@ -37,6 +40,12 @@ public class LootrMenu extends AbstractContainerMenu {
     public static final int FUEL_Y = 80;
     public static final int PLAYER_Y = 122;
     public static final int HOTBAR_Y = 180;
+
+    // Índices na lista de slots do menu (ordem de addSlot), usados pela screen
+    public static final int SLOT_INDEX_CARD = 1;
+    public static final int SLOT_INDEX_UPG_SPEED = 2;
+    public static final int SLOT_INDEX_UPG_LOOT = 3;
+    public static final int SLOT_INDEX_UPG_RARITY = 4;
 
     public LootrMenu(int id, Inventory playerInventory) {
         this(id, playerInventory, new ItemStacksResourceHandler(LootrBlockEntity.TOTAL_SLOTS), new SimpleContainerData(10));
@@ -61,7 +70,7 @@ public class LootrMenu extends AbstractContainerMenu {
         });
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
-                LootrBlockEntity.UPG_SPEED, MAIN_X + 0 * UPG_SPACING, UPG_Y) {
+                LootrBlockEntity.UPG_SPEED, UPG_X + 0 * UPG_SPACING, UPG_Y) {
             @Override public boolean mayPlace(ItemStack stack) {
                 return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
             }
@@ -69,7 +78,7 @@ public class LootrMenu extends AbstractContainerMenu {
         });
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
-                LootrBlockEntity.UPG_LOOT, MAIN_X + 1 * UPG_SPACING, UPG_Y) {
+                LootrBlockEntity.UPG_LOOT, UPG_X + 1 * UPG_SPACING, UPG_Y) {
             @Override public boolean mayPlace(ItemStack stack) {
                 return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
             }
@@ -77,7 +86,7 @@ public class LootrMenu extends AbstractContainerMenu {
         });
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
-                LootrBlockEntity.UPG_RARITY, MAIN_X + 2 * UPG_SPACING, UPG_Y) {
+                LootrBlockEntity.UPG_RARITY, UPG_X + 2 * UPG_SPACING, UPG_Y) {
             @Override public boolean mayPlace(ItemStack stack) {
                 return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
             }

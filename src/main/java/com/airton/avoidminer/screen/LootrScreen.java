@@ -1,13 +1,28 @@
 package com.airton.avoidminer.screen;
 
+import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.menu.LootrMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * GUI exclusiva da Avoid Lootr — "câmara de invocação": o painel lateral
+ * exibe o mob do cartão inserido como entidade 3D girando dentro de uma
+ * câmara, abaixo da seção de status. Na área principal, o cartão (dourado,
+ * input inerente à máquina) alimenta os três slots dedicados de melhoria
+ * (roxos: Velocidade, Saque, Raridade) e a grade de saída.
+ */
 public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
     private static final Identifier TEXTURE = Identifier.parse("avoidminer:textures/gui/avoid_lootr.png");
 
@@ -32,15 +47,25 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
     private static final int PROG_Y = 15;
     private static final int PROG_H = 3;
 
-    private static final int SEPARATOR_Y = 78;
+    // Câmara do mob no painel lateral (abaixo da seção de status)
+    private static final int CHAMBER_X0 = 6;
+    private static final int CHAMBER_Y0 = 66;
+    private static final int CHAMBER_X1 = 82;
+    private static final int CHAMBER_Y1 = 196;
 
-    private static final int ACCENT = 0xFF8844CC;
+    private static final int ACCENT = 0xFF8844CC;       // melhorias / identidade da máquina
     private static final int ACCENT_DIM = 0xFF663399;
+    private static final int CARD_GOLD = 0xFFDDAA33;    // cartão (input inerente)
+    private static final int CARD_GOLD_DIM = 0xFF6A5220;
     private static final int TEXT_WHITE = 0xFFFFFFFF;
     private static final int TEXT_DIM = 0xFFBB99DD;
     private static final int TEXT_DISABLED = 0xFF554477;
 
     private int tickCounter = 0;
+
+    // Entidade dummy só para exibição na câmara, cacheada por tipo de cartão
+    @Nullable private EntityType<?> cachedEntityType;
+    @Nullable private LivingEntity cachedEntity;
 
     public LootrScreen(LootrMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, TEXTURE_W, TEXTURE_H);
@@ -48,6 +73,31 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         this.titleLabelY = 9999;
         this.inventoryLabelX = LootrMenu.MAIN_X;
         this.inventoryLabelY = 111;
+    }
+
+    @Nullable
+    private EntityType<?> cardEntityType() {
+        ItemStack card = menu.slots.get(LootrMenu.SLOT_INDEX_CARD).getItem();
+        if (card.getItem() instanceof MobCardItem mobCard) {
+            return mobCard.getCardType().entityType;
+        }
+        return null;
+    }
+
+    @Nullable
+    private LivingEntity previewEntity() {
+        EntityType<?> type = cardEntityType();
+        if (type == null || minecraft == null || minecraft.level == null) {
+            cachedEntityType = null;
+            cachedEntity = null;
+            return null;
+        }
+        if (type != cachedEntityType) {
+            Entity created = type.create(minecraft.level, EntitySpawnReason.LOAD);
+            cachedEntity = created instanceof LivingEntity living ? living : null;
+            cachedEntityType = type;
+        }
+        return cachedEntity;
     }
 
     @Override
@@ -59,38 +109,38 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         extractor.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y,
                 0f, 0f, TEXTURE_W, TEXTURE_H, TEXTURE_W, TEXTURE_H);
 
-        drawModeBanner(extractor, x, y);
+        drawMobBanner(extractor, x, y);
         drawProgressBar(extractor, x, y);
-        drawSectionSeparator(extractor, x, y, SEPARATOR_Y);
-        drawSpecialSlotFrames(extractor, x, y);
+        drawSlotFrames(extractor, x, y);
         drawEnergyBar(extractor, x, y);
         drawFuelGlow(extractor, x, y);
         drawInfoPanel(extractor, x, y);
+        drawMobChamber(extractor, x, y);
 
         super.extractContents(extractor, mouseX, mouseY, partialTick);
     }
 
-    private void drawSectionSeparator(GuiGraphicsExtractor extractor, int gx, int gy, int y) {
-        int dim = (ACCENT & 0x00FFFFFF) >> 2 | 0xFF000000;
-        extractor.fill(gx + MAIN_LEFT, gy + y, gx + MAIN_RIGHT, gy + y + 1, dim);
-        extractor.fill(gx + MAIN_LEFT, gy + y + 1, gx + MAIN_RIGHT, gy + y + 2, 0xFF0A060A);
-    }
-
-    private void drawModeBanner(GuiGraphicsExtractor extractor, int gx, int gy) {
-        int dim = (ACCENT & 0x00FFFFFF) >> 1 | 0xFF000000;
+    // Faixa superior: nome do mob do cartão inserido (dourada) ou aviso para inserir cartão
+    private void drawMobBanner(GuiGraphicsExtractor extractor, int gx, int gy) {
+        EntityType<?> type = cardEntityType();
+        boolean hasCard = type != null;
+        int accent = hasCard ? CARD_GOLD : ACCENT_DIM;
+        int dim = (accent & 0x00FFFFFF) >> 1 | 0xFF000000;
 
         int bandTop = gy + BANNER_Y;
         int bandBot = bandTop + BANNER_H;
         int left = gx + MAIN_LEFT;
         int right = gx + MAIN_RIGHT;
 
-        extractor.fill(left, bandTop, left + 2, bandBot, ACCENT);
+        extractor.fill(left, bandTop, left + 2, bandBot, accent);
         extractor.fill(left + 2, bandTop, right, bandBot, dim);
 
-        String label = "LOOTR";
+        Component label = hasCard
+                ? type.getDescription()
+                : Component.translatable("screen.avoidminer.lootr.insert_card");
         int labelW = font.width(label);
         int tx = left + 2 + (right - left - 2 - labelW) / 2;
-        extractor.text(font, Component.literal(label), tx, gy + BANNER_Y + 1, TEXT_WHITE);
+        extractor.text(font, label, tx, gy + BANNER_Y + 1, hasCard ? TEXT_WHITE : TEXT_DIM);
     }
 
     private void drawProgressBar(GuiGraphicsExtractor extractor, int gx, int gy) {
@@ -102,9 +152,8 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
 
         int progress = menu.getProgress();
         int maxProgress = menu.getMaxProgress();
-        boolean burning = menu.isBurning();
 
-        if (burning && maxProgress > 0 && progress > 0) {
+        if (menu.isBurning() && maxProgress > 0 && progress > 0) {
             int fillW = (int) ((long) progress * barW / Math.max(1, maxProgress));
             fillW = Math.clamp(fillW, 1, barW);
 
@@ -118,13 +167,35 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         }
     }
 
-    private void drawSpecialSlotFrames(GuiGraphicsExtractor extractor, int gx, int gy) {
-        drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 0 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
-        drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 1 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
-        drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 2 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
+    // Cartão em dourado (input inerente) e melhorias em roxo (uma cor para todas),
+    // com letra do tipo dedicado quando vazias
+    private void drawSlotFrames(GuiGraphicsExtractor extractor, int gx, int gy) {
+        boolean cardIn = menu.slots.get(LootrMenu.SLOT_INDEX_CARD).hasItem();
+        drawSlotFrame(extractor, gx + LootrMenu.CARD_X, gy + LootrMenu.CARD_Y,
+                menu.hasValidCard() ? CARD_GOLD : CARD_GOLD_DIM);
+        if (!cardIn) {
+            Component letter = Component.translatable("screen.avoidminer.slot.letter.card");
+            int lw = font.width(letter);
+            extractor.text(font, letter, gx + LootrMenu.CARD_X + 9 - lw / 2, gy + LootrMenu.CARD_Y + 5, CARD_GOLD_DIM);
+        }
 
-        int cardAccent = menu.hasValidCard() ? ACCENT : ACCENT_DIM;
-        drawSlotFrame(extractor, gx + LootrMenu.CARD_X, gy + LootrMenu.CARD_Y, cardAccent);
+        String[] letterKeys = {
+                "screen.avoidminer.slot.letter.speed",
+                "screen.avoidminer.slot.letter.loot",
+                "screen.avoidminer.slot.letter.rarity"
+        };
+        int[] slotIndexes = { LootrMenu.SLOT_INDEX_UPG_SPEED, LootrMenu.SLOT_INDEX_UPG_LOOT, LootrMenu.SLOT_INDEX_UPG_RARITY };
+        for (int i = 0; i < 3; i++) {
+            int sx = gx + LootrMenu.UPG_X + i * LootrMenu.UPG_SPACING;
+            int sy = gy + LootrMenu.UPG_Y;
+            boolean filled = menu.slots.get(slotIndexes[i]).hasItem();
+            drawSlotFrame(extractor, sx, sy, filled ? ACCENT : ACCENT_DIM);
+            if (!filled) {
+                Component letter = Component.translatable(letterKeys[i]);
+                int lw = font.width(letter);
+                extractor.text(font, letter, sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
+            }
+        }
     }
 
     private void drawSlotFrame(GuiGraphicsExtractor extractor, int sx, int sy, int color) {
@@ -161,91 +232,67 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         }
     }
 
+    // Painel lateral enxuto: título, status e a câmara do mob logo abaixo
     private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy) {
         int px = gx + PANEL_X;
 
-        String tierLabel = "LOOTR";
-        extractor.text(font, Component.literal(tierLabel),
-                px + (PANEL_INNER_W - font.width(tierLabel)) / 2, gy + 6, ACCENT);
-        String subtitle = "AVOID LOOTR";
-        extractor.text(font, Component.literal(subtitle),
-                px + (PANEL_INNER_W - font.width(subtitle)) / 2, gy + 16, TEXT_DIM);
+        String title = "AVOID LOOTR";
+        extractor.text(font, Component.literal(title),
+                px + (PANEL_INNER_W - font.width(title)) / 2, gy + 6, ACCENT);
 
-        drawPanelDivider(extractor, px, gy + 26);
+        extractor.text(font, Component.translatable("screen.avoidminer.status"), px, gy + 22, TEXT_DISABLED);
 
-        extractor.text(font, Component.translatable("screen.avoidminer.lootr.card"), px, gy + 31, TEXT_DISABLED);
-        Component cardStatus = menu.hasValidCard()
-                ? Component.translatable("screen.avoidminer.lootr.card.ready")
-                : Component.translatable("screen.avoidminer.lootr.card.empty");
-        extractor.text(font, cardStatus, px, gy + 41, menu.hasValidCard() ? 0xFF55FF55 : ACCENT);
-
-        drawPanelDivider(extractor, px, gy + 51);
-
-        extractor.text(font, Component.translatable("screen.avoidminer.lootr.progress"), px, gy + 55, TEXT_DISABLED);
-        int progress = menu.getProgress();
-        int maxProgress = menu.getMaxProgress();
-        int pct = maxProgress > 0 ? Math.min(100, progress * 100 / maxProgress) : 0;
-        String pctStr = pct + "%";
-        extractor.text(font, Component.literal(pctStr), px, gy + 65, menu.isBurning() ? ACCENT : TEXT_DISABLED);
-
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"), px, gy + 78, TEXT_DISABLED);
-
-        int cardH = 18;
-        int cardGap = 2;
-        int cardYStart = gy + 88;
-
-        drawUpgradeCard(extractor, px, cardYStart,
-                Component.translatable("screen.avoidminer.upgrade.speed"),
-                menu.getSpeedUpgradeTier(),
-                switch (menu.getSpeedUpgradeTier()) { case 1 -> "/1.5"; case 2 -> "/1.7"; case 3 -> "/2.0"; default -> ""; });
-
-        drawUpgradeCard(extractor, px, cardYStart + cardH + cardGap,
-                Component.translatable("screen.avoidminer.lootr.loot"),
-                menu.getLootingLevel(),
-                menu.getLootingLevel() > 0 ? "Lv" + menu.getLootingLevel() : "");
-
-        drawUpgradeCard(extractor, px, cardYStart + 2 * (cardH + cardGap),
-                Component.translatable("screen.avoidminer.lootr.rarity"),
-                menu.hasRarityUpgrade() ? 1 : 0,
-                menu.hasRarityUpgrade() ? "rare" : "");
-
-        int statusY = cardYStart + 3 * (cardH + cardGap) + 4;
-        drawPanelDivider(extractor, px, statusY - 2);
-        extractor.text(font, Component.translatable("screen.avoidminer.status"), px, statusY + 1, TEXT_DISABLED);
         boolean burning = menu.isBurning();
         boolean outputFull = menu.isOutputFull();
         Component status = outputFull
                 ? Component.translatable("status.avoidminer.full")
                 : Component.translatable(burning ? "status.avoidminer.running" : "status.avoidminer.idle");
         int statusColor = outputFull ? 0xFFFF5555 : burning ? 0xFF55FF55 : 0xFFAA5544;
-        extractor.text(font, status, px, statusY + 11, statusColor);
+        extractor.text(font, status, px, gy + 32, statusColor);
 
-        String opLabel = menu.lastOperationSucceeded()
-                ? Component.translatable("status.avoidminer.success").getString()
-                : Component.translatable("status.avoidminer.fail").getString();
+        int maxProgress = menu.getMaxProgress();
+        int pct = maxProgress > 0 ? Math.min(100, menu.getProgress() * 100 / maxProgress) : 0;
+        String pctStr = pct + "%";
+        extractor.text(font, Component.literal(pctStr),
+                px + PANEL_INNER_W - font.width(pctStr), gy + 32, burning ? ACCENT : TEXT_DISABLED);
+
+        Component opLabel = menu.lastOperationSucceeded()
+                ? Component.translatable("status.avoidminer.success")
+                : Component.translatable("status.avoidminer.fail");
         int opColor = menu.lastOperationSucceeded() ? 0xFF55FF55 : 0xFFFF5555;
-        extractor.text(font, Component.literal(opLabel), px, statusY + 22, opColor);
+        extractor.text(font, opLabel, px, gy + 44, opColor);
     }
 
-    private void drawUpgradeCard(GuiGraphicsExtractor extractor, int px, int cardY, Component typeName, int tier, String effect) {
-        int cardH = 18;
-        boolean active = tier > 0;
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + cardH, active ? 0x88332255 : 0x44221133);
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + 1, active ? 0x884466AA : 0x44223344);
+    // Entidade 3D do mob do cartão girando em pedestal; "?" quando não há cartão
+    private void drawMobChamber(GuiGraphicsExtractor extractor, int gx, int gy) {
+        int x0 = gx + CHAMBER_X0;
+        int y0 = gy + CHAMBER_Y0;
+        int x1 = gx + CHAMBER_X1;
+        int y1 = gy + CHAMBER_Y1;
 
-        if (!active) {
-            extractor.text(font, Component.translatable("screen.avoidminer.slot.empty"),
-                    px + 4, cardY + (cardH - 8) / 2, TEXT_DISABLED);
-        } else {
-            extractor.text(font, typeName, px + 4, cardY + 2, TEXT_WHITE);
-            if (!effect.isEmpty()) {
-                extractor.text(font, Component.literal(effect), px + 4, cardY + 10, ACCENT);
-            }
+        LivingEntity entity = previewEntity();
+        if (entity == null) {
+            String q = "?";
+            int qw = font.width(q);
+            extractor.text(font, Component.literal(q),
+                    (x0 + x1) / 2 - qw / 2, (y0 + y1) / 2 - 4, TEXT_DISABLED);
+            return;
         }
-    }
 
-    private void drawPanelDivider(GuiGraphicsExtractor extractor, int px, int y) {
-        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x44556688);
+        if (menu.isBurning()) {
+            int pulse = (int) (32 + 24 * Math.sin(tickCounter * 0.08));
+            extractor.fill(x0, y1 - 6, x1, y1, (pulse << 24) | (ACCENT & 0x00FFFFFF));
+        }
+
+        float bbW = Math.max(0.4f, entity.getBbWidth());
+        float bbH = Math.max(0.4f, entity.getBbHeight());
+        int size = (int) Math.min((y1 - y0) * 0.68f / bbH, (x1 - x0) * 0.72f / bbW);
+        size = Math.clamp(size, 4, 50);
+
+        // renderEntityInInventoryFollowsAngle usa xAngle*20 graus: /20 dá giro contínuo
+        float spin = (tickCounter % 480) * 0.75f / 20.0f;
+        InventoryScreen.renderEntityInInventoryFollowsAngle(
+                extractor, x0, y0, x1, y1, size, 0.0625f, spin, 0f, entity);
     }
 
     @Override
@@ -262,6 +309,29 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
             extractor.setTooltipForNextFrame(
                     Component.translatable("tooltip.avoidminer.energy", menu.getEnergyStored(), menu.getEnergyCapacity()),
                     mouseX, mouseY);
+            return;
+        }
+
+        if (relY >= LootrMenu.UPG_Y - 1 && relY < LootrMenu.UPG_Y + 18) {
+            if (relX >= LootrMenu.CARD_X - 1 && relX < LootrMenu.CARD_X + 18
+                    && !menu.slots.get(LootrMenu.SLOT_INDEX_CARD).hasItem()) {
+                extractor.setTooltipForNextFrame(
+                        Component.translatable("tooltip.avoidminer.slot.card_only"), mouseX, mouseY);
+                return;
+            }
+            String[] keys = {
+                    "tooltip.avoidminer.slot.speed_only",
+                    "tooltip.avoidminer.slot.loot_only",
+                    "tooltip.avoidminer.slot.rarity_only"
+            };
+            int[] slotIndexes = { LootrMenu.SLOT_INDEX_UPG_SPEED, LootrMenu.SLOT_INDEX_UPG_LOOT, LootrMenu.SLOT_INDEX_UPG_RARITY };
+            for (int i = 0; i < 3; i++) {
+                int sx = LootrMenu.UPG_X + i * LootrMenu.UPG_SPACING;
+                if (relX >= sx - 1 && relX < sx + 18 && !menu.slots.get(slotIndexes[i]).hasItem()) {
+                    extractor.setTooltipForNextFrame(Component.translatable(keys[i]), mouseX, mouseY);
+                    return;
+                }
+            }
         }
     }
 }

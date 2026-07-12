@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.item.GuideBookItem;
+import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
 import net.minecraft.network.chat.Component;
@@ -94,107 +95,46 @@ public class ModItems {
             });
 
     public static final DeferredItem<Item> MINING_UPGRADE_TIER_1 = ITEMS.registerItem("mining_upgrade_tier_1",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.mining_upgrade_tier_1"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.mining_upgrade_tier_1"));
     public static final DeferredItem<Item> MINING_UPGRADE_TIER_2 = ITEMS.registerItem("mining_upgrade_tier_2",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.mining_upgrade_tier_2"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.mining_upgrade_tier_2"));
     public static final DeferredItem<Item> MINING_UPGRADE_TIER_3 = ITEMS.registerItem("mining_upgrade_tier_3",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.mining_upgrade_tier_3"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.mining_upgrade_tier_3"));
 
     public static final DeferredItem<Item> ENERGY_UPGRADE_TIER_1 = ITEMS.registerItem("energy_upgrade_tier_1",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.energy_upgrade_tier_1"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.energy_upgrade_tier_1"));
     public static final DeferredItem<Item> ENERGY_UPGRADE_TIER_2 = ITEMS.registerItem("energy_upgrade_tier_2",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.energy_upgrade_tier_2"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.energy_upgrade_tier_2"));
     public static final DeferredItem<Item> ENERGY_UPGRADE_TIER_3 = ITEMS.registerItem("energy_upgrade_tier_3",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.energy_upgrade_tier_3"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.energy_upgrade_tier_3"));
 
     public static final DeferredItem<Item> SPEED_UPGRADE_TIER_1 = ITEMS.registerItem("speed_upgrade_tier_1",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.speed_upgrade_tier_1"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.speed_upgrade_tier_1"));
     public static final DeferredItem<Item> SPEED_UPGRADE_TIER_2 = ITEMS.registerItem("speed_upgrade_tier_2",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.speed_upgrade_tier_2"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.speed_upgrade_tier_2"));
     public static final DeferredItem<Item> SPEED_UPGRADE_TIER_3 = ITEMS.registerItem("speed_upgrade_tier_3",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.speed_upgrade_tier_3"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.speed_upgrade_tier_3"));
 
     public static final DeferredItem<Item> BOTANY_UPGRADE = ITEMS.registerItem("botany_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.botany_upgrade.mode"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.botany_upgrade.output"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.world_slot"));
-                }
-            });
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.botany_upgrade.mode",
+                    "tooltip.avoidminer.botany_upgrade.output",
+                    "tooltip.avoidminer.world_slot"));
     public static final DeferredItem<Item> NETHER_UPGRADE = ITEMS.registerItem("nether_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.nether_upgrade.mode"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.nether_upgrade.output"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.world_slot"));
-                }
-            });
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.nether_upgrade.mode",
+                    "tooltip.avoidminer.nether_upgrade.output",
+                    "tooltip.avoidminer.world_slot"));
     public static final DeferredItem<Item> FORTUNE_UPGRADE = ITEMS.registerItem("fortune_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.fortune_upgrade.applies"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.fortune_upgrade.output"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.enchant_slot"));
-                }
-            });
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.fortune_upgrade.applies",
+                    "tooltip.avoidminer.fortune_upgrade.output",
+                    "tooltip.avoidminer.enchant_slot"));
     public static final DeferredItem<Item> SILK_UPGRADE = ITEMS.registerItem("silk_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.silk_upgrade.applies"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.silk_upgrade.output"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.enchant_slot"));
-                }
-            });
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.silk_upgrade.applies",
+                    "tooltip.avoidminer.silk_upgrade.output",
+                    "tooltip.avoidminer.enchant_slot"));
 
     public static final DeferredItem<BlockItem> MAGNETITE_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_ORE);
     public static final DeferredItem<BlockItem> RAW_MAGNETITE_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RAW_MAGNETITE_BLOCK);
@@ -282,20 +222,10 @@ public class ModItems {
 
     // Upgrades específicos da Lootr
     public static final DeferredItem<Item> RARITY_UPGRADE = ITEMS.registerItem("rarity_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.rarity_upgrade"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.rarity_upgrade"));
 
     public static final DeferredItem<Item> LOOT_UPGRADE = ITEMS.registerItem("loot_upgrade",
-            props -> new Item(props.stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.loot_upgrade"));
-                }
-            });
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.loot_upgrade"));
 
     /** Retorna o nível de saque (1/2/3) de um LOOT_UPGRADE, 0 se não for. */
     public static int lootUpgradeLevel(ItemStack stack) {

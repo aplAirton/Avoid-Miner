@@ -35,7 +35,6 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
     private static final int PROG_H = 3;
 
     private static final int SEPARATOR_Y = 78;
-    private static final int GROUP_LABEL_Y = 81;
 
     private static final int ACCENT_T1 = 0xFF3388CC;
     private static final int ACCENT_T2 = 0xFF55AAEE;
@@ -75,7 +74,6 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
         drawModeBanner(extractor, x, y);
         drawProgressBar(extractor, x, y);
         drawSectionSeparator(extractor, x, y, SEPARATOR_Y);
-        drawGroupLabels(extractor, x, y);
         drawUpgradeSlots(extractor, x, y);
         drawSpecialSlotAccents(extractor, x, y);
         drawEnergyBar(extractor, x, y);
@@ -146,23 +144,9 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
         }
     }
 
-    private void drawGroupLabels(GuiGraphicsExtractor extractor, int gx, int gy) {
-        int labelColor = 0xFF66779A;
-
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"),
-                gx + AvoidMinerMenu.MAIN_X, gy + GROUP_LABEL_Y, labelColor);
-
-        Component worldLabel = Component.translatable("screen.avoidminer.world");
-        int worldW = font.width(worldLabel);
-        extractor.text(font, worldLabel, gx + AvoidMinerMenu.WORLD_X + 9 - worldW / 2, gy + GROUP_LABEL_Y, labelColor);
-
-        Component enchLabel = Component.translatable("screen.avoidminer.effect");
-        int enchW = font.width(enchLabel);
-        extractor.text(font, enchLabel, gx + AvoidMinerMenu.ENCHANT_X + 9 - enchW / 2, gy + GROUP_LABEL_Y, labelColor);
-    }
-
-    // Slots de melhoria com "lugar marcado": os desbloqueados ganham borda de destaque,
-    // os acima do tier ficam escurecidos com um cadeado.
+    // Slots de melhoria dedicados (M/E/S): os desbloqueados ganham borda de
+    // destaque e letra do tipo quando vazios; os acima do tier ficam
+    // escurecidos com um cadeado.
     private void drawUpgradeSlots(GuiGraphicsExtractor extractor, int gx, int gy) {
         int slotCount = menu.getUpgradeSlotCount();
         int accent = accentColor();
@@ -176,6 +160,16 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
                 extractor.fill(sx - 1, sy + 17, sx + 18, sy + 18, accent);
                 extractor.fill(sx - 1, sy, sx - 1 + 1, sy + 17, accent);
                 extractor.fill(sx + 17, sy, sx + 18, sy + 17, accent);
+
+                if (menu.getUpgradeType(i) == 0) {
+                    Component letter = Component.translatable(switch (i) {
+                        case 0 -> "screen.avoidminer.slot.letter.mining";
+                        case 1 -> "screen.avoidminer.slot.letter.energy";
+                        default -> "screen.avoidminer.slot.letter.speed";
+                    });
+                    int lw = font.width(letter);
+                    extractor.text(font, letter, sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
+                }
             } else {
                 extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, 0xCC10141F);
                 // cadeado: corpo + alça
@@ -230,6 +224,21 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
 
         drawSlotFrame(extractor, gx + AvoidMinerMenu.WORLD_X, gy + AvoidMinerMenu.WORLD_Y, worldAccent);
         drawSlotFrame(extractor, gx + AvoidMinerMenu.ENCHANT_X, gy + AvoidMinerMenu.ENCHANT_Y, enchantAccent);
+
+        if (menu.getWorldMode() == 0) {
+            drawSlotLetter(extractor, gx + AvoidMinerMenu.WORLD_X, gy + AvoidMinerMenu.WORLD_Y,
+                    "screen.avoidminer.slot.letter.world");
+        }
+        if (menu.getEnchantMode() == 0) {
+            drawSlotLetter(extractor, gx + AvoidMinerMenu.ENCHANT_X, gy + AvoidMinerMenu.ENCHANT_Y,
+                    "screen.avoidminer.slot.letter.effect");
+        }
+    }
+
+    private void drawSlotLetter(GuiGraphicsExtractor extractor, int sx, int sy, String key) {
+        Component letter = Component.translatable(key);
+        int lw = font.width(letter);
+        extractor.text(font, letter, sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
     }
 
     private void drawSlotFrame(GuiGraphicsExtractor extractor, int sx, int sy, int color) {
@@ -349,16 +358,39 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
             return;
         }
 
-        // Tooltip nos slots de melhoria bloqueados
+        // Tooltip nos slots de melhoria: bloqueados mostram o tier exigido,
+        // desbloqueados vazios mostram o tipo dedicado que aceitam
         int slotCount = menu.getUpgradeSlotCount();
-        for (int i = slotCount; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             int sx = AvoidMinerMenu.MAIN_X + i * AvoidMinerMenu.UPG_SPACING;
             if (relX >= sx - 1 && relX < sx + 18
                     && relY >= AvoidMinerMenu.UPG_Y - 1 && relY < AvoidMinerMenu.UPG_Y + 18) {
-                extractor.setTooltipForNextFrame(
-                        Component.translatable("tooltip.avoidminer.slot.locked", i + 1),
-                        mouseX, mouseY);
+                if (i >= slotCount) {
+                    extractor.setTooltipForNextFrame(
+                            Component.translatable("tooltip.avoidminer.slot.locked", i + 1),
+                            mouseX, mouseY);
+                } else if (menu.getUpgradeType(i) == 0) {
+                    String key = switch (i) {
+                        case 0 -> "tooltip.avoidminer.slot.mining_only";
+                        case 1 -> "tooltip.avoidminer.slot.energy_only";
+                        default -> "tooltip.avoidminer.slot.speed_only";
+                    };
+                    extractor.setTooltipForNextFrame(Component.translatable(key), mouseX, mouseY);
+                }
                 return;
+            }
+        }
+
+        // Slots de mundo/efeito vazios
+        if (relY >= AvoidMinerMenu.WORLD_Y - 1 && relY < AvoidMinerMenu.WORLD_Y + 18) {
+            if (relX >= AvoidMinerMenu.WORLD_X - 1 && relX < AvoidMinerMenu.WORLD_X + 18
+                    && menu.getWorldMode() == 0) {
+                extractor.setTooltipForNextFrame(
+                        Component.translatable("tooltip.avoidminer.slot.world_only"), mouseX, mouseY);
+            } else if (relX >= AvoidMinerMenu.ENCHANT_X - 1 && relX < AvoidMinerMenu.ENCHANT_X + 18
+                    && menu.getEnchantMode() == 0) {
+                extractor.setTooltipForNextFrame(
+                        Component.translatable("tooltip.avoidminer.slot.effect_only"), mouseX, mouseY);
             }
         }
     }

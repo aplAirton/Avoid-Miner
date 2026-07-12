@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": ["avoidminer:magnetite_ore"]
+  "values": [
+    "avoidminer:magnetite_ore",
+    "avoidminer:raw_magnetite_block"
+  ]
 }

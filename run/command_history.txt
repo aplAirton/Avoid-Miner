@@ -31,3 +31,6 @@
 /fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_iron_ore
 /fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_lapis_ore
 /fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_copper_ore
+/weather clear
+/time pause
+/time set minecraft:day

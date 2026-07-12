@@ -120,8 +120,60 @@ def gen_processor(path):
 
 
 def gen_lootr(path):
-    # slots desenhados dinamicamente; apenas fundo + inventario + combustivel no texto
+    """Camara de invocacao: painel lateral com janela do mob 3D (y66..196),
+    cartao dourado em (100,90) alimentando 3 melhorias dedicadas (194/216/238)."""
     img, d, t = base("lootr")
+    gold = (170, 130, 50, 255)
+    gold_dk = (90, 68, 26, 255)
+    accent = (120, 70, 170, 255)
+
+    # grade de saida 9x3 em y=20
+    for row in range(3):
+        for col in range(9):
+            slot(d, t, MAIN_X + col * 18, 20 + row * 18)
+
+    # slot do cartao com moldura decorativa dupla (dourada) e cantos marcados
+    slot(d, t, 100, 90)
+    d.rectangle([96, 86, 121, 111], outline=gold_dk)
+    for cx in (96, 121):
+        for cy in (86, 111):
+            dx = 4 if cx == 96 else -4
+            dy = 4 if cy == 86 else -4
+            d.line([cx, cy, cx + dx, cy], fill=gold)
+            d.line([cx, cy, cx, cy + dy], fill=gold)
+
+    # chevrons cartao -> melhorias (fluxo de invocacao)
+    ch_y = 98
+    for i, ch_x in enumerate((132, 148, 164, 180)):
+        c = accent if i % 2 == 0 else gold_dk
+        d.line([ch_x, ch_y - 4, ch_x + 4, ch_y], fill=c, width=2)
+        d.line([ch_x + 4, ch_y, ch_x, ch_y + 4], fill=c, width=2)
+
+    # 3 slots dedicados de melhoria
+    for i in range(3):
+        slot(d, t, 194 + i * 22, 90)
+
+    # camara do mob no painel lateral: janela funda com vinheta e cantos em L
+    cx0, cy0, cx1, cy1 = 6, 66, 82, 196
+    d.rectangle([cx0 - 2, cy0 - 2, cx1 + 1, cy1 + 1], fill=t["border_dk"])
+    d.rectangle([cx0 - 1, cy0 - 1, cx1, cy1], fill=(6, 3, 9, 255))
+    # vinheta simples: bordas internas levemente mais claras (profundidade)
+    d.rectangle([cx0, cy0, cx1 - 1, cy1 - 1], outline=(16, 9, 22, 255))
+    d.rectangle([cx0 + 1, cy0 + 1, cx1 - 2, cy1 - 2], outline=(11, 6, 16, 255))
+    # piso da camara (pedestal)
+    d.rectangle([cx0 + 6, cy1 - 10, cx1 - 7, cy1 - 8], fill=(30, 16, 40, 255))
+    d.rectangle([cx0 + 12, cy1 - 8, cx1 - 13, cy1 - 6], fill=(20, 11, 28, 255))
+    # cantos em L dourados
+    L = 7
+    for px, py, dx, dy in ((cx0, cy0, 1, 1), (cx1 - 1, cy0, -1, 1),
+                           (cx0, cy1 - 1, 1, -1), (cx1 - 1, cy1 - 1, -1, -1)):
+        d.line([px, py, px + dx * L, py], fill=gold)
+        d.line([px, py, px, py + dy * L], fill=gold)
+
+    # divisores do painel: abaixo do titulo e entre status e camara
+    d.line([4, 17, 83, 17], fill=t["border_lt"])
+    d.line([4, 58, 83, 58], fill=t["border_lt"])
+
     img.save(path)
 
 
