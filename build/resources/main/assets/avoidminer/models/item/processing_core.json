@@ -1,4 +1,4 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "avoidminer:item/mining_core" }
+  "textures": { "layer0": "avoidminer:item/processing_core" }
 }

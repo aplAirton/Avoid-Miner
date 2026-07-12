@@ -22,8 +22,10 @@ public class ModCreativeTabs {
                         output.accept(ModItems.AVOID_MINER_TIER_2.get());
                         output.accept(ModItems.AVOID_MINER_TIER_3.get());
                         output.accept(ModItems.MAGNETITE_ORE.get());
+                        output.accept(ModItems.RAW_MAGNETITE_BLOCK.get());
                         output.accept(ModItems.RAW_MAGNETITE.get());
                         output.accept(ModItems.MAGNETITE_INGOT.get());
+                        output.accept(ModItems.MAGNETITE_NUGGET.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
                         for (var card : ModItems.MOB_CARDS) {

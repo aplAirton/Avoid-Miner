@@ -94,6 +94,8 @@ public class ProcessorBlockEntity extends BlockEntity {
         addRecipe(Items.ANCIENT_DEBRIS, Items.NETHERITE_SCRAP, 2);
         RECIPES.put(com.airton.avoidminer.ModItems.MAGNETITE_ORE.get().asItem(),
                 new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 3));
+        RECIPES.put(com.airton.avoidminer.ModItems.RAW_MAGNETITE_BLOCK.get().asItem(),
+                new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 9));
     }
 
     private static void addRecipe(Item inputItem, Item outputItem, int outputCount) {

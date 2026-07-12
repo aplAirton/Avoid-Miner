@@ -191,5 +191,8 @@
   "item.avoidminer.evoker_card": "Evoker Card",
   "item.avoidminer.ghast_card": "Ghast Card",
   "item.avoidminer.magma_cube_card": "Magma Cube Card",
-  "item.avoidminer.shulker_card": "Shulker Card"
+  "item.avoidminer.shulker_card": "Shulker Card",
+  "block.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
+  "item.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
+  "item.avoidminer.magnetite_nugget": "Magnetite Nugget"
 }

@@ -1,28 +1,41 @@
 {
   "stats": {
-    "minecraft:killed": {
-      "minecraft:creeper": 10
-    },
-    "minecraft:picked_up": {
-      "minecraft:gunpowder": 14
-    },
-    "minecraft:custom": {
-      "minecraft:sprint_one_cm": 1746,
-      "minecraft:time_since_rest": 172508,
-      "minecraft:walk_one_cm": 6639,
-      "minecraft:total_world_time": 87187,
-      "minecraft:leave_game": 13,
-      "minecraft:mob_kills": 10,
-      "minecraft:play_time": 86254,
-      "minecraft:damage_dealt": 2025,
-      "minecraft:jump": 31,
-      "minecraft:time_since_death": 86254
-    },
     "minecraft:used": {
       "minecraft:spruce_log": 6,
       "minecraft:netherite_sword": 23,
+      "avoidminer:avoid_miner_tier_3": 1,
+      "minecraft:netherite_pickaxe": 1,
+      "avoidminer:avoid_processor_tier_3": 1,
       "avoidminer:avoid_lootr": 1,
-      "minecraft:creeper_spawn_egg": 10
+      "minecraft:creeper_spawn_egg": 10,
+      "avoidminer:magnetite_ore": 1
+    },
+    "minecraft:picked_up": {
+      "avoidminer:nether_upgrade": 2,
+      "minecraft:gunpowder": 14,
+      "avoidminer:raw_magnetite": 1
+    },
+    "minecraft:dropped": {
+      "avoidminer:nether_upgrade": 2
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 1831,
+      "minecraft:time_since_rest": 347198,
+      "minecraft:walk_one_cm": 9550,
+      "minecraft:total_world_time": 174712,
+      "minecraft:leave_game": 23,
+      "minecraft:mob_kills": 10,
+      "minecraft:damage_dealt": 2025,
+      "minecraft:play_time": 173599,
+      "minecraft:jump": 32,
+      "minecraft:time_since_death": 173599,
+      "minecraft:drop": 2
+    },
+    "minecraft:killed": {
+      "minecraft:creeper": 10
+    },
+    "minecraft:mined": {
+      "avoidminer:magnetite_ore": 1
     }
   },
   "DataVersion": 4790

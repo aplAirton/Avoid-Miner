@@ -191,5 +191,8 @@
   "item.avoidminer.evoker_card": "Cartão de Invocador",
   "item.avoidminer.ghast_card": "Cartão de Ghast",
   "item.avoidminer.magma_cube_card": "Cartão de Cubo de Magma",
-  "item.avoidminer.shulker_card": "Cartão de Shulker"
+  "item.avoidminer.shulker_card": "Cartão de Shulker",
+  "block.avoidminer.raw_magnetite_block": "Bloco de Magnetita Bruta",
+  "item.avoidminer.raw_magnetite_block": "Bloco de Magnetita Bruta",
+  "item.avoidminer.magnetite_nugget": "Pepita de Magnetita"
 }
