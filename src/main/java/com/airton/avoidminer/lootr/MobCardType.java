@@ -1,5 +1,7 @@
 package com.airton.avoidminer.lootr;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -36,7 +38,8 @@ public enum MobCardType {
     GHAST("ghast", EntityType.GHAST, 10),
     MAGMA_CUBE("magma_cube", EntityType.MAGMA_CUBE, 10),
     SHULKER("shulker", EntityType.SHULKER, 10),
-    ENDER_DRAGON("ender_dragon", EntityType.ENDER_DRAGON, 3);
+    ENDER_DRAGON("ender_dragon", EntityType.ENDER_DRAGON, 3),
+    WARDEN("warden", EntityType.WARDEN, 5);
 
     public final String id;
     public final EntityType<?> entityType;
@@ -159,6 +162,12 @@ public enum MobCardType {
             case ENDER_DRAGON -> List.of(
                 new LootEntry(Items.DRAGON_BREATH, 1.0f, 1, 2, true)
             );
+            case WARDEN -> List.of(
+                new LootEntry(Items.SCULK, 1.0f, 1, 3, true),
+                new LootEntry(Items.SCULK_SENSOR, 0.3f, 1, 1, false),
+                new LootEntry(Items.ECHO_SHARD, 0.2f, 1, 1, false),
+                new LootEntry(Items.DISC_FRAGMENT_5, 0.1f, 1, 1, false)
+            );
         };
     }
 
@@ -247,6 +256,10 @@ public enum MobCardType {
             case ENDER_DRAGON -> List.of(
                 new RareEntry(Items.DRAGON_HEAD, 0.05f),
                 new RareEntry(Items.DRAGON_EGG, 0.005f)
+            );
+            case WARDEN -> List.of(
+                new RareEntry(BuiltInRegistries.ITEM.get(Identifier.parse("avoidminer:rarity_upgrade")).orElseThrow().value(), 0.05f),
+                new RareEntry(Items.WARDEN_SPAWN_EGG, 0.0015f)
             );
         };
     }

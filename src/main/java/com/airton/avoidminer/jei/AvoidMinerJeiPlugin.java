@@ -110,6 +110,7 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 case MAGMA_CUBE -> new ItemStack(ModItems.MAGMA_CUBE_CARD.get());
                 case SHULKER -> new ItemStack(ModItems.SHULKER_CARD.get());
                 case ENDER_DRAGON -> new ItemStack(ModItems.ENDER_DRAGON_CARD.get());
+                case WARDEN -> new ItemStack(ModItems.WARDEN_CARD.get());
             };
             lootrRecipes.add(new LootrJeiRecipe(type, card));
         }

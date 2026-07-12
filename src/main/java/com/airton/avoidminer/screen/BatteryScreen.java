@@ -83,7 +83,7 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
                 menu.getEnergyStored(), menu.getEffectiveCapacity());
         extractor.text(font, Component.literal(amount),
                 gx + (MAIN_LEFT + MAIN_RIGHT) / 2 - font.width(amount) / 2,
-                gy + 58, TEXT_DIM);
+                gy + 22, TEXT_DIM);
     }
 
     private void drawEnergyCore(GuiGraphicsExtractor extractor, int gx, int gy) {
@@ -123,10 +123,6 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
     }
 
     private void drawUpgradeArea(GuiGraphicsExtractor extractor, int gx, int gy) {
-        int labelY = 68;
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"),
-                gx + BatteryMenu.CAPACITY_UPG_X, gy + labelY, TEXT_DISABLED);
-
         drawMarkedUpgradeSlot(extractor, gx + BatteryMenu.CAPACITY_UPG_X, gy + BatteryMenu.CAPACITY_UPG_Y,
                 "screen.avoidminer.slot.letter.capacity", menu.getCapacityUpgradeTier() > 0);
         drawMarkedUpgradeSlot(extractor, gx + BatteryMenu.RANGE_UPG_X, gy + BatteryMenu.RANGE_UPG_Y,
@@ -216,6 +212,29 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
         int y = (height - imageHeight) / 2;
         int relX = mouseX - x;
         int relY = mouseY - y;
+
+        if (relX >= BatteryMenu.FUEL_X - 1 && relX < BatteryMenu.FUEL_X + 18
+                && relY >= BatteryMenu.FUEL_Y - 1 && relY < BatteryMenu.FUEL_Y + 18
+                && menu.getEnergyStored() < menu.getEffectiveCapacity()) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("tooltip.avoidminer.slot.fuel"), mouseX, mouseY);
+            return;
+        }
+
+        if (relY >= BatteryMenu.CAPACITY_UPG_Y - 1 && relY < BatteryMenu.CAPACITY_UPG_Y + 18) {
+            if (relX >= BatteryMenu.CAPACITY_UPG_X - 1 && relX < BatteryMenu.CAPACITY_UPG_X + 18
+                    && menu.getCapacityUpgradeTier() == 0) {
+                extractor.setTooltipForNextFrame(
+                        Component.translatable("tooltip.avoidminer.slot.capacity_only"), mouseX, mouseY);
+                return;
+            }
+            if (relX >= BatteryMenu.RANGE_UPG_X - 1 && relX < BatteryMenu.RANGE_UPG_X + 18
+                    && menu.getRangeUpgradeTier() == 0) {
+                extractor.setTooltipForNextFrame(
+                        Component.translatable("tooltip.avoidminer.slot.range_only"), mouseX, mouseY);
+                return;
+            }
+        }
 
         boolean overChamber = relX >= CHAMBER_X0 && relX < CHAMBER_X1
                 && relY >= CHAMBER_Y0 && relY < CHAMBER_Y1;

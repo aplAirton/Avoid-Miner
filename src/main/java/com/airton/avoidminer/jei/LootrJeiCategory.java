@@ -21,18 +21,18 @@ public class LootrJeiCategory extends AbstractRecipeCategory<LootrJeiRecipe> {
 
     private static final int SLOT_SIZE = 18;
     private static final int GAP = 4;
-    private static final int ROW_SIZE = 7;
+    private static final int ROW_SIZE = 4;
     private static final int CARD_X = 1;
     private static final int CARD_Y = 16;
     private static final int ARROW_X = 20;
     private static final int ARROW_Y = 18;
-    private static final int OUTPUT_X = 43;
+    private static final int OUTPUT_X = 45;
     private static final int OUTPUT_Y = 3;
 
     public LootrJeiCategory(IGuiHelper guiHelper) {
         super(TYPE, Component.translatable("avoidminer.jei.lootr.category"),
                 guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.AVOID_LOOTR.get())),
-                176, 120);
+                140, 90);
     }
 
     @Override
@@ -89,13 +89,5 @@ public class LootrJeiCategory extends AbstractRecipeCategory<LootrJeiRecipe> {
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, LootrJeiRecipe recipe, IFocusGroup focuses) {
         builder.addAnimatedRecipeArrow(200).setPosition(ARROW_X, ARROW_Y);
-
-        if (!recipe.cardType().rareDrops().isEmpty()) {
-            int normalCount = recipe.cardType().normalDrops().size();
-            int normalRows = (normalCount + ROW_SIZE - 1) / ROW_SIZE;
-            int labelY = OUTPUT_Y + normalRows * (SLOT_SIZE + GAP) + 2;
-            builder.addText(Component.translatable("avoidminer.jei.lootr.rare_section"), 170, 20)
-                    .setPosition(OUTPUT_X, labelY);
-        }
     }
 }

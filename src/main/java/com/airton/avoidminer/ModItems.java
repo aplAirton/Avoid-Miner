@@ -4,6 +4,7 @@ import com.airton.avoidminer.item.GuideBookItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,24 +23,24 @@ public class ModItems {
             props -> new BlockItem(ModBlocks.AVOID_PROCESSOR_TIER_1.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t1.desc"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t1.upgrades"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t1.desc").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t1.upgrades").withStyle(ChatFormatting.GRAY));
                 }
             });
     public static final DeferredItem<BlockItem> AVOID_PROCESSOR_TIER_2 = ITEMS.registerItem("avoid_processor_tier_2",
             props -> new BlockItem(ModBlocks.AVOID_PROCESSOR_TIER_2.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t2.desc"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t2.upgrades"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t2.desc").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t2.upgrades").withStyle(ChatFormatting.GRAY));
                 }
             });
     public static final DeferredItem<BlockItem> AVOID_PROCESSOR_TIER_3 = ITEMS.registerItem("avoid_processor_tier_3",
             props -> new BlockItem(ModBlocks.AVOID_PROCESSOR_TIER_3.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t3.desc"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t3.upgrades"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t3.desc").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processor_t3.upgrades").withStyle(ChatFormatting.GRAY));
                 }
             });
 
@@ -47,27 +48,27 @@ public class ModItems {
             props -> new BlockItem(ModBlocks.AVOID_MINER_TIER_1.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t1.efficiency"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t1.slots"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t1.efficiency").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t1.slots").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes").withStyle(ChatFormatting.GRAY));
                 }
             });
     public static final DeferredItem<BlockItem> AVOID_MINER_TIER_2 = ITEMS.registerItem("avoid_miner_tier_2",
             props -> new BlockItem(ModBlocks.AVOID_MINER_TIER_2.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t2.efficiency"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t2.slots"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t2.efficiency").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t2.slots").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes").withStyle(ChatFormatting.GRAY));
                 }
             });
     public static final DeferredItem<BlockItem> AVOID_MINER_TIER_3 = ITEMS.registerItem("avoid_miner_tier_3",
             props -> new BlockItem(ModBlocks.AVOID_MINER_TIER_3.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t3.efficiency"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t3.slots"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t3.efficiency").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine_t3.slots").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine.modes").withStyle(ChatFormatting.GRAY));
                 }
             });
 
@@ -75,7 +76,7 @@ public class ModItems {
             props -> new Item(props) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.mining_core"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.mining_core").withStyle(ChatFormatting.GRAY));
                 }
             });
 
@@ -83,14 +84,14 @@ public class ModItems {
             props -> new Item(props) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.upgrade_tier_2.obtain"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.upgrade_tier_2.obtain").withStyle(ChatFormatting.GRAY));
                 }
             });
     public static final DeferredItem<Item> UPGRADE_TIER_3 = ITEMS.registerItem("upgrade_tier_3",
             props -> new Item(props) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.upgrade_tier_3.obtain"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.upgrade_tier_3.obtain").withStyle(ChatFormatting.GRAY));
                 }
             });
 
@@ -152,7 +153,7 @@ public class ModItems {
             props -> new Item(props) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.processing_core"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.processing_core").withStyle(ChatFormatting.GRAY));
                 }
             });
 
@@ -210,6 +211,8 @@ public class ModItems {
             props -> new MobCardItem(MobCardType.SHULKER, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> ENDER_DRAGON_CARD = ITEMS.registerItem("ender_dragon_card",
             props -> new MobCardItem(MobCardType.ENDER_DRAGON, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> WARDEN_CARD = ITEMS.registerItem("warden_card",
+            props -> new MobCardItem(MobCardType.WARDEN, props.stacksTo(1)));
 
     // Referência ordenada usada pela HUD, JEI e máquina.
     public static final DeferredItem<?>[] MOB_CARDS = {
@@ -218,7 +221,7 @@ public class ModItems {
             ENDERMAN_CARD, VILLAGER_CARD, BLAZE_CARD, PIG_CARD, COW_CARD,
             CHICKEN_CARD, SHEEP_CARD, VEX_CARD, GUARDIAN_CARD, ELDER_GUARDIAN_CARD,
             SLIME_CARD, VINDICATOR_CARD, EVOKER_CARD, GHAST_CARD, MAGMA_CUBE_CARD,
-            SHULKER_CARD, ENDER_DRAGON_CARD
+            SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD
     };
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
@@ -231,8 +234,8 @@ public class ModItems {
             props -> new BlockItem(ModBlocks.BATTERY.get(), props) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-                    builder.accept(Component.translatable("tooltip.avoidminer.battery.desc"));
-                    builder.accept(Component.translatable("tooltip.avoidminer.battery.usage"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.battery.desc").withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.battery.usage").withStyle(ChatFormatting.GRAY));
                 }
             });
 

@@ -1,5 +1,6 @@
 package com.airton.avoidminer.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -27,9 +28,9 @@ public class MachineUpgradeItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
         for (String key : tooltipKeys) {
-            builder.accept(Component.translatable(key));
+            builder.accept(Component.translatable(key).withStyle(ChatFormatting.GRAY));
         }
-        builder.accept(Component.translatable("tooltip.avoidminer.upgrade.apply_hint"));
+        builder.accept(Component.translatable("tooltip.avoidminer.upgrade.apply_hint").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

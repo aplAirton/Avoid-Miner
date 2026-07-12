@@ -33,10 +33,10 @@ public class BatteryMenu extends AbstractContainerMenu {
     public static final int ENERGY_H = 54;
     public static final int FUEL_X = 265;
     public static final int FUEL_Y = 80;
-    public static final int CAPACITY_UPG_X = 100;
-    public static final int CAPACITY_UPG_Y = 66;
-    public static final int RANGE_UPG_X = 130;
-    public static final int RANGE_UPG_Y = 66;
+    public static final int CAPACITY_UPG_X = 150;
+    public static final int CAPACITY_UPG_Y = 58;
+    public static final int RANGE_UPG_X = 180;
+    public static final int RANGE_UPG_Y = 58;
     public static final int PLAYER_Y = 122;
     public static final int HOTBAR_Y = 180;
 

@@ -227,6 +227,10 @@
   "tooltip.avoidminer.range_upgrade_tier_1": "Supports up to 2 machines",
   "tooltip.avoidminer.range_upgrade_tier_2": "Supports up to 4 machines",
   "tooltip.avoidminer.range_upgrade_tier_3": "Supports up to 8 machines",
+  "item.avoidminer.warden_card": "Warden Card",
   "screen.avoidminer.slot.letter.capacity": "C",
-  "screen.avoidminer.slot.letter.range": "R"
+  "screen.avoidminer.slot.letter.range": "R",
+  "tooltip.avoidminer.slot.capacity_only": "Capacity Upgrade only",
+  "tooltip.avoidminer.slot.range_only": "Range Upgrade only",
+  "tooltip.avoidminer.slot.fuel": "Fuel or Energy Link"
 }
