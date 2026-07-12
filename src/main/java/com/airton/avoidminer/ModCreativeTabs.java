@@ -26,14 +26,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.MAGNETITE_INGOT.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
-                        output.accept(ModItems.SKELETON_CARD.get());
-                        output.accept(ModItems.WITHER_SKELETON_CARD.get());
-                        output.accept(ModItems.CREEPER_CARD.get());
-                        output.accept(ModItems.ZOMBIE_CARD.get());
-                        output.accept(ModItems.SPIDER_CARD.get());
-                        output.accept(ModItems.WITCH_CARD.get());
-                        output.accept(ModItems.PIGLIN_CARD.get());
-                        output.accept(ModItems.ENDER_DRAGON_CARD.get());
+                        for (var card : ModItems.MOB_CARDS) {
+                            output.accept(card.get());
+                        }
                         output.accept(ModItems.RARITY_UPGRADE.get());
                         output.accept(ModItems.LOOT_UPGRADE.get());
                         output.accept(ModBlocks.AVOID_LOOTR.get());

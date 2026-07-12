@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GMG", "EBE", "GTG"],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "M": "avoidminer:magnetite_ingot",
+    "E": "minecraft:ender_eye",
+    "B": "minecraft:emerald_block",
+    "T": "minecraft:ghast_tear"
+  },
+  "result": { "id": "avoidminer:villager_card", "count": 1 }
+}

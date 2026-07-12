@@ -226,13 +226,51 @@ public class ModItems {
             props -> new MobCardItem(MobCardType.WITCH, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> PIGLIN_CARD = ITEMS.registerItem("piglin_card",
             props -> new MobCardItem(MobCardType.PIGLIN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> PIGLIN_BRUTE_CARD = ITEMS.registerItem("piglin_brute_card",
+            props -> new MobCardItem(MobCardType.PIGLIN_BRUTE, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> ENDERMAN_CARD = ITEMS.registerItem("enderman_card",
+            props -> new MobCardItem(MobCardType.ENDERMAN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> VILLAGER_CARD = ITEMS.registerItem("villager_card",
+            props -> new MobCardItem(MobCardType.VILLAGER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> BLAZE_CARD = ITEMS.registerItem("blaze_card",
+            props -> new MobCardItem(MobCardType.BLAZE, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> PIG_CARD = ITEMS.registerItem("pig_card",
+            props -> new MobCardItem(MobCardType.PIG, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> COW_CARD = ITEMS.registerItem("cow_card",
+            props -> new MobCardItem(MobCardType.COW, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> CHICKEN_CARD = ITEMS.registerItem("chicken_card",
+            props -> new MobCardItem(MobCardType.CHICKEN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> SHEEP_CARD = ITEMS.registerItem("sheep_card",
+            props -> new MobCardItem(MobCardType.SHEEP, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> VEX_CARD = ITEMS.registerItem("vex_card",
+            props -> new MobCardItem(MobCardType.VEX, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> GUARDIAN_CARD = ITEMS.registerItem("guardian_card",
+            props -> new MobCardItem(MobCardType.GUARDIAN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> ELDER_GUARDIAN_CARD = ITEMS.registerItem("elder_guardian_card",
+            props -> new MobCardItem(MobCardType.ELDER_GUARDIAN, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> SLIME_CARD = ITEMS.registerItem("slime_card",
+            props -> new MobCardItem(MobCardType.SLIME, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> VINDICATOR_CARD = ITEMS.registerItem("vindicator_card",
+            props -> new MobCardItem(MobCardType.VINDICATOR, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> EVOKER_CARD = ITEMS.registerItem("evoker_card",
+            props -> new MobCardItem(MobCardType.EVOKER, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> GHAST_CARD = ITEMS.registerItem("ghast_card",
+            props -> new MobCardItem(MobCardType.GHAST, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> MAGMA_CUBE_CARD = ITEMS.registerItem("magma_cube_card",
+            props -> new MobCardItem(MobCardType.MAGMA_CUBE, props.stacksTo(1)));
+    public static final DeferredItem<MobCardItem> SHULKER_CARD = ITEMS.registerItem("shulker_card",
+            props -> new MobCardItem(MobCardType.SHULKER, props.stacksTo(1)));
     public static final DeferredItem<MobCardItem> ENDER_DRAGON_CARD = ITEMS.registerItem("ender_dragon_card",
             props -> new MobCardItem(MobCardType.ENDER_DRAGON, props.stacksTo(1)));
 
     // Referência ordenada usada pela HUD, JEI e máquina.
     public static final DeferredItem<?>[] MOB_CARDS = {
             SKELETON_CARD, WITHER_SKELETON_CARD, CREEPER_CARD, ZOMBIE_CARD,
-            SPIDER_CARD, WITCH_CARD, PIGLIN_CARD, ENDER_DRAGON_CARD
+            SPIDER_CARD, WITCH_CARD, PIGLIN_CARD, PIGLIN_BRUTE_CARD,
+            ENDERMAN_CARD, VILLAGER_CARD, BLAZE_CARD, PIG_CARD, COW_CARD,
+            CHICKEN_CARD, SHEEP_CARD, VEX_CARD, GUARDIAN_CARD, ELDER_GUARDIAN_CARD,
+            SLIME_CARD, VINDICATOR_CARD, EVOKER_CARD, GHAST_CARD, MAGMA_CUBE_CARD,
+            SHULKER_CARD, ENDER_DRAGON_CARD
     };
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
@@ -259,7 +297,7 @@ public class ModItems {
 
     /** Retorna o nível de saque (1/2/3) de um LOOT_UPGRADE, 0 se não for. */
     public static int lootUpgradeLevel(ItemStack stack) {
-        if (stack.is(LOOT_UPGRADE.get())) return 1; // FIXME? distinct tiers?
+        if (stack.is(LOOT_UPGRADE.get())) return 3;
         return 0;
     }
 }

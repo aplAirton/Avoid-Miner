@@ -1,10 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GMG", "GTG", "GMG"],
+  "pattern": ["SGS", "DND", "SGS"],
   "key": {
+    "S": "minecraft:diamond_sword",
     "G": "minecraft:gold_ingot",
-    "M": "avoidminer:magnetite_ingot",
-    "T": "minecraft:ghast_tear"
+    "D": "minecraft:diamond",
+    "N": "minecraft:nether_star"
   },
   "result": { "id": "avoidminer:loot_upgrade", "count": 1 }
 }

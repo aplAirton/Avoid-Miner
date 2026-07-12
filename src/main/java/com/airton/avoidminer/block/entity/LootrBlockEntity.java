@@ -36,7 +36,8 @@ public class LootrBlockEntity extends BlockEntity {
     public static final int OUTPUT_COUNT = 27;
     public static final int UPG_SPEED = 29;
     public static final int UPG_LOOT = 30;
-    public static final int TOTAL_SLOTS = 31;
+    public static final int UPG_RARITY = 31;
+    public static final int TOTAL_SLOTS = 32;
 
     private static final int ENERGY_CAPACITY = 20000;
     private static final int BASE_TICKS_PER_OPERATION = 200;
@@ -65,8 +66,9 @@ public class LootrBlockEntity extends BlockEntity {
                     || stack.is(ModItems.SPEED_UPGRADE_TIER_2.get())
                     || stack.is(ModItems.SPEED_UPGRADE_TIER_3.get());
             if (slot == UPG_LOOT)
-                return stack.is(ModItems.RARITY_UPGRADE.get())
-                    || stack.is(ModItems.LOOT_UPGRADE.get());
+                return stack.is(ModItems.LOOT_UPGRADE.get());
+            if (slot == UPG_RARITY)
+                return stack.is(ModItems.RARITY_UPGRADE.get());
             return false;
         }
     };
@@ -149,7 +151,7 @@ public class LootrBlockEntity extends BlockEntity {
     }
 
     private boolean hasRarityUpgrade() {
-        return getUpgradeStack(UPG_LOOT).is(ModItems.RARITY_UPGRADE.get());
+        return getUpgradeStack(UPG_RARITY).is(ModItems.RARITY_UPGRADE.get());
     }
 
     private int getLootingLevel() {

@@ -33,7 +33,6 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
     private static final int PROG_H = 3;
 
     private static final int SEPARATOR_Y = 78;
-    private static final int GROUP_LABEL_Y = 81;
 
     private static final int ACCENT = 0xFF8844CC;
     private static final int ACCENT_DIM = 0xFF663399;
@@ -63,7 +62,6 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         drawModeBanner(extractor, x, y);
         drawProgressBar(extractor, x, y);
         drawSectionSeparator(extractor, x, y, SEPARATOR_Y);
-        drawGroupLabels(extractor, x, y);
         drawSpecialSlotFrames(extractor, x, y);
         drawEnergyBar(extractor, x, y);
         drawFuelGlow(extractor, x, y);
@@ -120,20 +118,10 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         }
     }
 
-    private void drawGroupLabels(GuiGraphicsExtractor extractor, int gx, int gy) {
-        int labelColor = 0xFF77669A;
-
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"),
-                gx + LootrMenu.MAIN_X, gy + GROUP_LABEL_Y, labelColor);
-
-        Component cardLabel = Component.translatable("screen.avoidminer.lootr.card");
-        int cardLabelW = font.width(cardLabel);
-        extractor.text(font, cardLabel, gx + LootrMenu.CARD_X + 9 - cardLabelW / 2, gy + GROUP_LABEL_Y, labelColor);
-    }
-
     private void drawSpecialSlotFrames(GuiGraphicsExtractor extractor, int gx, int gy) {
         drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 0 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
         drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 1 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
+        drawSlotFrame(extractor, gx + LootrMenu.MAIN_X + 2 * LootrMenu.UPG_SPACING, gy + LootrMenu.UPG_Y, ACCENT);
 
         int cardAccent = menu.hasValidCard() ? ACCENT : ACCENT_DIM;
         drawSlotFrame(extractor, gx + LootrMenu.CARD_X, gy + LootrMenu.CARD_Y, cardAccent);
@@ -211,17 +199,17 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
                 menu.getSpeedUpgradeTier(),
                 switch (menu.getSpeedUpgradeTier()) { case 1 -> "/1.5"; case 2 -> "/1.7"; case 3 -> "/2.0"; default -> ""; });
 
-        int speedTier = menu.getSpeedUpgradeTier();
-        Component lootName = menu.hasRarityUpgrade()
-                ? Component.translatable("screen.avoidminer.lootr.rarity")
-                : Component.translatable("screen.avoidminer.lootr.loot");
-        int lootTier = menu.hasRarityUpgrade() ? 1 : menu.getLootingLevel();
-        String lootEffect = menu.hasRarityUpgrade()
-                ? "rare"
-                : (menu.getLootingLevel() > 0 ? "Lv" + menu.getLootingLevel() : "");
-        drawUpgradeCard(extractor, px, cardYStart + cardH + cardGap, lootName, lootTier, lootEffect);
+        drawUpgradeCard(extractor, px, cardYStart + cardH + cardGap,
+                Component.translatable("screen.avoidminer.lootr.loot"),
+                menu.getLootingLevel(),
+                menu.getLootingLevel() > 0 ? "Lv" + menu.getLootingLevel() : "");
 
-        int statusY = cardYStart + 2 * (cardH + cardGap) + 4;
+        drawUpgradeCard(extractor, px, cardYStart + 2 * (cardH + cardGap),
+                Component.translatable("screen.avoidminer.lootr.rarity"),
+                menu.hasRarityUpgrade() ? 1 : 0,
+                menu.hasRarityUpgrade() ? "rare" : "");
+
+        int statusY = cardYStart + 3 * (cardH + cardGap) + 4;
         drawPanelDivider(extractor, px, statusY - 2);
         extractor.text(font, Component.translatable("screen.avoidminer.status"), px, statusY + 1, TEXT_DISABLED);
         boolean burning = menu.isBurning();

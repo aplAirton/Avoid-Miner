@@ -76,6 +76,14 @@ public class LootrMenu extends AbstractContainerMenu {
             @Override public int getMaxStackSize() { return 1; }
         });
 
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                LootrBlockEntity.UPG_RARITY, MAIN_X + 2 * UPG_SPACING, UPG_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 1; }
+        });
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 int index = LootrBlockEntity.OUTPUT_START + row * 9 + col;
@@ -123,20 +131,17 @@ public class LootrMenu extends AbstractContainerMenu {
             if (index < total) {
                 if (!moveItemStackTo(stackInSlot, total, slots.size(), true)) return ItemStack.EMPTY;
             } else {
-                FuelValues fuels = player.level().fuelValues();
-                boolean isFuel = stackInSlot.getBurnTime(RecipeType.SMELTING, fuels) > 0;
                 if (stackInSlot.getItem() instanceof com.airton.avoidminer.lootr.MobCardItem) {
                     if (!moveItemStackTo(stackInSlot, LootrBlockEntity.CARD_SLOT, LootrBlockEntity.CARD_SLOT + 1, false))
                         return ItemStack.EMPTY;
-                } else if (isFuel) {
-                    if (!moveItemStackTo(stackInSlot, LootrBlockEntity.FUEL_SLOT, LootrBlockEntity.FUEL_SLOT + 1, false)) {
-                        if (!moveItemStackTo(stackInSlot, LootrBlockEntity.UPG_SPEED, LootrBlockEntity.TOTAL_SLOTS, false)) {
-                            if (!moveItemStackTo(stackInSlot, LootrBlockEntity.OUTPUT_START, LootrBlockEntity.OUTPUT_START + LootrBlockEntity.OUTPUT_COUNT, false))
-                                return ItemStack.EMPTY;
-                        }
-                    }
                 } else {
-                    if (!moveItemStackTo(stackInSlot, LootrBlockEntity.UPG_SPEED, LootrBlockEntity.TOTAL_SLOTS, false)) {
+                    FuelValues fuels = player.level().fuelValues();
+                    boolean isFuel = stackInSlot.getBurnTime(RecipeType.SMELTING, fuels) > 0;
+                    if (isFuel) {
+                        if (!moveItemStackTo(stackInSlot, LootrBlockEntity.FUEL_SLOT, LootrBlockEntity.FUEL_SLOT + 1, false))
+                            return ItemStack.EMPTY;
+                    }
+                    if (!moveItemStackTo(stackInSlot, LootrBlockEntity.UPG_SPEED, LootrBlockEntity.UPG_RARITY + 1, false)) {
                         if (!moveItemStackTo(stackInSlot, LootrBlockEntity.OUTPUT_START, LootrBlockEntity.OUTPUT_START + LootrBlockEntity.OUTPUT_COUNT, false))
                             return ItemStack.EMPTY;
                     }
