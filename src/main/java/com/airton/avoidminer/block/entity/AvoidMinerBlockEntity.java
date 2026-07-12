@@ -3,6 +3,7 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.AvoidMinerBlock;
+import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.menu.AvoidMinerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,13 +51,16 @@ public class AvoidMinerBlockEntity extends BlockEntity {
             if (resource.isEmpty()) return false;
             ItemStack stack = resource.toStack(1);
             if (slot == FUEL_SLOT) {
-                return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
+                return (level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0)
+                        || stack.is(ModItems.ENERGY_LINK.get());
             }
             if (slot >= OUTPUT_START && slot < UPGRADE_SLOT_START) {
                 return false;
             }
             if (slot == WORLD_SLOT) {
-                return stack.is(ModItems.BOTANY_UPGRADE.get()) || stack.is(ModItems.NETHER_UPGRADE.get());
+                return stack.is(ModItems.BOTANY_UPGRADE.get())
+                        || stack.is(ModItems.NETHER_UPGRADE.get())
+                        || stack.is(ModItems.END_UPGRADE.get());
             }
             if (slot == ENCHANT_SLOT) {
                 return stack.is(ModItems.FORTUNE_UPGRADE.get()) || stack.is(ModItems.SILK_UPGRADE.get());
@@ -152,6 +156,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         ItemStack stack = r.toStack(1);
         if (stack.is(ModItems.BOTANY_UPGRADE.get())) return 1;
         if (stack.is(ModItems.NETHER_UPGRADE.get())) return 2;
+        if (stack.is(ModItems.END_UPGRADE.get())) return 3;
         return 0;
     }
 
@@ -240,6 +245,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         public final Supplier<List<WeightedResource>> resources;
         public final Supplier<List<WeightedResource>> botanyResources;
         public final Supplier<List<WeightedResource>> netherResources;
+        public final Supplier<List<WeightedResource>> endResources;
 
         Tier(int energyCapacity, int ticksPerGeneration, int energyPerTick, float successChance) {
             this.energyCapacity = energyCapacity;
@@ -248,8 +254,9 @@ public class AvoidMinerBlockEntity extends BlockEntity {
             this.successChance = successChance;
             this.resources = switch (this) {
                 case TIER_1 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.COAL), 556),
-                    new WeightedResource(new ItemStack(Items.RAW_IRON), 250),
+                    new WeightedResource(new ItemStack(Items.COAL), 526),
+                    new WeightedResource(new ItemStack(Items.RAW_IRON), 240),
+                    new WeightedResource(new ItemStack(Items.RAW_COPPER), 40),
                     new WeightedResource(new ItemStack(Items.REDSTONE), 100),
                     new WeightedResource(new ItemStack(Items.LAPIS_LAZULI), 60),
                     new WeightedResource(new ItemStack(Items.RAW_GOLD), 25),
@@ -257,8 +264,9 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.DIAMOND), 3)
                 );
                 case TIER_2 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.COAL), 510),
-                    new WeightedResource(new ItemStack(Items.RAW_IRON), 200),
+                    new WeightedResource(new ItemStack(Items.COAL), 480),
+                    new WeightedResource(new ItemStack(Items.RAW_IRON), 190),
+                    new WeightedResource(new ItemStack(Items.RAW_COPPER), 40),
                     new WeightedResource(new ItemStack(Items.REDSTONE), 120),
                     new WeightedResource(new ItemStack(Items.LAPIS_LAZULI), 80),
                     new WeightedResource(new ItemStack(Items.RAW_GOLD), 50),
@@ -266,8 +274,9 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.DIAMOND), 15)
                 );
                 case TIER_3 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.COAL), 450),
-                    new WeightedResource(new ItemStack(Items.RAW_IRON), 210),
+                    new WeightedResource(new ItemStack(Items.COAL), 420),
+                    new WeightedResource(new ItemStack(Items.RAW_IRON), 200),
+                    new WeightedResource(new ItemStack(Items.RAW_COPPER), 40),
                     new WeightedResource(new ItemStack(Items.REDSTONE), 120),
                     new WeightedResource(new ItemStack(Items.LAPIS_LAZULI), 90),
                     new WeightedResource(new ItemStack(Items.RAW_GOLD), 75),
@@ -280,9 +289,13 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 350),
                     new WeightedResource(new ItemStack(Items.BIRCH_LOG), 250),
                     new WeightedResource(new ItemStack(Items.SPRUCE_LOG), 200),
-                    new WeightedResource(new ItemStack(Items.STICK), 100),
+                    new WeightedResource(new ItemStack(Items.STICK), 80),
                     new WeightedResource(new ItemStack(Items.OAK_SAPLING), 50),
-                    new WeightedResource(new ItemStack(Items.BIRCH_SAPLING), 50)
+                    new WeightedResource(new ItemStack(Items.BIRCH_SAPLING), 50),
+                    new WeightedResource(new ItemStack(Items.DANDELION), 30),
+                    new WeightedResource(new ItemStack(Items.POPPY), 25),
+                    new WeightedResource(new ItemStack(Items.BLUE_ORCHID), 15),
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 10)
                 );
                 case TIER_2 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 250),
@@ -291,10 +304,19 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.JUNGLE_LOG), 150),
                     new WeightedResource(new ItemStack(Items.ACACIA_LOG), 120),
                     new WeightedResource(new ItemStack(Items.DARK_OAK_LOG), 120),
-                    new WeightedResource(new ItemStack(Items.STICK), 80),
+                    new WeightedResource(new ItemStack(Items.STICK), 60),
                     new WeightedResource(new ItemStack(Items.OAK_SAPLING), 40),
                     new WeightedResource(new ItemStack(Items.SPRUCE_SAPLING), 25),
-                    new WeightedResource(new ItemStack(Items.BIRCH_SAPLING), 25)
+                    new WeightedResource(new ItemStack(Items.BIRCH_SAPLING), 25),
+                    new WeightedResource(new ItemStack(Items.DANDELION), 20),
+                    new WeightedResource(new ItemStack(Items.POPPY), 15),
+                    new WeightedResource(new ItemStack(Items.BLUE_ORCHID), 10),
+                    new WeightedResource(new ItemStack(Items.ALLIUM), 12),
+                    new WeightedResource(new ItemStack(Items.AZURE_BLUET), 12),
+                    new WeightedResource(new ItemStack(Items.CORNFLOWER), 8),
+                    new WeightedResource(new ItemStack(Items.OXEYE_DAISY), 8),
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 8),
+                    new WeightedResource(new ItemStack(Items.TORCHFLOWER), 8)
                 );
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 180),
@@ -305,8 +327,9 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.DARK_OAK_LOG), 90),
                     new WeightedResource(new ItemStack(Items.CHERRY_LOG), 80),
                     new WeightedResource(new ItemStack(Items.MANGROVE_LOG), 60),
+                    new WeightedResource(new ItemStack(Items.PALE_OAK_LOG), 50),
                     new WeightedResource(new ItemStack(Items.BAMBOO), 70),
-                    new WeightedResource(new ItemStack(Items.STICK), 60),
+                    new WeightedResource(new ItemStack(Items.STICK), 40),
                     new WeightedResource(new ItemStack(Items.OAK_SAPLING), 40),
                     new WeightedResource(new ItemStack(Items.SPRUCE_SAPLING), 25),
                     new WeightedResource(new ItemStack(Items.BIRCH_SAPLING), 25),
@@ -315,25 +338,83 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.DARK_OAK_SAPLING), 15),
                     new WeightedResource(new ItemStack(Items.CHERRY_SAPLING), 10),
                     new WeightedResource(new ItemStack(Items.MANGROVE_PROPAGULE), 10),
-                    new WeightedResource(new ItemStack(Items.VINE), 30),
-                    new WeightedResource(new ItemStack(Items.MOSS_BLOCK), 20)
+                    new WeightedResource(new ItemStack(Items.PALE_OAK_SAPLING), 8),
+                    new WeightedResource(new ItemStack(Items.VINE), 20),
+                    new WeightedResource(new ItemStack(Items.MOSS_BLOCK), 15),
+                    new WeightedResource(new ItemStack(Items.DANDELION), 15),
+                    new WeightedResource(new ItemStack(Items.POPPY), 12),
+                    new WeightedResource(new ItemStack(Items.BLUE_ORCHID), 8),
+                    new WeightedResource(new ItemStack(Items.ALLIUM), 10),
+                    new WeightedResource(new ItemStack(Items.AZURE_BLUET), 10),
+                    new WeightedResource(new ItemStack(Items.CORNFLOWER), 6),
+                    new WeightedResource(new ItemStack(Items.OXEYE_DAISY), 6),
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 6),
+                    new WeightedResource(new ItemStack(Items.TORCHFLOWER), 6),
+                    new WeightedResource(new ItemStack(Items.RED_TULIP), 8),
+                    new WeightedResource(new ItemStack(Items.ORANGE_TULIP), 8),
+                    new WeightedResource(new ItemStack(Items.WHITE_TULIP), 8),
+                    new WeightedResource(new ItemStack(Items.PINK_TULIP), 8),
+                    new WeightedResource(new ItemStack(Items.SUNFLOWER), 6),
+                    new WeightedResource(new ItemStack(Items.LILAC), 6),
+                    new WeightedResource(new ItemStack(Items.ROSE_BUSH), 6),
+                    new WeightedResource(new ItemStack(Items.PEONY), 6),
+                    new WeightedResource(new ItemStack(Items.PINK_PETALS), 6),
+                    new WeightedResource(new ItemStack(Items.PITCHER_PLANT), 4)
                 );
             };
             this.netherResources = switch (this) {
                 case TIER_1 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.QUARTZ), 700),
-                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 250),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 50)
+                    new WeightedResource(new ItemStack(Items.QUARTZ), 680),
+                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 240),
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 45),
+                    new WeightedResource(new ItemStack(Items.OBSIDIAN), 25),
+                    new WeightedResource(new ItemStack(Items.CRYING_OBSIDIAN), 10)
                 );
                 case TIER_2 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.QUARTZ), 550),
-                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 350),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 100)
+                    new WeightedResource(new ItemStack(Items.QUARTZ), 530),
+                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 330),
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 90),
+                    new WeightedResource(new ItemStack(Items.OBSIDIAN), 35),
+                    new WeightedResource(new ItemStack(Items.CRYING_OBSIDIAN), 15)
                 );
                 case TIER_3 -> () -> List.of(
-                    new WeightedResource(new ItemStack(Items.QUARTZ), 400),
-                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 450),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 150)
+                    new WeightedResource(new ItemStack(Items.QUARTZ), 380),
+                    new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 420),
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 130),
+                    new WeightedResource(new ItemStack(Items.OBSIDIAN), 50),
+                    new WeightedResource(new ItemStack(Items.CRYING_OBSIDIAN), 20)
+                );
+            };
+            this.endResources = switch (this) {
+                case TIER_1 -> () -> List.of(
+                    new WeightedResource(new ItemStack(Items.END_STONE), 580),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 250),
+                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 80),
+                    new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 30),
+                    new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 30),
+                    new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 20),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FLOWER), 5),
+                    new WeightedResource(new ItemStack(Items.END_CRYSTAL), 5)
+                );
+                case TIER_2 -> () -> List.of(
+                    new WeightedResource(new ItemStack(Items.END_STONE), 430),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 270),
+                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 150),
+                    new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 50),
+                    new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 40),
+                    new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 40),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FLOWER), 10),
+                    new WeightedResource(new ItemStack(Items.END_CRYSTAL), 10)
+                );
+                case TIER_3 -> () -> List.of(
+                    new WeightedResource(new ItemStack(Items.END_STONE), 330),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 280),
+                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 200),
+                    new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 60),
+                    new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 50),
+                    new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 40),
+                    new WeightedResource(new ItemStack(Items.CHORUS_FLOWER), 20),
+                    new WeightedResource(new ItemStack(Items.END_CRYSTAL), 20)
                 );
             };
         }
@@ -401,6 +482,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         return switch (getWorldMode()) {
             case 1 -> tier.botanyResources.get();
             case 2 -> tier.netherResources.get();
+            case 3 -> tier.endResources.get();
             default -> tier.resources.get();
         };
     }
@@ -453,13 +535,25 @@ public class AvoidMinerBlockEntity extends BlockEntity {
             int fuelAmount = be.itemHandler.getAmountAsInt(FUEL_SLOT);
             if (!fuelResource.isEmpty() && fuelAmount > 0) {
                 ItemStack fuelStack = fuelResource.toStack(1);
-                int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
-                if (burnTime > 0) {
-                    int energy = Math.max(1, burnTime / 5);
-                    if (energy > 0 && be.energyBuffer + energy <= tier.energyCapacity) {
-                        be.energyBuffer += energy;
-                        be.itemHandler.set(FUEL_SLOT, fuelResource, fuelAmount - 1);
+                if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
+                    int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, EnergyLinkItem.TRANSFER_PER_TICK);
+                    if (pulled > 0) {
+                        be.energyBuffer = Math.min(be.energyBuffer + pulled, tier.energyCapacity);
                         dirty = true;
+                    }
+                } else {
+                    int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+                    if (burnTime > 0) {
+                        int energy = Math.max(1, burnTime / 5);
+                        if (energy > 0 && be.energyBuffer + energy <= tier.energyCapacity) {
+                            be.energyBuffer += energy;
+                            if (fuelStack.is(Items.LAVA_BUCKET)) {
+                                be.itemHandler.set(FUEL_SLOT, ItemResource.of(Items.BUCKET), 1);
+                            } else {
+                                be.itemHandler.set(FUEL_SLOT, fuelResource, fuelAmount - 1);
+                            }
+                            dirty = true;
+                        }
                     }
                 }
             }
@@ -496,16 +590,22 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         int amount = 1;
         int worldMode = getWorldMode();
         int enchantMode = getEnchantMode();
-        boolean isAncientDebris = result.is(Items.ANCIENT_DEBRIS);
+        // Itens preciosos demais para multiplicar com Fortuna
+        boolean fortuneExempt = result.is(Items.ANCIENT_DEBRIS) || result.is(Items.END_CRYSTAL);
 
-        // Fortune: multiply output (not for botany, not for ancient_debris)
-        if (enchantMode == 1 && worldMode != 1 && !isAncientDebris) {
+        // Fortune: multiply output (not for botany, not for exempt items)
+        if (enchantMode == 1 && worldMode != 1 && !fortuneExempt) {
             amount = level.getRandom().nextInt(4) + 1; // 1-4, avg 2.5
         }
 
         // Silk: convert to ore blocks (overworld and nether only, not for botany)
         if (enchantMode == 2 && worldMode != 1) {
             result = applySilkTouch(result, worldMode == 2, level.getRandom().nextBoolean());
+        }
+
+        // No Nether, sem Silk Touch: ancient debris vira netherite scrap diretamente
+        if (worldMode == 2 && enchantMode != 2 && result.is(Items.ANCIENT_DEBRIS)) {
+            result = new ItemStack(Items.NETHERITE_SCRAP);
         }
 
         result.setCount(amount);
@@ -551,7 +651,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         }
     }
 
-    private ItemStack applySilkTouch(ItemStack input, boolean nether, boolean deepslate) {
+    public static ItemStack applySilkTouch(ItemStack input, boolean nether, boolean deepslate) {
         var item = input.getItem();
         if (nether) {
             if (item == Items.QUARTZ) return new ItemStack(Items.NETHER_QUARTZ_ORE);
@@ -560,6 +660,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
         }
         if (item == Items.COAL) return new ItemStack(deepslate ? Items.DEEPSLATE_COAL_ORE : Items.COAL_ORE);
         if (item == Items.RAW_IRON) return new ItemStack(deepslate ? Items.DEEPSLATE_IRON_ORE : Items.IRON_ORE);
+        if (item == Items.RAW_COPPER) return new ItemStack(deepslate ? Items.DEEPSLATE_COPPER_ORE : Items.COPPER_ORE);
         if (item == Items.RAW_GOLD) return new ItemStack(deepslate ? Items.DEEPSLATE_GOLD_ORE : Items.GOLD_ORE);
         if (item == Items.REDSTONE) return new ItemStack(deepslate ? Items.DEEPSLATE_REDSTONE_ORE : Items.REDSTONE_ORE);
         if (item == Items.LAPIS_LAZULI) return new ItemStack(deepslate ? Items.DEEPSLATE_LAPIS_ORE : Items.LAPIS_ORE);

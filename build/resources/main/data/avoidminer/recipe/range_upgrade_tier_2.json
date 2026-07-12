@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["RGR", "GPG", "RGR"],
+  "key": {
+    "R": "minecraft:redstone_block",
+    "G": "minecraft:gold_block",
+    "P": "avoidminer:range_upgrade_tier_1"
+  },
+  "result": { "id": "avoidminer:range_upgrade_tier_2", "count": 1 }
+}

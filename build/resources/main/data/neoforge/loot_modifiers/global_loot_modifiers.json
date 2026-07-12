@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:global_loot_modifiers",
+  "entries": [
+    "avoidminer:rarity_upgrade_in_ancient_city"
+  ]
+}

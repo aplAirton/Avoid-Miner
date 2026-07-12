@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.screen.AvoidMinerScreen;
+import com.airton.avoidminer.screen.BatteryScreen;
 import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import net.neoforged.api.distmarker.Dist;
@@ -15,5 +16,6 @@ public class ClientModEvents {
         event.register(ModMenuTypes.AVOID_MINER.get(), AvoidMinerScreen::new);
         event.register(ModMenuTypes.PROCESSOR.get(), ProcessorScreen::new);
         event.register(ModMenuTypes.LOOTR.get(), LootrScreen::new);
+        event.register(ModMenuTypes.BATTERY.get(), BatteryScreen::new);
     }
 }

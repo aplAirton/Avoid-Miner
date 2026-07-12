@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
+import com.airton.avoidminer.block.entity.BatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -21,4 +22,7 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LootrBlockEntity>> LOOTR = BLOCK_ENTITIES.register("lootr",
             () -> new BlockEntityType<>(LootrBlockEntity::new, Collections.emptySet()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBlockEntity>> BATTERY = BLOCK_ENTITIES.register("battery",
+            () -> new BlockEntityType<>(BatteryBlockEntity::new, Collections.emptySet()));
 }

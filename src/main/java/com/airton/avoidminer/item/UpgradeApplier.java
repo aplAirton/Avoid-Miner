@@ -1,6 +1,7 @@
 package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
+import com.airton.avoidminer.block.entity.BatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import net.minecraft.network.chat.Component;
@@ -63,6 +64,7 @@ public final class UpgradeApplier {
         if (be instanceof AvoidMinerBlockEntity miner) return miner.getItemHandler();
         if (be instanceof ProcessorBlockEntity processor) return processor.getItemHandler();
         if (be instanceof LootrBlockEntity lootr) return lootr.getItemHandler();
+        if (be instanceof BatteryBlockEntity battery) return battery.getItemHandler();
         return null;
     }
 }

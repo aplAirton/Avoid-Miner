@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.menu.AvoidMinerMenu;
+import com.airton.avoidminer.menu.BatteryMenu;
 import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.core.registries.Registries;
@@ -23,4 +24,7 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<LootrMenu>> LOOTR = MENUS.register("lootr",
             () -> new MenuType<>(LootrMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<BatteryMenu>> BATTERY = MENUS.register("battery",
+            () -> new MenuType<>(BatteryMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

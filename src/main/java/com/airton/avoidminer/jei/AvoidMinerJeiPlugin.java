@@ -63,6 +63,13 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 double dropPct = (double) wr.weight() / totalNetherWeight;
                 minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.nether"));
             }
+
+            // End
+            int totalEndWeight = tier.endResources.get().stream().mapToInt(AvoidMinerBlockEntity.WeightedResource::weight).sum();
+            for (var wr : tier.endResources.get()) {
+                double dropPct = (double) wr.weight() / totalEndWeight;
+                minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.end"));
+            }
         }
 
         // Upgrade drops (nether mode, ~0.5% per cycle)

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Gera as texturas de GUI (288x206) do Avoid Miner, Processor e Lootr."""
+"""Gera as texturas de GUI (288x206) do Avoid Miner, Processor e Lootr.
+
+Todas seguem o mesmo esqueleto: painel lateral (0..88) com titulo/status e
+uma "camara" (janela funda em (6,66)-(82,196)), area principal (92..258) e
+coluna direita com energia/combustivel. Cada maquina tem um tema proprio:
+miner = aco azulado, processor = cobre/bronze, lootr = void roxo.
+"""
 from PIL import Image, ImageDraw
 
 W, H = 288, 206
@@ -10,31 +16,38 @@ PLAYER_Y = 122
 HOTBAR_Y = 180
 FUEL = (265, 80)
 ENERGY = (268, 18, 12, 54)  # x, y, w, h
+CHAMBER = (6, 66, 82, 196)  # x0, y0, x1, y1 (janela do painel lateral)
 
 THEMES = {
     "miner": {
-        "bg":        (11, 14, 22, 255),    # fundo geral
-        "panel":     (13, 18, 32, 255),    # painel lateral
-        "main":      (14, 17, 26, 255),    # area principal
-        "right":     (12, 16, 28, 255),    # coluna direita
-        "border_lt": (42, 56, 88, 255),
+        "bg":        (12, 15, 21, 255),
+        "panel":     (17, 21, 30, 255),
+        "main":      (14, 18, 26, 255),
+        "right":     (15, 19, 28, 255),
+        "border_lt": (56, 70, 100, 255),
         "border_dk": (4, 6, 12, 255),
         "slot_bg":   (8, 10, 16, 255),
-        "slot_lt":   (30, 42, 68, 255),
+        "slot_lt":   (40, 52, 80, 255),
         "slot_dk":   (3, 4, 8, 255),
-        "frame":     (26, 36, 60, 255),
+        "frame":     (36, 48, 76, 255),
+        "corner":    (110, 160, 220, 255),   # cantos da camara
+        "rivet_lt":  (88, 104, 136, 255),
+        "rivet_dk":  (28, 36, 52, 255),
     },
     "processor": {
-        "bg":        (18, 13, 7, 255),
-        "panel":     (24, 17, 9, 255),
-        "main":      (21, 15, 9, 255),
-        "right":     (22, 15, 8, 255),
-        "border_lt": (74, 58, 32, 255),
+        "bg":        (24, 15, 8, 255),
+        "panel":     (32, 21, 11, 255),
+        "main":      (28, 18, 10, 255),
+        "right":     (30, 20, 10, 255),
+        "border_lt": (108, 76, 38, 255),
         "border_dk": (8, 5, 2, 255),
-        "slot_bg":   (12, 8, 4, 255),
-        "slot_lt":   (58, 42, 22, 255),
-        "slot_dk":   (5, 3, 1, 255),
-        "frame":     (58, 42, 16, 255),
+        "slot_bg":   (14, 9, 5, 255),
+        "slot_lt":   (84, 58, 28, 255),
+        "slot_dk":   (6, 3, 1, 255),
+        "frame":     (84, 58, 24, 255),
+        "corner":    (214, 150, 84, 255),
+        "rivet_lt":  (150, 106, 54, 255),
+        "rivet_dk":  (46, 30, 14, 255),
     },
     "lootr": {
         "bg":        (18, 12, 22, 255),
@@ -47,6 +60,9 @@ THEMES = {
         "slot_lt":   (56, 30, 68, 255),
         "slot_dk":   (4, 2, 5, 255),
         "frame":     (56, 30, 60, 255),
+        "corner":    (170, 130, 50, 255),    # dourado (cartao)
+        "rivet_lt":  (96, 62, 112, 255),
+        "rivet_dk":  (26, 14, 32, 255),
     },
 }
 
@@ -59,6 +75,44 @@ def slot(d, t, x, y):
     d.line([x - 1, y - 1, x - 1, y + 16], fill=t["slot_dk"])
     d.line([x - 1, y + 17, x + 17, y + 17], fill=t["slot_lt"])
     d.line([x + 17, y - 1, x + 17, y + 17], fill=t["slot_lt"])
+
+
+def rivet(d, t, x, y):
+    """Rebite 2x2: pixel claro + sombra."""
+    d.point([(x, y), (x + 1, y)], fill=t["rivet_lt"])
+    d.point([(x, y + 1), (x + 1, y + 1)], fill=t["rivet_dk"])
+
+
+def chamber(d, t, pedestal=False):
+    """Janela funda do painel lateral com cantos em L na cor de destaque."""
+    cx0, cy0, cx1, cy1 = CHAMBER
+    d.rectangle([cx0 - 2, cy0 - 2, cx1 + 1, cy1 + 1], fill=t["border_dk"])
+    d.rectangle([cx0 - 1, cy0 - 1, cx1, cy1], fill=(6, 5, 8, 255))
+    # profundidade: bordas internas levemente mais claras
+    inner1 = tuple(min(255, c + 9) for c in (6, 5, 8)) + (255,)
+    d.rectangle([cx0, cy0, cx1 - 1, cy1 - 1], outline=inner1)
+    if pedestal:
+        d.rectangle([cx0 + 6, cy1 - 10, cx1 - 7, cy1 - 8], fill=t["slot_lt"])
+        d.rectangle([cx0 + 12, cy1 - 8, cx1 - 13, cy1 - 6], fill=t["slot_bg"])
+    # cantos em L
+    L = 7
+    for px, py, sx, sy in ((cx0, cy0, 1, 1), (cx1 - 1, cy0, -1, 1),
+                           (cx0, cy1 - 1, 1, -1), (cx1 - 1, cy1 - 1, -1, -1)):
+        d.line([px, py, px + sx * L, py], fill=t["corner"])
+        d.line([px, py, px, py + sy * L], fill=t["corner"])
+
+
+def panel_dividers(d, t):
+    """Divisores do painel lateral: abaixo do titulo (y17) e do status (y58)."""
+    d.line([4, 17, 83, 17], fill=t["border_lt"])
+    d.line([4, 58, 83, 58], fill=t["border_lt"])
+
+
+def plate_rivets(d, t):
+    """Rebites nos cantos do painel lateral e da area principal."""
+    for x, y in ((5, 5), (81, 5), (5, 199), (81, 199),
+                 (93, 4), (254, 4), (93, 199), (254, 199)):
+        rivet(d, t, x, y)
 
 
 def base(theme):
@@ -99,31 +153,58 @@ def base(theme):
     return img, d, t
 
 
+def hazard_band(d, x0, x1, y0, h=4):
+    """Faixa de listras diagonais estilo maquina industrial (bem discreta)."""
+    dark = (14, 12, 6, 255)
+    amber = (96, 78, 20, 255)
+    for x in range(x0, x1):
+        for y in range(y0, y0 + h):
+            c = amber if ((x + y) // 4) % 2 == 0 else dark
+            d.point((x, y), fill=c)
+
+
 def gen_miner(path):
+    """Aco azulado: grade de saida, faixa de perigo, slots dedicados e
+    camara de amostras (a screen desenha os itens possiveis dentro dela)."""
     img, d, t = base("miner")
     # grade de saida 9x3 em y=20
     for row in range(3):
         for col in range(9):
             slot(d, t, MAIN_X + col * 18, 20 + row * 18)
+    # faixa de perigo entre saida e melhorias
+    hazard_band(d, 93, 258, 79)
     # melhorias (3, espacadas de 22) + mundo + encantamento em y=90
     for i in range(3):
         slot(d, t, MAIN_X + i * 22, 90)
     slot(d, t, 200, 90)
     slot(d, t, 238, 90)
+    chamber(d, t)
+    panel_dividers(d, t)
+    plate_rivets(d, t)
     img.save(path)
 
 
 def gen_processor(path):
-    # slots da area principal sao desenhados dinamicamente pela screen (variam por tier)
+    """Cobre/bronze: viga aparafusada entre area de processo e melhorias,
+    camara-catalogo de receitas; slots das colunas sao desenhados pela screen."""
     img, d, t = base("processor")
+    # viga metalica horizontal com parafusos em y=84..88
+    d.rectangle([93, 84, 257, 88], fill=(52, 36, 18, 255))
+    d.line([93, 84, 257, 84], fill=t["border_lt"])
+    d.line([93, 88, 257, 88], fill=t["border_dk"])
+    for bx in range(100, 258, 22):
+        rivet(d, t, bx, 85)
+    chamber(d, t)
+    panel_dividers(d, t)
+    plate_rivets(d, t)
     img.save(path)
 
 
 def gen_lootr(path):
-    """Camara de invocacao: painel lateral com janela do mob 3D (y66..196),
-    cartao dourado em (100,90) alimentando 3 melhorias dedicadas (194/216/238)."""
+    """Camara de invocacao: janela do mob 3D no painel, cartao dourado em
+    (100,90) alimentando 3 melhorias dedicadas (194/216/238)."""
     img, d, t = base("lootr")
-    gold = (170, 130, 50, 255)
+    gold = t["corner"]
     gold_dk = (90, 68, 26, 255)
     accent = (120, 70, 170, 255)
 
@@ -153,27 +234,8 @@ def gen_lootr(path):
     for i in range(3):
         slot(d, t, 194 + i * 22, 90)
 
-    # camara do mob no painel lateral: janela funda com vinheta e cantos em L
-    cx0, cy0, cx1, cy1 = 6, 66, 82, 196
-    d.rectangle([cx0 - 2, cy0 - 2, cx1 + 1, cy1 + 1], fill=t["border_dk"])
-    d.rectangle([cx0 - 1, cy0 - 1, cx1, cy1], fill=(6, 3, 9, 255))
-    # vinheta simples: bordas internas levemente mais claras (profundidade)
-    d.rectangle([cx0, cy0, cx1 - 1, cy1 - 1], outline=(16, 9, 22, 255))
-    d.rectangle([cx0 + 1, cy0 + 1, cx1 - 2, cy1 - 2], outline=(11, 6, 16, 255))
-    # piso da camara (pedestal)
-    d.rectangle([cx0 + 6, cy1 - 10, cx1 - 7, cy1 - 8], fill=(30, 16, 40, 255))
-    d.rectangle([cx0 + 12, cy1 - 8, cx1 - 13, cy1 - 6], fill=(20, 11, 28, 255))
-    # cantos em L dourados
-    L = 7
-    for px, py, dx, dy in ((cx0, cy0, 1, 1), (cx1 - 1, cy0, -1, 1),
-                           (cx0, cy1 - 1, 1, -1), (cx1 - 1, cy1 - 1, -1, -1)):
-        d.line([px, py, px + dx * L, py], fill=gold)
-        d.line([px, py, px, py + dy * L], fill=gold)
-
-    # divisores do painel: abaixo do titulo e entre status e camara
-    d.line([4, 17, 83, 17], fill=t["border_lt"])
-    d.line([4, 58, 83, 58], fill=t["border_lt"])
-
+    chamber(d, t, pedestal=True)
+    panel_dividers(d, t)
     img.save(path)
 
 

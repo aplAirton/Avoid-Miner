@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" E ", "GRG", " B "],
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "B": "avoidminer:blank_upgrade_pattern"
+  },
+  "result": { "id": "avoidminer:energy_link", "count": 1 }
+}

@@ -1,8 +1,10 @@
 package com.airton.avoidminer.block.entity;
 
 import com.airton.avoidminer.ModBlockEntities;
+import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity.UpgradeType;
+import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -96,6 +98,8 @@ public class ProcessorBlockEntity extends BlockEntity {
                 new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 3));
         RECIPES.put(com.airton.avoidminer.ModItems.RAW_MAGNETITE_BLOCK.get().asItem(),
                 new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 9));
+        RECIPES.put(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get().asItem(),
+                new ItemStack(com.airton.avoidminer.ModItems.MAGNETITE_POWDER.get(), 2));
     }
 
     private static void addRecipe(Item inputItem, Item outputItem, int outputCount) {
@@ -204,7 +208,8 @@ public class ProcessorBlockEntity extends BlockEntity {
                 if (resource.isEmpty()) return false;
                 ItemStack stack = resource.toStack(1);
                 if (slot == FUEL_SLOT) {
-                    return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
+                    return (level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0)
+                            || stack.is(ModItems.ENERGY_LINK.get());
                 }
                 if (slot >= tier.getInputStart() && slot <= tier.getInputEnd()) {
                     return isProcessable(stack);
@@ -367,13 +372,25 @@ public class ProcessorBlockEntity extends BlockEntity {
             int fuelAmount = be.itemHandler.getAmountAsInt(FUEL_SLOT);
             if (!fuelResource.isEmpty() && fuelAmount > 0) {
                 ItemStack fuelStack = fuelResource.toStack(1);
-                int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
-                if (burnTime > 0) {
-                    int energy = Math.max(1, burnTime / 5);
-                    if (energy > 0 && be.energyBuffer + energy <= tier.energyCapacity) {
-                        be.energyBuffer += energy;
-                        be.itemHandler.set(FUEL_SLOT, fuelResource, fuelAmount - 1);
+                if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
+                    int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, EnergyLinkItem.TRANSFER_PER_TICK);
+                    if (pulled > 0) {
+                        be.energyBuffer = Math.min(be.energyBuffer + pulled, tier.energyCapacity);
                         dirty = true;
+                    }
+                } else {
+                    int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+                    if (burnTime > 0) {
+                        int energy = Math.max(1, burnTime / 5);
+                        if (energy > 0 && be.energyBuffer + energy <= tier.energyCapacity) {
+                            be.energyBuffer += energy;
+                            if (fuelStack.is(Items.LAVA_BUCKET)) {
+                                be.itemHandler.set(FUEL_SLOT, ItemResource.of(Items.BUCKET), 1);
+                            } else {
+                                be.itemHandler.set(FUEL_SLOT, fuelResource, fuelAmount - 1);
+                            }
+                            dirty = true;
+                        }
                     }
                 }
             }

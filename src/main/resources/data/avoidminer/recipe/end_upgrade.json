@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CEC", "SPS", "CEC"],
+  "key": {
+    "C": "minecraft:chorus_fruit",
+    "E": "minecraft:ender_pearl",
+    "S": "minecraft:end_stone",
+    "P": "avoidminer:blank_upgrade_pattern"
+  },
+  "result": { "id": "avoidminer:end_upgrade", "count": 1 }
+}

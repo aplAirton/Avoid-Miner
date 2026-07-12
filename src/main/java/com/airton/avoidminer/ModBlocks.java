@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.block.AvoidMinerBlock;
+import com.airton.avoidminer.block.BatteryBlock;
 import com.airton.avoidminer.block.LootrBlock;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
@@ -70,4 +71,11 @@ public class ModBlocks {
                     .strength(3.5f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.NETHERITE_BLOCK));
+
+    public static final DeferredBlock<Block> BATTERY = BLOCKS.registerBlock("battery",
+            BatteryBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.COPPER));
 }

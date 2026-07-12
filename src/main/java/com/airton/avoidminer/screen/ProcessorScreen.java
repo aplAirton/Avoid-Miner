@@ -1,5 +1,6 @@
 package com.airton.avoidminer.screen;
 
+import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity.Tier;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -8,7 +9,20 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * GUI do Processador de Minérios no padrão "câmara" da Lootr: painel lateral
+ * com título, status e o catálogo de receitas — grade com todos os minérios
+ * processáveis; o hover mostra o que cada um vira. Na área principal, as
+ * colunas de processamento ganham brasa sob a entrada ativa.
+ */
 public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     private static final Identifier TEXTURE = Identifier.parse("avoidminer:textures/gui/avoid_processor.png");
 
@@ -28,20 +42,28 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     private static final int FUEL_X = ProcessorMenu.FUEL_X;
     private static final int FUEL_Y = ProcessorMenu.FUEL_Y;
 
-    private static final int SEPARATOR_Y = 84;
+    // Catálogo de receitas: grade de 4 colunas na janela do painel
+    private static final int GRID_X = 8;
+    private static final int GRID_Y = 70;
+    private static final int GRID_COLS = 4;
+    private static final int GRID_CELL = 18;
+    private static final int GRID_MAX = 28;
 
-    private static final int SLOT_BORDER = 0xFF373737;
-    private static final int SLOT_BORDER_LT = 0xFF555555;
-    private static final int SLOT_BORDER_DK = 0xFF111111;
-    private static final int SLOT_INNER = 0xFF8B8B8B;
-    private static final int ACCENT = 0xFFD0874C;
-    private static final int ACCENT_DIM = 0xFF804020;
+    private static final int SLOT_BORDER = 0xFF3A2A18;
+    private static final int SLOT_BORDER_LT = 0xFF6A4E2A;
+    private static final int SLOT_BORDER_DK = 0xFF160E06;
+    private static final int SLOT_INNER = 0xFF4A3520;
+    private static final int ACCENT = 0xFFE09650;
+    private static final int ACCENT_DIM = 0xFF8A5426;
 
     private static final int TEXT_WHITE = 0xFFFFFFFF;
-    private static final int TEXT_DIM = 0xFFC6C6C6;
-    private static final int TEXT_DISABLED = 0xFF555555;
+    private static final int TEXT_DIM = 0xFFC8B090;
+    private static final int TEXT_DISABLED = 0xFF6B4F33;
 
     private int tickCounter = 0;
+
+    private record RecipeSample(ItemStack input, ItemStack output) {}
+    private List<RecipeSample> cachedRecipes;
 
     public ProcessorScreen(ProcessorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, TEXTURE_W, TEXTURE_H);
@@ -49,6 +71,16 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         this.titleLabelY = 9999;
         this.inventoryLabelX = ProcessorMenu.MAIN_X;
         this.inventoryLabelY = 111;
+    }
+
+    private List<RecipeSample> recipeCatalog() {
+        if (cachedRecipes == null) {
+            cachedRecipes = new ArrayList<>();
+            for (Map.Entry<Item, ItemStack> e : ProcessorBlockEntity.getRecipeMap().entrySet()) {
+                cachedRecipes.add(new RecipeSample(new ItemStack(e.getKey()), e.getValue()));
+            }
+        }
+        return cachedRecipes;
     }
 
     @Override
@@ -64,11 +96,11 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
 
         drawTitleBanner(extractor, x, y);
         drawProcessingArea(extractor, x, y, t);
-        drawSectionSeparator(extractor, x, y, SEPARATOR_Y);
         drawUpgradeArea(extractor, x, y);
         drawEnergyBar(extractor, x, y);
         drawFuelGlow(extractor, x, y);
-        drawInfoPanel(extractor, x, y);
+        drawInfoPanel(extractor, x, y, t);
+        drawRecipeChamber(extractor, x, y, mouseX, mouseY);
 
         super.extractContents(extractor, mouseX, mouseY, partialTick);
     }
@@ -77,7 +109,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int left = gx + MAIN_LEFT;
         int right = gx + MAIN_RIGHT;
         extractor.fill(left, gy + 4, left + 2, gy + 13, ACCENT);
-        extractor.fill(left + 2, gy + 4, right, gy + 13, 0xFF3C3C3C);
+        extractor.fill(left + 2, gy + 4, right, gy + 13, 0xFF32220F);
 
         Component label = Component.translatable("screen.avoidminer.processing");
         int labelW = font.width(label);
@@ -87,8 +119,9 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     private void drawProcessingArea(GuiGraphicsExtractor extractor, int gx, int gy, Tier t) {
         if (t.inputCount == 1) {
             // Tier 1: entrada > seta horizontal > saída
-            drawSlotBg(extractor, gx + ProcessorMenu.T1_INPUT_X, gy + ProcessorMenu.T1_ROW_Y);
-            drawSlotBg(extractor, gx + ProcessorMenu.T1_OUTPUT_X, gy + ProcessorMenu.T1_ROW_Y);
+            boolean active = menu.getInputProgress(0) > 0;
+            drawSlotBg(extractor, gx + ProcessorMenu.T1_INPUT_X, gy + ProcessorMenu.T1_ROW_Y, active);
+            drawSlotBg(extractor, gx + ProcessorMenu.T1_OUTPUT_X, gy + ProcessorMenu.T1_ROW_Y, false);
             drawHorizontalArrow(extractor,
                     gx + ProcessorMenu.T1_ARROW_X,
                     gy + ProcessorMenu.T1_ROW_Y + (18 - ProcessorMenu.T1_ARROW_ROW_H) / 2,
@@ -97,17 +130,13 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
             // Tiers 2/3: colunas entrada > progresso > saída
             for (int i = 0; i < t.inputCount; i++) {
                 int sx = gx + ProcessorMenu.inputSlotX(t, i);
-                drawSlotBg(extractor, sx, gy + ProcessorMenu.INPUT_Y);
+                boolean active = menu.getInputProgress(i) > 0;
+                drawSlotBg(extractor, sx, gy + ProcessorMenu.INPUT_Y, active);
                 drawVerticalArrow(extractor, sx, gy + ProcessorMenu.ARROW_Y,
                         menu.getInputProgress(i), menu.getMaxProgress(), i);
-                drawSlotBg(extractor, sx, gy + ProcessorMenu.OUTPUT_Y);
+                drawSlotBg(extractor, sx, gy + ProcessorMenu.OUTPUT_Y, false);
             }
         }
-    }
-
-    private void drawSectionSeparator(GuiGraphicsExtractor extractor, int gx, int gy, int y) {
-        extractor.fill(gx + MAIN_LEFT, gy + y, gx + MAIN_RIGHT, gy + y + 1, SLOT_BORDER);
-        extractor.fill(gx + MAIN_LEFT, gy + y + 1, gx + MAIN_RIGHT, gy + y + 2, 0xFF333333);
     }
 
     // Dois slots de melhoria com lugar marcado (letra do tipo dedicado quando vazios)
@@ -119,7 +148,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
     }
 
     private void drawMarkedUpgradeSlot(GuiGraphicsExtractor extractor, int sx, int sy, String letterKey, boolean filled) {
-        drawSlotBg(extractor, sx, sy);
+        drawSlotBg(extractor, sx, sy, false);
         int frame = filled ? ACCENT : ACCENT_DIM;
         extractor.fill(sx - 1, sy - 1, sx + 18, sy, frame);
         extractor.fill(sx - 1, sy + 17, sx + 18, sy + 18, frame);
@@ -132,22 +161,26 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         }
     }
 
-    private void drawSlotBg(GuiGraphicsExtractor extractor, int sx, int sy) {
+    // Slot escavado em tons de bronze; entradas ativas ganham brasa pulsante
+    private void drawSlotBg(GuiGraphicsExtractor extractor, int sx, int sy, boolean heat) {
         extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, SLOT_BORDER);
         extractor.fill(sx, sy, sx + 17, sy + 17, SLOT_INNER);
-        extractor.fill(sx, sy, sx + 17, sy + 1, SLOT_BORDER_LT);
-        extractor.fill(sx, sy, sx + 1, sy + 17, SLOT_BORDER_LT);
-        extractor.fill(sx + 17, sy + 1, sx + 18, sy + 17, SLOT_BORDER_DK);
-        extractor.fill(sx + 1, sy + 17, sx + 17, sy + 18, SLOT_BORDER_DK);
+        extractor.fill(sx, sy, sx + 17, sy + 1, SLOT_BORDER_DK);
+        extractor.fill(sx, sy, sx + 1, sy + 17, SLOT_BORDER_DK);
+        extractor.fill(sx + 17, sy + 1, sx + 18, sy + 17, SLOT_BORDER_LT);
+        extractor.fill(sx + 1, sy + 17, sx + 17, sy + 18, SLOT_BORDER_LT);
+        if (heat) {
+            int alpha = (int) (56 + 40 * Math.sin(tickCounter * 0.12));
+            extractor.fill(sx, sy, sx + 17, sy + 17, (alpha << 24) | 0x00FF7722);
+        }
     }
 
     private void drawHorizontalArrow(GuiGraphicsExtractor extractor, int sx, int sy, int progress, int maxProgress) {
         int barW = ProcessorMenu.T1_ARROW_W;
         int barH = ProcessorMenu.T1_ARROW_ROW_H;
 
-        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF3C3C3C);
-        // ponta da seta
-        extractor.fill(sx + barW - 4, sy - 2, sx + barW - 3, sy + barH + 2, 0xFF555555);
+        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF2A1C0E);
+        extractor.fill(sx + barW - 4, sy - 2, sx + barW - 3, sy + barH + 2, ACCENT_DIM);
 
         if (maxProgress > 0 && progress > 0) {
             int fillW = Math.clamp((int) ((long) progress * barW / Math.max(1, maxProgress)), 1, barW);
@@ -159,7 +192,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
                 extractor.fill(sx + shimmer, sy + 2, sx + shimmer + 3, sy + barH - 2, 0x44FFFFFF);
             }
         } else {
-            extractor.fill(sx + 4, sy + barH / 2 - 1, sx + barW - 6, sy + barH / 2 + 1, 0xFF555555);
+            extractor.fill(sx + 4, sy + barH / 2 - 1, sx + barW - 6, sy + barH / 2 + 1, ACCENT_DIM);
         }
     }
 
@@ -167,7 +200,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int barW = 18;
         int barH = ProcessorMenu.ARROW_H;
 
-        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF3C3C3C);
+        extractor.fill(sx, sy, sx + barW, sy + barH, 0xFF2A1C0E);
 
         if (maxProgress > 0 && progress > 0) {
             int fillH = Math.clamp((int) ((long) progress * barH / Math.max(1, maxProgress)), 1, barH);
@@ -186,9 +219,9 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
             }
         } else {
             // seta apagada apontando para baixo
-            extractor.fill(sx + 7, sy + 3, sx + 11, sy + 8, 0xFF555555);
-            extractor.fill(sx + 5, sy + 8, sx + 13, sy + 10, 0xFF555555);
-            extractor.fill(sx + 7, sy + 10, sx + 11, sy + 12, 0xFF555555);
+            extractor.fill(sx + 7, sy + 3, sx + 11, sy + 8, ACCENT_DIM);
+            extractor.fill(sx + 5, sy + 8, sx + 13, sy + 10, ACCENT_DIM);
+            extractor.fill(sx + 7, sy + 10, sx + 11, sy + 12, ACCENT_DIM);
         }
     }
 
@@ -215,50 +248,42 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         if (menu.isBurning()) {
             int sx = gx + FUEL_X;
             int sy = gy + FUEL_Y;
-            extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, 0x33D0874C);
+            extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, 0x33E09650);
         }
     }
 
-    private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy) {
+    // Painel lateral enxuto: título + tier, status com linhas ativas e custo
+    private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy, Tier t) {
         int px = gx + PANEL_X;
 
-        String tierLabel = "TIER " + menu.getMachineTier();
+        String title = "ORE PROCESSOR";
+        extractor.text(font, Component.literal(title),
+                px + (PANEL_INNER_W - font.width(title)) / 2, gy + 6, ACCENT);
+
+        extractor.text(font, Component.translatable("screen.avoidminer.status"), px, gy + 22, TEXT_DISABLED);
+        String tierLabel = "T" + menu.getMachineTier();
         extractor.text(font, Component.literal(tierLabel),
-                px + (PANEL_INNER_W - font.width(tierLabel)) / 2, gy + 6, ACCENT);
-        String subtitle = "PROCESSOR";
-        extractor.text(font, Component.literal(subtitle),
-                px + (PANEL_INNER_W - font.width(subtitle)) / 2, gy + 16, TEXT_DIM);
+                px + PANEL_INNER_W - font.width(tierLabel), gy + 22, ACCENT);
 
-        drawPanelDivider(extractor, px, gy + 26);
-
-        extractor.text(font, Component.translatable("screen.avoidminer.upgrades"), px, gy + 32, TEXT_DISABLED);
-
-        int cardH = 18;
-        int cardGap = 2;
-        int cardYStart = gy + 42;
-        drawUpgradeCard(extractor, px, cardYStart,
-                Component.translatable("screen.avoidminer.upgrade.energy"),
-                menu.getEnergyUpgradeTier(),
-                switch (menu.getEnergyUpgradeTier()) { case 1 -> "x0.8"; case 2 -> "x0.7"; case 3 -> "x0.6"; default -> ""; });
-        drawUpgradeCard(extractor, px, cardYStart + cardH + cardGap,
-                Component.translatable("screen.avoidminer.upgrade.speed"),
-                menu.getSpeedUpgradeTier(),
-                switch (menu.getSpeedUpgradeTier()) { case 1 -> "/1.5"; case 2 -> "/1.7"; case 3 -> "/2.0"; default -> ""; });
-
-        int statusY = cardYStart + 2 * (cardH + cardGap) + 4;
-        drawPanelDivider(extractor, px, statusY - 2);
-        extractor.text(font, Component.translatable("screen.avoidminer.status"), px, statusY + 1, TEXT_DISABLED);
         boolean burning = menu.isBurning();
         boolean blocked = menu.isOutputBlocked();
         Component status = blocked
                 ? Component.translatable("status.avoidminer.full")
                 : Component.translatable(burning ? "status.avoidminer.running" : "status.avoidminer.idle");
         int statusColor = blocked ? 0xFFFF5555 : burning ? 0xFF55FF55 : TEXT_DIM;
-        extractor.text(font, status, px, statusY + 11, statusColor);
+        extractor.text(font, status, px, gy + 32, statusColor);
 
-        extractor.text(font, Component.translatable("screen.avoidminer.cost"), px, statusY + 23, TEXT_DIM);
-        extractor.text(font, Component.translatable("screen.avoidminer.cost_per_item", energyCostPerItem()),
-                px, statusY + 33, TEXT_DIM);
+        int activeLines = 0;
+        for (int i = 0; i < t.inputCount; i++) {
+            if (menu.getInputProgress(i) > 0) activeLines++;
+        }
+        String lines = activeLines + "/" + t.inputCount;
+        extractor.text(font, Component.literal(lines),
+                px + PANEL_INNER_W - font.width(lines), gy + 32, activeLines > 0 ? ACCENT : TEXT_DISABLED);
+
+        extractor.text(font, Component.translatable("screen.avoidminer.cost"), px, gy + 44, TEXT_DIM);
+        Component cost = Component.translatable("screen.avoidminer.cost_per_item", energyCostPerItem());
+        extractor.text(font, cost, px + PANEL_INNER_W - font.width(cost), gy + 44, 0xFFDDBB88);
     }
 
     // Custo total por item processado: ticks base x multiplicador de energia
@@ -270,23 +295,31 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         return Math.max(1, Math.round(menu.getBaseTicksPerProcess() * energyMult));
     }
 
-    private void drawUpgradeCard(GuiGraphicsExtractor extractor, int px, int cardY, Component typeName, int tier, String effect) {
-        int cardH = 18;
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + cardH, 0x66333333);
-        extractor.fill(px, cardY, px + PANEL_INNER_W, cardY + 1, 0x66555555);
+    // Catálogo de receitas: tudo que a máquina aceita; hover mostra o resultado
+    private void drawRecipeChamber(GuiGraphicsExtractor extractor, int gx, int gy, int mouseX, int mouseY) {
+        List<RecipeSample> recipes = recipeCatalog();
+        int hovered = hoveredRecipeIndex(mouseX - gx, mouseY - gy);
 
-        if (tier <= 0) {
-            extractor.text(font, Component.translatable("screen.avoidminer.upgrade.tier.none", typeName),
-                    px + 4, cardY + (cardH - 8) / 2, TEXT_DISABLED);
-        } else {
-            extractor.text(font, Component.translatable("screen.avoidminer.upgrade.tier", typeName, tier),
-                    px + 4, cardY + 2, TEXT_WHITE);
-            extractor.text(font, Component.literal(effect), px + 4, cardY + 10, ACCENT);
+        for (int i = 0; i < recipes.size() && i < GRID_MAX; i++) {
+            int cx = gx + GRID_X + (i % GRID_COLS) * GRID_CELL;
+            int cy = gy + GRID_Y + (i / GRID_COLS) * GRID_CELL;
+            if (i == hovered) {
+                extractor.fill(cx - 1, cy - 1, cx + 17, cy + 17, 0x33FFFFFF);
+            }
+            extractor.item(recipes.get(i).input(), cx, cy);
         }
     }
 
-    private void drawPanelDivider(GuiGraphicsExtractor extractor, int px, int y) {
-        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x44555555);
+    private int hoveredRecipeIndex(int relX, int relY) {
+        int col = Math.floorDiv(relX - GRID_X, GRID_CELL);
+        int row = Math.floorDiv(relY - GRID_Y, GRID_CELL);
+        if (col < 0 || col >= GRID_COLS || row < 0) return -1;
+        int idx = row * GRID_COLS + col;
+        List<RecipeSample> recipes = recipeCatalog();
+        if (idx >= recipes.size() || idx >= GRID_MAX) return -1;
+        int inX = relX - GRID_X - col * GRID_CELL;
+        int inY = relY - GRID_Y - row * GRID_CELL;
+        return (inX < 17 && inY < 17) ? idx : -1;
     }
 
     @Override
@@ -303,6 +336,17 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
             extractor.setTooltipForNextFrame(
                     Component.translatable("tooltip.avoidminer.energy", menu.getEnergyStored(), menu.getEnergyCapacity()),
                     mouseX, mouseY);
+            return;
+        }
+
+        int recipe = hoveredRecipeIndex(relX, relY);
+        if (recipe >= 0) {
+            RecipeSample sample = recipeCatalog().get(recipe);
+            extractor.setTooltipForNextFrame(font, List.of(
+                    sample.input().getHoverName(),
+                    Component.translatable("screen.avoidminer.recipe.gives",
+                            sample.output().getCount(), sample.output().getHoverName())
+            ), Optional.empty(), ItemStack.EMPTY, mouseX, mouseY);
             return;
         }
 

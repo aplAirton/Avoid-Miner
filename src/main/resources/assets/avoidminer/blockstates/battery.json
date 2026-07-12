@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "avoidminer:block/battery" },
+    "lit=true": { "model": "avoidminer:block/battery_on" }
+  }
+}

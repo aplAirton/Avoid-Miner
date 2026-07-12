@@ -125,6 +125,11 @@ public class ModItems {
                     "tooltip.avoidminer.nether_upgrade.mode",
                     "tooltip.avoidminer.nether_upgrade.output",
                     "tooltip.avoidminer.world_slot"));
+    public static final DeferredItem<Item> END_UPGRADE = ITEMS.registerItem("end_upgrade",
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.end_upgrade.mode",
+                    "tooltip.avoidminer.end_upgrade.output",
+                    "tooltip.avoidminer.world_slot"));
     public static final DeferredItem<Item> FORTUNE_UPGRADE = ITEMS.registerItem("fortune_upgrade",
             props -> new MachineUpgradeItem(props,
                     "tooltip.avoidminer.fortune_upgrade.applies",
@@ -141,6 +146,7 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_MAGNETITE = ITEMS.registerSimpleItem("raw_magnetite");
     public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
     public static final DeferredItem<Item> MAGNETITE_NUGGET = ITEMS.registerSimpleItem("magnetite_nugget");
+    public static final DeferredItem<Item> MAGNETITE_POWDER = ITEMS.registerSimpleItem("magnetite_powder");
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {
@@ -219,6 +225,33 @@ public class ModItems {
             props -> new GuideBookItem(props.stacksTo(1)));
 
     public static final DeferredItem<BlockItem> AVOID_LOOTR = ITEMS.registerSimpleBlockItem(ModBlocks.AVOID_LOOTR);
+
+    // Bateria + Link de Energia
+    public static final DeferredItem<BlockItem> BATTERY = ITEMS.registerItem("battery",
+            props -> new BlockItem(ModBlocks.BATTERY.get(), props) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.battery.desc"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.battery.usage"));
+                }
+            });
+
+    public static final DeferredItem<Item> ENERGY_LINK = ITEMS.registerItem("energy_link",
+            com.airton.avoidminer.item.EnergyLinkItem::new);
+
+    // Upgrades específicos da Bateria
+    public static final DeferredItem<Item> CAPACITY_UPGRADE_TIER_1 = ITEMS.registerItem("capacity_upgrade_tier_1",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.capacity_upgrade_tier_1"));
+    public static final DeferredItem<Item> CAPACITY_UPGRADE_TIER_2 = ITEMS.registerItem("capacity_upgrade_tier_2",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.capacity_upgrade_tier_2"));
+    public static final DeferredItem<Item> CAPACITY_UPGRADE_TIER_3 = ITEMS.registerItem("capacity_upgrade_tier_3",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.capacity_upgrade_tier_3"));
+    public static final DeferredItem<Item> RANGE_UPGRADE_TIER_1 = ITEMS.registerItem("range_upgrade_tier_1",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.range_upgrade_tier_1"));
+    public static final DeferredItem<Item> RANGE_UPGRADE_TIER_2 = ITEMS.registerItem("range_upgrade_tier_2",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.range_upgrade_tier_2"));
+    public static final DeferredItem<Item> RANGE_UPGRADE_TIER_3 = ITEMS.registerItem("range_upgrade_tier_3",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.range_upgrade_tier_3"));
 
     // Upgrades específicos da Lootr
     public static final DeferredItem<Item> RARITY_UPGRADE = ITEMS.registerItem("rarity_upgrade",
