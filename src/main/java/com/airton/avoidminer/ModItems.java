@@ -1,6 +1,7 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.item.GuideBookItem;
+import com.airton.avoidminer.item.HypersonicCannonItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
@@ -148,6 +149,8 @@ public class ModItems {
     public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
     public static final DeferredItem<Item> MAGNETITE_NUGGET = ITEMS.registerSimpleItem("magnetite_nugget");
     public static final DeferredItem<Item> MAGNETITE_POWDER = ITEMS.registerSimpleItem("magnetite_powder");
+    public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON = ITEMS.registerItem("hypersonic_cannon",
+            HypersonicCannonItem::new);
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {

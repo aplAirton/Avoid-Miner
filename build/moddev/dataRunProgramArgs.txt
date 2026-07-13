@@ -1,0 +1,17 @@
+# Main Class
+net.neoforged.fml.startup.DataClient
+
+# NeoForge Run-Type Program Arguments
+--assetIndex
+30
+--assetsDir
+/Users/airtonlopes/.gradle/caches/neoformruntime/assets
+
+# User Supplied Program Arguments
+--mod
+avoidminer
+--all
+--output
+"/Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/src/generated/resources"
+--existing
+"/Users/airtonlopes/Dev/MODS JAVA/AvoidMiner/src/main/resources"

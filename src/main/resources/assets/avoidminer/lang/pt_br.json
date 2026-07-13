@@ -240,5 +240,8 @@
   "item.avoidminer.hoglin_card": "Cartão de Hoglin",
   "item.avoidminer.phantom_card": "Cartão de Fantasma",
   "item.avoidminer.pillager_card": "Cartão de Saqueador",
-  "item.avoidminer.stray_card": "Cartão de Vagaroso"
+  "item.avoidminer.stray_card": "Cartão de Vagaroso",
+  "item.avoidminer.hypersonic_cannon": "Canhão Hipersônico",
+  "tooltip.avoidminer.hypersonic_cannon.attack": "Dispara o ataque sônico do Warden na direção da mira",
+  "tooltip.avoidminer.hypersonic_cannon.cooldown": "Carregamento: 1,7 s | Recarga: 10 s | Alcance: 15 blocos"
 }

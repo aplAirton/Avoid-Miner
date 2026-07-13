@@ -239,5 +239,8 @@
   "item.avoidminer.hoglin_card": "Hoglin Card",
   "item.avoidminer.phantom_card": "Phantom Card",
   "item.avoidminer.pillager_card": "Pillager Card",
-  "item.avoidminer.stray_card": "Stray Card"
+  "item.avoidminer.stray_card": "Stray Card",
+  "item.avoidminer.hypersonic_cannon": "Hypersonic Cannon",
+  "tooltip.avoidminer.hypersonic_cannon.attack": "Fires the Warden's sonic attack in the aimed direction",
+  "tooltip.avoidminer.hypersonic_cannon.cooldown": "Charge: 1.7 s | Cooldown: 10 s | Range: 15 blocks"
 }

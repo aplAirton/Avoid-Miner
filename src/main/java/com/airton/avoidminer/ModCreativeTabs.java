@@ -27,6 +27,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.MAGNETITE_INGOT.get());
                         output.accept(ModItems.MAGNETITE_NUGGET.get());
                         output.accept(ModItems.MAGNETITE_POWDER.get());
+                        output.accept(ModItems.HYPERSONIC_CANNON.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
                         for (var card : ModItems.MOB_CARDS) {

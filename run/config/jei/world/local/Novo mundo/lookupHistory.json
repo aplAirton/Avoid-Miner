@@ -1,5 +1,6 @@
 [
   {"version":1},
+  {"ingredient":{"id":"avoidminer:hypersonic_cannon"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:blank_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:ender_dragon_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:cow_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -98,6 +99,5 @@
   {"ingredient":{"id":"minecraft:copper_nugget"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:diamond"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:ender_eye"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:end_crystal"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:diamond_block"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"minecraft:end_crystal"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]
