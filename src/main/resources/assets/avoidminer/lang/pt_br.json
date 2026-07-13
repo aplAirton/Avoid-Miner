@@ -59,7 +59,7 @@
   "screen.avoidminer.slot.letter.effect": "EF",
   "tooltip.avoidminer.slot.world_only": "Melhoria de Mundo — Botânica ou Nether",
   "tooltip.avoidminer.slot.effect_only": "Melhoria de Efeito — Fortuna ou Toque Suave",
-  "screen.avoidminer.lootr.insert_card": "INSIRA UM CARTÃO DE MOB CARREGADO",
+  "screen.avoidminer.lootr.insert_card": "INSIRA UM CARTÃO DE MOB",
   "item.avoidminer.blank_upgrade_pattern": "Molde de Melhoria em Branco",
   "item.avoidminer.guide_book": "Guia do Avoid Miner",
   "item.avoidminer.botany_upgrade": "Melhoria de Botânica",

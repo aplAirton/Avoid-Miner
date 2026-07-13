@@ -292,8 +292,8 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         int size = (int) Math.min((y1 - y0) * 0.68f / bbH, (x1 - x0) * 0.72f / bbW);
         size = Math.clamp(size, 4, 50);
 
-        // renderEntityInInventoryFollowsAngle usa xAngle*20 graus: /20 dá giro contínuo
-        float spin = (tickCounter % 480) * 0.75f / 20.0f;
+        entity.tickCount = 0;
+        float spin = tickCounter * 0.75f / 20.0f;
         InventoryScreen.renderEntityInInventoryFollowsAngle(
                 extractor, x0, y0, x1, y1, size, 0.0625f, spin, 0f, entity);
     }
