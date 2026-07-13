@@ -164,6 +164,7 @@
   "tooltip.avoidminer.loot_upgrade": "Aplica Saque III em todos os drops do Lootr.",
   "status.avoidminer.success": "Sucesso",
   "status.avoidminer.fail": "Falha",
+  "status.avoidminer.incomplete": "Incompleto",
 
   "avoidminer.jei.lootr.category": "Avoid Lootr",
   "avoidminer.jei.lootr.chance": "Chance: %s%%",

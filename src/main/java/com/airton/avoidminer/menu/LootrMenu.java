@@ -48,7 +48,7 @@ public class LootrMenu extends AbstractContainerMenu {
     public static final int SLOT_INDEX_UPG_RARITY = 4;
 
     public LootrMenu(int id, Inventory playerInventory) {
-        this(id, playerInventory, new ItemStacksResourceHandler(LootrBlockEntity.TOTAL_SLOTS), new SimpleContainerData(10));
+        this(id, playerInventory, new ItemStacksResourceHandler(LootrBlockEntity.TOTAL_SLOTS), new SimpleContainerData(11));
     }
 
     public LootrMenu(int id, Inventory playerInventory, ResourceHandler<ItemResource> handler, ContainerData data) {
@@ -125,6 +125,7 @@ public class LootrMenu extends AbstractContainerMenu {
     public boolean hasRarityUpgrade() { return data.get(4) == 1; }
     public int getLootingLevel() { return data.get(5); }
     public boolean hasValidCard() { return data.get(6) == 1; }
+    public boolean hasCard() { return data.get(10) == 1; }
     public boolean isOutputFull() { return data.get(7) == 1; }
     public int getSpeedUpgradeTier() { return data.get(8); }
     public boolean lastOperationSucceeded() { return data.get(9) == 1; }

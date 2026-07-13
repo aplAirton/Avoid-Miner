@@ -256,10 +256,13 @@ public class LootrScreen extends AbstractContainerScreen<LootrMenu> {
         extractor.text(font, Component.literal(pctStr),
                 px + PANEL_INNER_W - font.width(pctStr), gy + 32, burning ? ACCENT : TEXT_DISABLED);
 
-        Component opLabel = menu.lastOperationSucceeded()
-                ? Component.translatable("status.avoidminer.success")
-                : Component.translatable("status.avoidminer.fail");
-        int opColor = menu.lastOperationSucceeded() ? 0xFF55FF55 : 0xFFFF5555;
+        boolean incomplete = menu.hasCard() && !menu.hasValidCard();
+        Component opLabel = incomplete
+                ? Component.translatable("status.avoidminer.incomplete")
+                : menu.lastOperationSucceeded()
+                        ? Component.translatable("status.avoidminer.success")
+                        : Component.translatable("status.avoidminer.fail");
+        int opColor = incomplete ? 0xFFDDAA33 : menu.lastOperationSucceeded() ? 0xFF55FF55 : 0xFFFF5555;
         extractor.text(font, opLabel, px, gy + 44, opColor);
     }
 

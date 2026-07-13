@@ -164,6 +164,7 @@
   "tooltip.avoidminer.loot_upgrade": "Applies Looting III to all Lootr drops.",
   "status.avoidminer.success": "Success",
   "status.avoidminer.fail": "Fail",
+  "status.avoidminer.incomplete": "Incomplete",
 
   "avoidminer.jei.lootr.category": "Avoid Lootr",
   "avoidminer.jei.lootr.chance": "Chance: %s%%",

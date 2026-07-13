@@ -58,8 +58,7 @@ public class LootrBlockEntity extends BlockEntity {
                         || stack.is(ModItems.ENERGY_LINK.get());
             }
             if (slot == CARD_SLOT) {
-                return stack.getItem() instanceof MobCardItem card
-                        && MobCardItem.isCompleted(stack, card.getCardType());
+                return stack.getItem() instanceof MobCardItem;
             }
             if (slot >= OUTPUT_START && slot < OUTPUT_START + OUTPUT_COUNT) {
                 return false;
@@ -121,6 +120,7 @@ public class LootrBlockEntity extends BlockEntity {
                 case 7 -> isOutputFull() ? 1 : 0;
                 case 8 -> getSpeedUpgradeTier();
                 case 9 -> lastOperationSucceeded ? 1 : 0;
+                case 10 -> hasCard() ? 1 : 0;
                 default -> 0;
             };
         }
@@ -130,7 +130,7 @@ public class LootrBlockEntity extends BlockEntity {
                 case 2 -> progress = value;
             }
         }
-        @Override public int getCount() { return 10; }
+        @Override public int getCount() { return 11; }
     };
 
     public LootrBlockEntity(BlockPos pos, BlockState state) {
@@ -171,6 +171,10 @@ public class LootrBlockEntity extends BlockEntity {
         ItemStack stack = getSlotStack(CARD_SLOT);
         return stack.getItem() instanceof MobCardItem card
                 && MobCardItem.isCompleted(stack, card.getCardType());
+    }
+
+    private boolean hasCard() {
+        return getSlotStack(CARD_SLOT).getItem() instanceof MobCardItem;
     }
 
     @Nullable
