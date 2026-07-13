@@ -33,10 +33,12 @@ public class BatteryMenu extends AbstractContainerMenu {
     public static final int ENERGY_H = 54;
     public static final int FUEL_X = 265;
     public static final int FUEL_Y = 80;
-    public static final int CAPACITY_UPG_X = 150;
-    public static final int CAPACITY_UPG_Y = 58;
-    public static final int RANGE_UPG_X = 180;
+    public static final int RANGE_UPG_X = 265;
     public static final int RANGE_UPG_Y = 58;
+    public static final int CAPACITY_GRID_X = 93;
+    public static final int CAPACITY_GRID_Y = 30;
+    public static final int CAPACITY_COLS = 9;
+    public static final int CAPACITY_ROWS = 3;
     public static final int PLAYER_Y = 122;
     public static final int HOTBAR_Y = 180;
 
@@ -56,12 +58,19 @@ public class BatteryMenu extends AbstractContainerMenu {
             }
         });
 
-        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
-                BatteryBlockEntity.CAPACITY_UPGRADE_SLOT, CAPACITY_UPG_X, CAPACITY_UPG_Y) {
-            @Override public boolean mayPlace(ItemStack stack) {
-                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+        for (int row = 0; row < CAPACITY_ROWS; row++) {
+            for (int col = 0; col < CAPACITY_COLS; col++) {
+                int slotIndex = BatteryBlockEntity.CAPACITY_SLOT_START + row * CAPACITY_COLS + col;
+                int sx = CAPACITY_GRID_X + col * 18;
+                int sy = CAPACITY_GRID_Y + row * 18;
+                addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                        slotIndex, sx, sy) {
+                    @Override public boolean mayPlace(ItemStack stack) {
+                        return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+                    }
+                });
             }
-        });
+        }
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
                 BatteryBlockEntity.RANGE_UPGRADE_SLOT, RANGE_UPG_X, RANGE_UPG_Y) {
@@ -91,11 +100,10 @@ public class BatteryMenu extends AbstractContainerMenu {
     }
 
     public int getEffectiveCapacity() {
-        int capTier = data.get(BatteryBlockEntity.DATA_CAPACITY_TIER);
-        return BatteryBlockEntity.ENERGY_CAPACITY * (1 << capTier);
+        return (data.get(BatteryBlockEntity.DATA_CAPACITY_HI) << 16)
+                | (data.get(BatteryBlockEntity.DATA_CAPACITY_LO) & 0xFFFF);
     }
     public int getActiveLinks() { return data.get(BatteryBlockEntity.DATA_LINKS); }
-    public int getCapacityUpgradeTier() { return data.get(BatteryBlockEntity.DATA_CAPACITY_TIER); }
     public int getRangeUpgradeTier() { return data.get(BatteryBlockEntity.DATA_RANGE_TIER); }
     public boolean isCharging() { return data.get(BatteryBlockEntity.DATA_CHARGING) == 1; }
 
@@ -111,7 +119,8 @@ public class BatteryMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
             } else {
                 if (!moveItemStackTo(stackInSlot, BatteryBlockEntity.FUEL_SLOT, BatteryBlockEntity.FUEL_SLOT + 1, false)
-                        && !moveItemStackTo(stackInSlot, BatteryBlockEntity.CAPACITY_UPGRADE_SLOT, BatteryBlockEntity.TOTAL_SLOTS, false))
+                        && !moveItemStackTo(stackInSlot, BatteryBlockEntity.CAPACITY_SLOT_START, BatteryBlockEntity.CAPACITY_SLOT_END, false)
+                        && !moveItemStackTo(stackInSlot, BatteryBlockEntity.RANGE_UPGRADE_SLOT, BatteryBlockEntity.RANGE_UPGRADE_SLOT + 1, false))
                     return ItemStack.EMPTY;
             }
             if (stackInSlot.isEmpty()) slot.set(ItemStack.EMPTY);

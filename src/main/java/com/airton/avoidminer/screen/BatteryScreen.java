@@ -1,5 +1,6 @@
 package com.airton.avoidminer.screen;
 
+import com.airton.avoidminer.block.entity.BatteryBlockEntity;
 import com.airton.avoidminer.menu.BatteryMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -61,9 +62,19 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
         drawInfoPanel(extractor, x, y);
         drawEnergyCore(extractor, x, y);
         drawEnergyText(extractor, x, y);
-        drawUpgradeArea(extractor, x, y);
+        drawCapacityGrid(extractor, x, y);
 
         super.extractContents(extractor, mouseX, mouseY, partialTick);
+    }
+
+    private void drawCapacityGrid(GuiGraphicsExtractor extractor, int gx, int gy) {
+        for (int row = 0; row < BatteryMenu.CAPACITY_ROWS; row++) {
+            for (int col = 0; col < BatteryMenu.CAPACITY_COLS; col++) {
+                int sx = gx + BatteryMenu.CAPACITY_GRID_X + col * 18;
+                int sy = gy + BatteryMenu.CAPACITY_GRID_Y + row * 18;
+                drawSlotBg(extractor, sx, sy);
+            }
+        }
     }
 
     private void drawBanner(GuiGraphicsExtractor extractor, int gx, int gy) {
@@ -122,27 +133,6 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
         }
     }
 
-    private void drawUpgradeArea(GuiGraphicsExtractor extractor, int gx, int gy) {
-        drawMarkedUpgradeSlot(extractor, gx + BatteryMenu.CAPACITY_UPG_X, gy + BatteryMenu.CAPACITY_UPG_Y,
-                "screen.avoidminer.slot.letter.capacity", menu.getCapacityUpgradeTier() > 0);
-        drawMarkedUpgradeSlot(extractor, gx + BatteryMenu.RANGE_UPG_X, gy + BatteryMenu.RANGE_UPG_Y,
-                "screen.avoidminer.slot.letter.range", menu.getRangeUpgradeTier() > 0);
-    }
-
-    private void drawMarkedUpgradeSlot(GuiGraphicsExtractor extractor, int sx, int sy, String letterKey, boolean filled) {
-        drawSlotBg(extractor, sx, sy);
-        int frame = filled ? ACCENT : ACCENT_DIM;
-        extractor.fill(sx - 1, sy - 1, sx + 18, sy, frame);
-        extractor.fill(sx - 1, sy + 17, sx + 18, sy + 18, frame);
-        extractor.fill(sx - 1, sy, sx, sy + 17, frame);
-        extractor.fill(sx + 17, sy, sx + 18, sy + 17, frame);
-        if (!filled) {
-            Component letter = Component.translatable(letterKey);
-            int lw = font.width(letter);
-            extractor.text(font, letter, sx + 9 - lw / 2, sy + 5, TEXT_DISABLED);
-        }
-    }
-
     private void drawSlotBg(GuiGraphicsExtractor extractor, int sx, int sy) {
         extractor.fill(sx - 1, sy - 1, sx + 18, sy + 18, SLOT_BORDER);
         extractor.fill(sx, sy, sx + 17, sy + 17, SLOT_INNER);
@@ -188,10 +178,9 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
                 active > 0 ? ACCENT : TEXT_DISABLED);
 
         extractor.text(font, Component.translatable("screen.avoidminer.battery.capacity"), px, gy + 58, TEXT_DISABLED);
-        String capTier = "T" + menu.getCapacityUpgradeTier();
-        extractor.text(font, Component.literal(capTier),
-                px + PANEL_INNER_W - font.width(capTier), gy + 58,
-                menu.getCapacityUpgradeTier() > 0 ? ACCENT : TEXT_DISABLED);
+        String slotsText = menu.getEffectiveCapacity() / 1_000_000 + "m";
+        extractor.text(font, Component.literal(slotsText),
+                px + PANEL_INNER_W - font.width(slotsText), gy + 58, ACCENT);
 
         extractor.text(font, Component.translatable("screen.avoidminer.battery.range"), px, gy + 68, TEXT_DISABLED);
         String rangeTier = "T" + menu.getRangeUpgradeTier();
@@ -221,17 +210,22 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
             return;
         }
 
-        if (relY >= BatteryMenu.CAPACITY_UPG_Y - 1 && relY < BatteryMenu.CAPACITY_UPG_Y + 18) {
-            if (relX >= BatteryMenu.CAPACITY_UPG_X - 1 && relX < BatteryMenu.CAPACITY_UPG_X + 18
-                    && menu.getCapacityUpgradeTier() == 0) {
+        if (relX >= BatteryMenu.RANGE_UPG_X - 1 && relX < BatteryMenu.RANGE_UPG_X + 18
+                && relY >= BatteryMenu.RANGE_UPG_Y - 1 && relY < BatteryMenu.RANGE_UPG_Y + 18
+                && menu.getRangeUpgradeTier() == 0) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("tooltip.avoidminer.slot.range_only"), mouseX, mouseY);
+            return;
+        }
+
+        if (relY >= BatteryMenu.CAPACITY_GRID_Y - 1 && relY < BatteryMenu.CAPACITY_GRID_Y + BatteryMenu.CAPACITY_ROWS * 18
+                && relX >= BatteryMenu.CAPACITY_GRID_X - 1 && relX < BatteryMenu.CAPACITY_GRID_X + BatteryMenu.CAPACITY_COLS * 18) {
+            int col = (relX - BatteryMenu.CAPACITY_GRID_X) / 18;
+            int row = (relY - BatteryMenu.CAPACITY_GRID_Y) / 18;
+            int slotIndex = BatteryBlockEntity.CAPACITY_SLOT_START + row * BatteryMenu.CAPACITY_COLS + col;
+            if (slotIndex < BatteryBlockEntity.CAPACITY_SLOT_END && menu.getSlot(slotIndex).getItem().isEmpty()) {
                 extractor.setTooltipForNextFrame(
                         Component.translatable("tooltip.avoidminer.slot.capacity_only"), mouseX, mouseY);
-                return;
-            }
-            if (relX >= BatteryMenu.RANGE_UPG_X - 1 && relX < BatteryMenu.RANGE_UPG_X + 18
-                    && menu.getRangeUpgradeTier() == 0) {
-                extractor.setTooltipForNextFrame(
-                        Component.translatable("tooltip.avoidminer.slot.range_only"), mouseX, mouseY);
                 return;
             }
         }

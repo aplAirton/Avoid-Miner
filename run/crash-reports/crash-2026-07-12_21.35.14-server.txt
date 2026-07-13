@@ -1,0 +1,162 @@
+---- Minecraft Crash Report ----
+// Daisy, daisy...
+
+Time: 2026-07-12 21:35:14
+Description: Ticking block entity
+
+java.lang.IndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:100) ~[?:?] {}
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:106) ~[?:?] {}
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:302) ~[?:?] {}
+	at java.base/java.util.Objects.checkIndex(Objects.java:365) ~[?:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.StacksResourceHandler.getResource(StacksResourceHandler.java:220) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.entity.BatteryBlockEntity.getEffectiveCapacity(BatteryBlockEntity.java:125) ~[main/:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.entity.BatteryBlockEntity.tick(BatteryBlockEntity.java:178) ~[main/:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.BatteryBlock.lambda$getTicker$0(BatteryBlock.java:49) ~[main/:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$BoundTickingBlockEntity.tick(LevelChunk.java:779) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$RebindableTickingBlockEntityWrapper.tick(LevelChunk.java:855) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.Level.tickBlockEntities(Level.java:525) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:459) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1150) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1003) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:146) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1035) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.processPacketsAndTick(IntegratedServer.java:119) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:776) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:300) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:100) ~[?:?] {}
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:106) ~[?:?] {}
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:302) ~[?:?] {}
+	at java.base/java.util.Objects.checkIndex(Objects.java:365) ~[?:?] {}
+	at TRANSFORMER/neoforge@26.1.2.78/net.neoforged.neoforge.transfer.StacksResourceHandler.getResource(StacksResourceHandler.java:220) ~[neoforge-26.1.2.78-universal.jar:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.entity.BatteryBlockEntity.getEffectiveCapacity(BatteryBlockEntity.java:125) ~[main/:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.entity.BatteryBlockEntity.tick(BatteryBlockEntity.java:178) ~[main/:?] {}
+	at TRANSFORMER/avoidminer@1.0.0/com.airton.avoidminer.block.BatteryBlock.lambda$getTicker$0(BatteryBlock.java:49) ~[main/:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$BoundTickingBlockEntity.tick(LevelChunk.java:779) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$RebindableTickingBlockEntityWrapper.tick(LevelChunk.java:855) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.Level.tickBlockEntities(Level.java:525) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+-- Block entity being ticked --
+Details:
+	Name: avoidminer:battery // com.airton.avoidminer.block.entity.BatteryBlockEntity
+	Cached block: Block{avoidminer:battery}[lit=false]
+	Actual block: Block{avoidminer:battery}[lit=false]
+	Block location: World: (103,72,-234), Section: (at 7,8,6 in 6,4,-15; chunk contains blocks 96,-64,-240 to 111,319,-225), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,-64,-512 to 511,319,-1)
+Stacktrace:
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$BoundTickingBlockEntity.tick(LevelChunk.java:779) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.chunk.LevelChunk$RebindableTickingBlockEntityWrapper.tick(LevelChunk.java:855) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.world.level.Level.tickBlockEntities(Level.java:525) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:459) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1150) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1003) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:146) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1035) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.processPacketsAndTick(IntegratedServer.java:119) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:776) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:300) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?] {}
+
+
+-- Affected level --
+Details:
+	All players: 1 total; ServerPlayer{name=Dev, id=40, pos=(108.9197439390872, 72.0, -233.43819748046923), mode=CREATIVE, permission=owner}
+	Chunk stats: 841
+	Level dimension: minecraft:overworld
+	Level time: 611658 game time, 193000 day time
+	Level spawn location: World: (96,69,-224), Section: (at 0,5,0 in 6,4,-14; chunk contains blocks 96,-64,-224 to 111,319,-209), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,-64,-512 to 511,319,-1)
+	Level name: Novo mundo
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Commands: true
+	Known server brands: neoforge
+	Removed feature flags: 
+	Level was modded: true
+	Level storage version: 0x04ABD - Anvil
+	Loaded entity count: 40
+	Server weather: Rain time: 60150 (now: false), thunder time: 22368 (now: false)
+Stacktrace:
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.level.ServerLevel.fillReportDetails(ServerLevel.java:1863) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1153) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1003) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:146) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1035) ~[minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.client.server.IntegratedServer.processPacketsAndTick(IntegratedServer.java:119) ~[minecraft-patched-26.1.2.78.jar:?] {}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:776) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at TRANSFORMER/minecraft@26.1.2/net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:300) [minecraft-patched-26.1.2.78.jar:?] {neoforge:access_transformer}
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 26.1.2
+	Minecraft Version ID: 26.1.2
+	Operating System: Mac OS X (aarch64) version 26.5.1
+	Java Version: 25.0.3, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 157923872 bytes (150 MiB) / 637534208 bytes (608 MiB) up to 4294967296 bytes (4096 MiB)
+	Memory (heap): init: 256MiB, used: 454MiB, committed: 608MiB, max: 4096MiB
+	Memory (non-head): init: 007MiB, used: 190MiB, committed: 193MiB, max: 000MiB
+	CPUs: 10
+	Processor Vendor: Apple Inc.
+	Processor Name: Apple M4
+	Identifier: Apple Inc. Family 0x1b588bb3 Model 0 Stepping 0
+	Microarchitecture: ARM64 SoC: Firestorm + Icestorm
+	Frequency (GHz): 0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 10
+	Number of logical CPUs: 10
+	Graphics card #0 name: Apple M4
+	Graphics card #0 vendor: Apple (0x106b)
+	Graphics card #0 VRAM (MiB): 0.00
+	Graphics card #0 deviceId: unknown
+	Graphics card #0 versionInfo: unknown
+	Memory slot #0 capacity (MiB): 0.00
+	Memory slot #0 clockSpeed (GHz): 0.00
+	Memory slot #0 type: unknown
+	Virtual memory max (MiB): 19456.00
+	Virtual memory used (MiB): 12949.56
+	Swap memory total (MiB): 3072.00
+	Swap memory used (MiB): 1597.00
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 6801.70, total: 233752.44
+	Space in storage for workdir (MiB): available: 6801.70, total: 233752.44
+	JVM Flags: 0 total; 
+	Debug Flags: 0 total; 
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Dev'/40, l='ServerLevel[Novo mundo]', x=108.92, y=72.00, z=-233.44]]
+	Active Data Packs: vanilla, mod_data, mod/neoforge, mod/jei (incompatible), mod/avoidminer
+	Available Data Packs: minecart_improvements, redstone_experiments, trade_rebalance, vanilla, mod/avoidminer, mod/jei (incompatible), mod/neoforge, mod_data
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	World Seed: 2842844181225060453
+	Suppressed Exceptions: ~~NONE~~
+	Type: Integrated Server
+	Is Modded: Definitely; Client brand changed to 'neoforge'; Server brand changed to 'neoforge'
+	Launched Version: 26.1.2.78
+	Class Processors: 
+		00,00%: neoforge:neoforge_dev_dist_cleaner
+		00,00%: neoforge:computing_frames (marker)
+		00,00%: neoforge:runtime_enum_extender
+		04,17%: neoforge:access_transformer
+		00,04%: neoforge:mixin
+		00,00%: neoforge:simple_processors_default (marker)
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.biome.biome
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.block.flowerpotblock
+		00,01%: neoforge.coremods:field_to_getter.net.minecraft.world.level.levelgen.structure.structure
+		00,27%: neoforge.coremods:method_redirector
+	Mod List: 
+		main                                              |Avoid Miner                   |avoidminer                    |1.0.0               |Manifest: NOSIGNATURE
+		jei-26.1.2-neoforge-29.14.0.43.jar                |Just Enough Items             |jei                           |29.14.0.43          |Manifest: fec9b3e31dd3546738bffae991e0297fda478bbbcea9457a3a5e95479f989bf3
+		minecraft-patched-26.1.2.78.jar                   |Minecraft                     |minecraft                     |26.1.2              |Manifest: NOSIGNATURE
+		neoforge-26.1.2.78-universal.jar                  |NeoForge                      |neoforge                      |26.1.2.78           |Manifest: NOSIGNATURE
+	Crash Report UUID: dcbbd888-18c7-4b87-907c-4f1f1c106d65
+	FML: 11.0.15
+	NeoForge: 26.1.2.78

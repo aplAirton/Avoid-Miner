@@ -13,6 +13,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.neoforge.transfer.StacksResourceHandler;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,27 +25,26 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Bateria — queima combustível e acumula grandes quantidades de energia já
- * transformada. Máquinas com um Link de Energia vinculado no slot de
- * combustível puxam energia daqui via {@link #extractEnergy}; várias máquinas
- * podem drenar a mesma bateria ao mesmo tempo (servidor single-thread).
- */
 public class BatteryBlockEntity extends BlockEntity {
     public static final int FUEL_SLOT = 0;
-    public static final int CAPACITY_UPGRADE_SLOT = 1;
-    public static final int RANGE_UPGRADE_SLOT = 2;
-    public static final int TOTAL_SLOTS = 3;
-    public static final int ENERGY_CAPACITY = 4_000_000;
+    public static final int CAPACITY_SLOT_START = 1;
+    public static final int CAPACITY_SLOT_COUNT = 27;
+    public static final int CAPACITY_SLOT_END = CAPACITY_SLOT_START + CAPACITY_SLOT_COUNT; // 28
+    public static final int RANGE_UPGRADE_SLOT = 28;
+    public static final int TOTAL_SLOTS = 29;
 
-    // A energia excede 16 bits, então é sincronizada em duas metades
+    public static final int ENERGY_CAPACITY_BASE = 4_000_000;
+
+    public static final int[] CAPACITY_BONUS = {0, 10_000_000, 20_000_000, 30_000_000};
+
     public static final int DATA_ENERGY_LO = 0;
     public static final int DATA_ENERGY_HI = 1;
     public static final int DATA_LINKS = 2;
     public static final int DATA_CHARGING = 3;
-    public static final int DATA_CAPACITY_TIER = 4;
-    public static final int DATA_RANGE_TIER = 5;
-    public static final int DATA_SIZE = 6;
+    public static final int DATA_CAPACITY_LO = 4;
+    public static final int DATA_CAPACITY_HI = 5;
+    public static final int DATA_RANGE_TIER = 6;
+    public static final int DATA_SIZE = 7;
 
     private final ItemStacksResourceHandler itemHandler = new ItemStacksResourceHandler(TOTAL_SLOTS) {
         @Override
@@ -57,7 +57,7 @@ public class BatteryBlockEntity extends BlockEntity {
             if (slot == FUEL_SLOT) {
                 return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
             }
-            if (slot == CAPACITY_UPGRADE_SLOT) {
+            if (slot >= CAPACITY_SLOT_START && slot < CAPACITY_SLOT_END) {
                 return stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())
                         || stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())
                         || stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get());
@@ -84,19 +84,21 @@ public class BatteryBlockEntity extends BlockEntity {
     };
 
     private int energyBuffer;
-    private int chargingTicks;    // >0 enquanto queimou combustível há pouco
+    private int chargingTicks;
     private int linksThisTick;
     private int linksDisplay;
     private long lastLinkGameTime = Long.MIN_VALUE;
 
     private final ContainerData data = new ContainerData() {
         @Override public int get(int index) {
+            int totalCap = getEffectiveCapacity();
             return switch (index) {
                 case DATA_ENERGY_LO -> energyBuffer & 0xFFFF;
                 case DATA_ENERGY_HI -> energyBuffer >>> 16;
                 case DATA_LINKS -> linksDisplay;
                 case DATA_CHARGING -> chargingTicks > 0 ? 1 : 0;
-                case DATA_CAPACITY_TIER -> getCapacityUpgradeTier();
+                case DATA_CAPACITY_LO -> totalCap & 0xFFFF;
+                case DATA_CAPACITY_HI -> totalCap >>> 16;
                 case DATA_RANGE_TIER -> getRangeUpgradeTier();
                 default -> 0;
             };
@@ -119,8 +121,16 @@ public class BatteryBlockEntity extends BlockEntity {
     public int getEnergy() { return energyBuffer; }
 
     public int getEffectiveCapacity() {
-        int capTier = getCapacityUpgradeTier();
-        return ENERGY_CAPACITY * (1 << capTier); // x2, x4, x8
+        int bonus = 0;
+        for (int i = CAPACITY_SLOT_START; i < CAPACITY_SLOT_END; i++) {
+            ItemResource res = itemHandler.getResource(i);
+            if (res.isEmpty()) continue;
+            ItemStack stack = res.toStack(1);
+            if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())) bonus += CAPACITY_BONUS[1];
+            else if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())) bonus += CAPACITY_BONUS[2];
+            else if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get())) bonus += CAPACITY_BONUS[3];
+        }
+        return ENERGY_CAPACITY_BASE + bonus;
     }
 
     public int getMaxLinks() {
@@ -132,20 +142,8 @@ public class BatteryBlockEntity extends BlockEntity {
         };
     }
 
-    private int getCapacityUpgradeTier() {
-        if (itemHandler.size() < 2) return 0;
-        ItemResource res = itemHandler.getResource(1);
-        if (res.isEmpty()) return 0;
-        ItemStack stack = res.toStack(1);
-        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())) return 1;
-        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())) return 2;
-        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get())) return 3;
-        return 0;
-    }
-
     private int getRangeUpgradeTier() {
-        if (itemHandler.size() < 3) return 0;
-        ItemResource res = itemHandler.getResource(2);
+        ItemResource res = itemHandler.getResource(RANGE_UPGRADE_SLOT);
         if (res.isEmpty()) return 0;
         ItemStack stack = res.toStack(1);
         if (stack.is(ModItems.RANGE_UPGRADE_TIER_1.get())) return 1;
@@ -154,7 +152,6 @@ public class BatteryBlockEntity extends BlockEntity {
         return 0;
     }
 
-    /** Drena até {@code amount} de energia; usado pelos Links de Energia. */
     public int extractEnergy(int amount) {
         if (amount <= 0 || energyBuffer <= 0 || level == null) return 0;
         long gt = level.getGameTime();
@@ -234,6 +231,26 @@ public class BatteryBlockEntity extends BlockEntity {
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         energyBuffer = input.getIntOr("Energy", 0);
-        itemHandler.deserialize(input.childOrEmpty("Inventory"));
+
+        // itemHandler.deserialize() would resize the handler to match old save size (3).
+        // Instead, manually read stacks to handle migration: old (3) -> new (29).
+        ValueInput invInput = input.childOrEmpty("Inventory");
+        invInput.read(StacksResourceHandler.VALUE_IO_KEY, ItemStack.OPTIONAL_CODEC.listOf()).ifPresent(stacks -> {
+            int n = stacks.size();
+            if (n == 3) {
+                if (!stacks.get(0).isEmpty())
+                    itemHandler.set(FUEL_SLOT, ItemResource.of(stacks.get(0)), stacks.get(0).getCount());
+                if (!stacks.get(1).isEmpty())
+                    itemHandler.set(CAPACITY_SLOT_START, ItemResource.of(stacks.get(1)), stacks.get(1).getCount());
+                if (!stacks.get(2).isEmpty())
+                    itemHandler.set(RANGE_UPGRADE_SLOT, ItemResource.of(stacks.get(2)), stacks.get(2).getCount());
+            } else {
+                for (int i = 0; i < Math.min(n, TOTAL_SLOTS); i++) {
+                    ItemStack stack = stacks.get(i);
+                    if (!stack.isEmpty())
+                        itemHandler.set(i, ItemResource.of(stack), stack.getCount());
+                }
+            }
+        });
     }
 }
