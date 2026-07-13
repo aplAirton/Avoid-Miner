@@ -28,6 +28,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.MAGNETITE_NUGGET.get());
                         output.accept(ModItems.MAGNETITE_POWDER.get());
                         output.accept(ModItems.HYPERSONIC_CANNON.get());
+                        output.accept(ModItems.HYPERSONIC_CANNON_TIER_2.get());
+                        output.accept(ModItems.HYPERSONIC_CANNON_TIER_3.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
                         for (var card : ModItems.MOB_CARDS) {
@@ -58,6 +60,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.BOTANY_UPGRADE.get());
                         output.accept(ModItems.NETHER_UPGRADE.get());
                         output.accept(ModItems.END_UPGRADE.get());
+                        output.accept(ModItems.DEEP_DARK_UPGRADE.get());
+                        output.accept(ModItems.OCEAN_UPGRADE.get());
                         output.accept(ModItems.FORTUNE_UPGRADE.get());
                         output.accept(ModItems.SILK_UPGRADE.get());
                         output.accept(ModItems.BLANK_UPGRADE_PATTERN.get());

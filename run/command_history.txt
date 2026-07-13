@@ -36,3 +36,5 @@
 /time set minecraft:day
 /give @a minecraft:netherite_pickaxe
 /weather clear
+/give @a minecraft:netherite_pickaxe
+/weather clear

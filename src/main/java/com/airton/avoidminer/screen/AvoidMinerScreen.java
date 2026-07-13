@@ -102,6 +102,8 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
             case 1 -> t.botanyResources.get();
             case 2 -> t.netherResources.get();
             case 3 -> t.endResources.get();
+            case 4 -> t.deepDarkResources.get();
+            case 5 -> t.oceanResources.get();
             default -> t.resources.get();
         };
 
@@ -109,7 +111,7 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
         int total = 0;
         for (AvoidMinerBlockEntity.WeightedResource r : pool) {
             ItemStack display = r.stack().copy();
-            if (enchant == 2 && mode != 1) {
+            if (enchant == 2 && (mode == 0 || mode == 2)) {
                 display = AvoidMinerBlockEntity.applySilkTouch(display, mode == 2, false);
             }
             samples.add(new SampleEntry(display, r.weight()));
@@ -175,6 +177,8 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
             case 1 -> Component.translatable("screen.avoidminer.mode.botany");
             case 2 -> Component.translatable("screen.avoidminer.mode.nether");
             case 3 -> Component.translatable("screen.avoidminer.mode.end");
+            case 4 -> Component.translatable("screen.avoidminer.mode.deep_dark");
+            case 5 -> Component.translatable("screen.avoidminer.mode.ocean");
             default -> Component.translatable("screen.avoidminer.mode.overworld");
         };
         if (menu.getEnchantMode() > 0) {
@@ -255,6 +259,8 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
             case 1 -> 0xFF33AA55;
             case 2 -> 0xFFAA3333;
             case 3 -> 0xFFBB66EE;
+            case 4 -> 0xFF18A6A6;
+            case 5 -> 0xFF2E8BDB;
             default -> 0xFF224488;
         };
         int enchantAccent = switch (menu.getEnchantMode()) {

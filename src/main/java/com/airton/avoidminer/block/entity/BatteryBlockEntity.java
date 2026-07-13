@@ -27,11 +27,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class BatteryBlockEntity extends BlockEntity {
     public static final int FUEL_SLOT = 0;
-    public static final int CAPACITY_SLOT_START = 1;
-    public static final int CAPACITY_SLOT_COUNT = 27;
-    public static final int CAPACITY_SLOT_END = CAPACITY_SLOT_START + CAPACITY_SLOT_COUNT; // 28
-    public static final int RANGE_UPGRADE_SLOT = 28;
-    public static final int TOTAL_SLOTS = 29;
+    public static final int CAPACITY_INSTALL_SLOT = 1;
+    public static final int RANGE_UPGRADE_SLOT = 2;
+    public static final int TOTAL_SLOTS = 3;
 
     public static final int ENERGY_CAPACITY_BASE = 4_000_000;
 
@@ -44,7 +42,8 @@ public class BatteryBlockEntity extends BlockEntity {
     public static final int DATA_CAPACITY_LO = 4;
     public static final int DATA_CAPACITY_HI = 5;
     public static final int DATA_RANGE_TIER = 6;
-    public static final int DATA_SIZE = 7;
+    public static final int DATA_INSTALLED_CAPACITY = 7;
+    public static final int DATA_SIZE = 8;
 
     private final ItemStacksResourceHandler itemHandler = new ItemStacksResourceHandler(TOTAL_SLOTS) {
         @Override
@@ -57,7 +56,7 @@ public class BatteryBlockEntity extends BlockEntity {
             if (slot == FUEL_SLOT) {
                 return level != null && stack.getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0;
             }
-            if (slot >= CAPACITY_SLOT_START && slot < CAPACITY_SLOT_END) {
+            if (slot == CAPACITY_INSTALL_SLOT) {
                 return stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())
                         || stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())
                         || stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get());
@@ -88,6 +87,8 @@ public class BatteryBlockEntity extends BlockEntity {
     private int linksThisTick;
     private int linksDisplay;
     private long lastLinkGameTime = Long.MIN_VALUE;
+    private long installedCapacityBonus;
+    private int installedCapacityUpgrades;
 
     private final ContainerData data = new ContainerData() {
         @Override public int get(int index) {
@@ -100,6 +101,7 @@ public class BatteryBlockEntity extends BlockEntity {
                 case DATA_CAPACITY_LO -> totalCap & 0xFFFF;
                 case DATA_CAPACITY_HI -> totalCap >>> 16;
                 case DATA_RANGE_TIER -> getRangeUpgradeTier();
+                case DATA_INSTALLED_CAPACITY -> installedCapacityUpgrades;
                 default -> 0;
             };
         }
@@ -121,16 +123,16 @@ public class BatteryBlockEntity extends BlockEntity {
     public int getEnergy() { return energyBuffer; }
 
     public int getEffectiveCapacity() {
-        int bonus = 0;
-        for (int i = CAPACITY_SLOT_START; i < CAPACITY_SLOT_END; i++) {
-            ItemResource res = itemHandler.getResource(i);
-            if (res.isEmpty()) continue;
-            ItemStack stack = res.toStack(1);
-            if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())) bonus += CAPACITY_BONUS[1];
-            else if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())) bonus += CAPACITY_BONUS[2];
-            else if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get())) bonus += CAPACITY_BONUS[3];
-        }
-        return ENERGY_CAPACITY_BASE + bonus;
+        return (int) Math.min(Integer.MAX_VALUE, ENERGY_CAPACITY_BASE + installedCapacityBonus);
+    }
+
+    public int getInstalledCapacityUpgrades() { return installedCapacityUpgrades; }
+
+    public static int capacityBonus(ItemStack stack) {
+        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_1.get())) return CAPACITY_BONUS[1];
+        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_2.get())) return CAPACITY_BONUS[2];
+        if (stack.is(ModItems.CAPACITY_UPGRADE_TIER_3.get())) return CAPACITY_BONUS[3];
+        return 0;
     }
 
     public int getMaxLinks() {
@@ -171,6 +173,8 @@ public class BatteryBlockEntity extends BlockEntity {
     public static void tick(Level level, BlockPos pos, BlockState state, BatteryBlockEntity be) {
         boolean dirty = false;
 
+        dirty |= be.installCapacityUpgrades();
+
         if (be.chargingTicks > 0) be.chargingTicks--;
         if (level.getGameTime() - be.lastLinkGameTime > 2 && be.linksDisplay != 0) {
             be.linksDisplay = 0;
@@ -203,6 +207,27 @@ public class BatteryBlockEntity extends BlockEntity {
         if (dirty) be.setChanged();
     }
 
+    private boolean installCapacityUpgrades() {
+        ItemResource resource = itemHandler.getResource(CAPACITY_INSTALL_SLOT);
+        int amount = itemHandler.getAmountAsInt(CAPACITY_INSTALL_SLOT);
+        if (resource.isEmpty() || amount <= 0) return false;
+
+        int bonusPerItem = capacityBonus(resource.toStack(1));
+        if (bonusPerItem <= 0) return false;
+
+        long remainingCapacity = Integer.MAX_VALUE - (long) ENERGY_CAPACITY_BASE - installedCapacityBonus;
+        int consumed = (int) Math.min(amount, Math.max(0L, remainingCapacity / bonusPerItem));
+        if (consumed <= 0) return false;
+
+        installedCapacityBonus += (long) bonusPerItem * consumed;
+        installedCapacityUpgrades = (int) Math.min(
+                Integer.MAX_VALUE,
+                (long) installedCapacityUpgrades + consumed
+        );
+        itemHandler.set(CAPACITY_INSTALL_SLOT, resource, amount - consumed);
+        return true;
+    }
+
     public void openMenu(ServerPlayer player) {
         player.openMenu(getMenuProvider(), worldPosition);
     }
@@ -224,6 +249,9 @@ public class BatteryBlockEntity extends BlockEntity {
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.putInt("Energy", energyBuffer);
+        output.putLong("InstalledCapacityBonus", installedCapacityBonus);
+        output.putInt("InstalledCapacityUpgrades", installedCapacityUpgrades);
+        output.putInt("BatteryLayoutVersion", 2);
         itemHandler.serialize(output.child("Inventory"));
     }
 
@@ -231,26 +259,50 @@ public class BatteryBlockEntity extends BlockEntity {
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         energyBuffer = input.getIntOr("Energy", 0);
+        installedCapacityBonus = Math.max(0L, input.getLongOr("InstalledCapacityBonus", 0L));
+        installedCapacityUpgrades = Math.max(0, input.getIntOr("InstalledCapacityUpgrades", 0));
 
-        // itemHandler.deserialize() would resize the handler to match old save size (3).
-        // Instead, manually read stacks to handle migration: old (3) -> new (29).
+        // Old batteries used 27 live capacity slots. Convert every installed item
+        // into the permanent bonus while preserving fuel and range upgrades.
         ValueInput invInput = input.childOrEmpty("Inventory");
         invInput.read(StacksResourceHandler.VALUE_IO_KEY, ItemStack.OPTIONAL_CODEC.listOf()).ifPresent(stacks -> {
             int n = stacks.size();
-            if (n == 3) {
-                if (!stacks.get(0).isEmpty())
-                    itemHandler.set(FUEL_SLOT, ItemResource.of(stacks.get(0)), stacks.get(0).getCount());
-                if (!stacks.get(1).isEmpty())
-                    itemHandler.set(CAPACITY_SLOT_START, ItemResource.of(stacks.get(1)), stacks.get(1).getCount());
-                if (!stacks.get(2).isEmpty())
-                    itemHandler.set(RANGE_UPGRADE_SLOT, ItemResource.of(stacks.get(2)), stacks.get(2).getCount());
-            } else {
-                for (int i = 0; i < Math.min(n, TOTAL_SLOTS); i++) {
-                    ItemStack stack = stacks.get(i);
-                    if (!stack.isEmpty())
-                        itemHandler.set(i, ItemResource.of(stack), stack.getCount());
+            if (n == 0) return;
+
+            copyStack(stacks.get(0), FUEL_SLOT);
+            if (n >= 29) {
+                for (int i = 1; i < 28; i++) {
+                    migrateCapacityStack(stacks.get(i));
                 }
+                copyStack(stacks.get(28), RANGE_UPGRADE_SLOT);
+            } else {
+                if (n > 1) copyStack(stacks.get(1), CAPACITY_INSTALL_SLOT);
+                if (n > 2) copyStack(stacks.get(2), RANGE_UPGRADE_SLOT);
             }
         });
+
+        installedCapacityBonus = Math.min(
+                installedCapacityBonus,
+                Integer.MAX_VALUE - (long) ENERGY_CAPACITY_BASE
+        );
+        energyBuffer = Math.min(energyBuffer, getEffectiveCapacity());
+    }
+
+    private void copyStack(ItemStack stack, int slot) {
+        if (!stack.isEmpty()) itemHandler.set(slot, ItemResource.of(stack), stack.getCount());
+    }
+
+    private void migrateCapacityStack(ItemStack stack) {
+        if (stack.isEmpty()) return;
+        int bonus = capacityBonus(stack);
+        if (bonus <= 0) return;
+        long maxBonus = Integer.MAX_VALUE - (long) ENERGY_CAPACITY_BASE;
+        long accepted = Math.min((long) bonus * stack.getCount(), maxBonus - installedCapacityBonus);
+        int count = (int) Math.max(0L, accepted / bonus);
+        installedCapacityBonus += (long) bonus * count;
+        installedCapacityUpgrades = (int) Math.min(
+                Integer.MAX_VALUE,
+                (long) installedCapacityUpgrades + count
+        );
     }
 }

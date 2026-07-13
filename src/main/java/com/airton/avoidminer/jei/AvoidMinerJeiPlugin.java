@@ -70,6 +70,18 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
                 double dropPct = (double) wr.weight() / totalEndWeight;
                 minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.end"));
             }
+
+            int totalDeepDarkWeight = tier.deepDarkResources.get().stream().mapToInt(AvoidMinerBlockEntity.WeightedResource::weight).sum();
+            for (var wr : tier.deepDarkResources.get()) {
+                double dropPct = (double) wr.weight() / totalDeepDarkWeight;
+                minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.deep_dark"));
+            }
+
+            int totalOceanWeight = tier.oceanResources.get().stream().mapToInt(AvoidMinerBlockEntity.WeightedResource::weight).sum();
+            for (var wr : tier.oceanResources.get()) {
+                double dropPct = (double) wr.weight() / totalOceanWeight;
+                minerRecipes.add(new AvoidMinerJeiRecipe(machines[t], t + 1, wr.stack().copy(), dropPct, chances[t], "screen.avoidminer.mode.ocean"));
+            }
         }
 
         // Upgrade drops (nether mode, ~0.5% per cycle)

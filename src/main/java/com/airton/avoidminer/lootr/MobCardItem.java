@@ -66,6 +66,10 @@ public class MobCardItem extends Item {
         boolean done = kills >= cardType.requiredKills;
         builder.accept(Component.translatable("tooltip.avoidminer.mobcard.target",
                 Component.translatable("entity." + cardType.id)).withStyle(ChatFormatting.GRAY));
+        if (cardType == MobCardType.WARDEN || cardType == MobCardType.WITHER || cardType == MobCardType.ENDER_DRAGON) {
+            builder.accept(Component.translatable("tooltip.avoidminer.mobcard.boss_source." + cardType.id)
+                    .withStyle(ChatFormatting.DARK_AQUA));
+        }
         builder.accept(Component.translatable("tooltip.avoidminer.mobcard.progress", kills, cardType.requiredKills)
                 .withStyle(done ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
         if (done) {

@@ -6,6 +6,7 @@ import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -132,6 +133,16 @@ public class ModItems {
                     "tooltip.avoidminer.end_upgrade.mode",
                     "tooltip.avoidminer.end_upgrade.output",
                     "tooltip.avoidminer.world_slot"));
+    public static final DeferredItem<Item> DEEP_DARK_UPGRADE = ITEMS.registerItem("deep_dark_upgrade",
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.deep_dark_upgrade.mode",
+                    "tooltip.avoidminer.deep_dark_upgrade.output",
+                    "tooltip.avoidminer.world_slot"));
+    public static final DeferredItem<Item> OCEAN_UPGRADE = ITEMS.registerItem("ocean_upgrade",
+            props -> new MachineUpgradeItem(props,
+                    "tooltip.avoidminer.ocean_upgrade.mode",
+                    "tooltip.avoidminer.ocean_upgrade.output",
+                    "tooltip.avoidminer.world_slot"));
     public static final DeferredItem<Item> FORTUNE_UPGRADE = ITEMS.registerItem("fortune_upgrade",
             props -> new MachineUpgradeItem(props,
                     "tooltip.avoidminer.fortune_upgrade.applies",
@@ -151,6 +162,10 @@ public class ModItems {
     public static final DeferredItem<Item> MAGNETITE_POWDER = ITEMS.registerSimpleItem("magnetite_powder");
     public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON = ITEMS.registerItem("hypersonic_cannon",
             HypersonicCannonItem::new);
+    public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON_TIER_2 = ITEMS.registerItem("hypersonic_cannon_tier_2",
+            props -> new HypersonicCannonItem(props, 2));
+    public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON_TIER_3 = ITEMS.registerItem("hypersonic_cannon_tier_3",
+            props -> new HypersonicCannonItem(props, 3));
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {
@@ -247,15 +262,30 @@ public class ModItems {
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
             props -> new GuideBookItem(props.stacksTo(1)));
 
-    public static final DeferredItem<BlockItem> AVOID_LOOTR = ITEMS.registerSimpleBlockItem(ModBlocks.AVOID_LOOTR);
+    public static final DeferredItem<BlockItem> AVOID_LOOTR = ITEMS.registerItem("avoid_lootr",
+            props -> new BlockItem(ModBlocks.AVOID_LOOTR.get(), props.stacksTo(1)));
 
     // Bateria + Link de Energia
     public static final DeferredItem<BlockItem> BATTERY = ITEMS.registerItem("battery",
-            props -> new BlockItem(ModBlocks.BATTERY.get(), props) {
+            props -> new BlockItem(ModBlocks.BATTERY.get(), props.stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
                     builder.accept(Component.translatable("tooltip.avoidminer.battery.desc").withStyle(ChatFormatting.GRAY));
                     builder.accept(Component.translatable("tooltip.avoidminer.battery.usage").withStyle(ChatFormatting.GRAY));
+                    var data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+                    if (data != null) {
+                        var tag = data.copyTagWithoutId();
+                        int energy = tag.getIntOr("Energy", 0);
+                        long capacity = Math.min(
+                                Integer.MAX_VALUE,
+                                4_000_000L + tag.getLongOr("InstalledCapacityBonus", 0L)
+                        );
+                        int installed = tag.getIntOr("InstalledCapacityUpgrades", 0);
+                        builder.accept(Component.translatable("tooltip.avoidminer.battery.stored", energy, capacity)
+                                .withStyle(ChatFormatting.RED));
+                        builder.accept(Component.translatable("tooltip.avoidminer.battery.installed", installed)
+                                .withStyle(ChatFormatting.DARK_RED));
+                    }
                 }
             });
 

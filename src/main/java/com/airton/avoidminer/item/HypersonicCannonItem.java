@@ -26,19 +26,29 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class HypersonicCannonItem extends Item {
-    public static final int COOLDOWN_TICKS = HypersonicCannonRules.COOLDOWN_TICKS;
-    public static final int CHARGE_TICKS = HypersonicCannonRules.CHARGE_TICKS;
-    public static final double RANGE = HypersonicCannonRules.RANGE;
-    public static final float DAMAGE = HypersonicCannonRules.DAMAGE;
-    public static final double HORIZONTAL_KNOCKBACK = HypersonicCannonRules.HORIZONTAL_KNOCKBACK;
-    public static final double VERTICAL_KNOCKBACK = HypersonicCannonRules.VERTICAL_KNOCKBACK;
+    private static final double HORIZONTAL_KNOCKBACK = 2.5;
+    private static final double VERTICAL_KNOCKBACK = 0.5;
+
+    private final HypersonicCannonRules.CannonTier cannonTier;
 
     public HypersonicCannonItem(Properties properties) {
+        this(properties, 1);
+    }
+
+    public HypersonicCannonItem(Properties properties, int tier) {
         super(properties.stacksTo(1));
+        this.cannonTier = HypersonicCannonRules.forTier(tier);
+    }
+
+    public int getTier() {
+        return cannonTier.tier();
     }
 
     @Override
@@ -59,7 +69,7 @@ public class HypersonicCannonItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity user) {
-        return CHARGE_TICKS;
+        return cannonTier.chargeTicks();
     }
 
     @Override
@@ -71,36 +81,82 @@ public class HypersonicCannonItem extends Item {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel) {
             fire(serverLevel, player);
-            player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);
+            player.getCooldowns().addCooldown(stack, cannonTier.cooldownTicks());
             player.awardStat(Stats.ITEM_USED.get(this));
         }
         return stack;
     }
 
-    public static void fire(ServerLevel level, Player shooter) {
+    private void fire(ServerLevel level, Player shooter) {
         Vec3 direction = shooter.getLookAngle().normalize();
         Vec3 source = shooter.getEyePosition().add(direction.scale(0.4));
-        Vec3 end = source.add(direction.scale(RANGE));
-
-        for (Vec3 particlePos : particlePositions(source, direction, RANGE)) {
-            level.sendParticles(ParticleTypes.SONIC_BOOM, particlePos.x, particlePos.y, particlePos.z,
-                    1, 0.0, 0.0, 0.0, 0.0);
-        }
-
+        sendSonicTrail(level, source, direction, cannonTier.range(), true);
         level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(),
                 SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 3.0F, 1.0F);
 
-        AABB searchArea = shooter.getBoundingBox().expandTowards(direction.scale(RANGE)).inflate(1.0);
-        EntityHitResult hit = ProjectileUtil.getEntityHitResult(
-                shooter,
-                source,
-                end,
-                searchArea,
-                HypersonicCannonItem::isValidTarget,
-                RANGE * RANGE
-        );
-        if (hit != null && hit.getEntity() instanceof LivingEntity target) {
-            damageAndKnockBack(level, shooter, target, direction);
+        List<LivingEntity> directTargets = cannonTier.tier() == 1
+                ? findPrecisionTarget(level, shooter, source, direction)
+                : findConeTargets(level, shooter, source, direction);
+
+        Set<LivingEntity> hitTargets = new HashSet<>();
+        for (LivingEntity target : directTargets) {
+            float damage = HypersonicCannonRules.damageAtDistance(cannonTier, source.distanceTo(target.getEyePosition()));
+            damageAndKnockBack(level, shooter, target, direction, damage);
+            hitTargets.add(target);
+        }
+
+        if (cannonTier.ricochets() > 0 && !directTargets.isEmpty()) {
+            ricochet(level, shooter, directTargets.getLast(), hitTargets);
+        }
+    }
+
+    private List<LivingEntity> findPrecisionTarget(ServerLevel level, Player shooter, Vec3 source, Vec3 direction) {
+        Vec3 end = source.add(direction.scale(cannonTier.range()));
+        AABB searchArea = shooter.getBoundingBox().expandTowards(direction.scale(cannonTier.range())).inflate(1.0);
+        EntityHitResult hit = ProjectileUtil.getEntityHitResult(shooter, source, end, searchArea,
+                HypersonicCannonItem::isValidTarget, cannonTier.range() * cannonTier.range());
+        return hit != null && hit.getEntity() instanceof LivingEntity target ? List.of(target) : List.of();
+    }
+
+    private List<LivingEntity> findConeTargets(ServerLevel level, Player shooter, Vec3 source, Vec3 direction) {
+        double range = cannonTier.range();
+        double minimumDot = Math.cos(Math.toRadians(cannonTier.coneDegrees()));
+        AABB searchArea = shooter.getBoundingBox().inflate(range);
+        return level.getEntitiesOfClass(LivingEntity.class, searchArea,
+                        target -> target != shooter && isValidTarget(target)
+                                && isInsideCone(source, direction, target.getEyePosition(), range, minimumDot))
+                .stream()
+                .sorted(Comparator.comparingDouble(target -> source.distanceToSqr(target.getEyePosition())))
+                .limit(cannonTier.maxTargets())
+                .toList();
+    }
+
+    static boolean isInsideCone(Vec3 source, Vec3 direction, Vec3 target, double range, double minimumDot) {
+        Vec3 delta = target.subtract(source);
+        double distance = delta.length();
+        return distance > 0.0 && distance <= range && delta.normalize().dot(direction) >= minimumDot;
+    }
+
+    private void ricochet(ServerLevel level, Player shooter, LivingEntity first, Set<LivingEntity> hitTargets) {
+        LivingEntity current = first;
+        for (int bounce = 0; bounce < cannonTier.ricochets(); bounce++) {
+            Vec3 origin = current.getEyePosition();
+            LivingEntity next = level.getEntitiesOfClass(LivingEntity.class,
+                            current.getBoundingBox().inflate(cannonTier.ricochetRange()),
+                            target -> target != shooter && !hitTargets.contains(target) && isValidTarget(target))
+                    .stream()
+                    .min(Comparator.comparingDouble(target -> origin.distanceToSqr(target.getEyePosition())))
+                    .orElse(null);
+            if (next == null) return;
+
+            Vec3 delta = next.getEyePosition().subtract(origin);
+            Vec3 bounceDirection = delta.normalize();
+            sendSonicTrail(level, origin, bounceDirection, delta.length(), false);
+            level.playSound(null, next.getX(), next.getY(), next.getZ(),
+                    SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.4F, 1.15F + bounce * 0.1F);
+            damageAndKnockBack(level, shooter, next, bounceDirection, cannonTier.minDamage() * 0.65F);
+            hitTargets.add(next);
+            current = next;
         }
     }
 
@@ -108,10 +164,8 @@ public class HypersonicCannonItem extends Item {
         return entity instanceof LivingEntity living && living.isAlive() && !living.isSpectator();
     }
 
-    static void damageAndKnockBack(ServerLevel level, Player shooter, LivingEntity target, Vec3 direction) {
-        if (!target.hurtServer(level, level.damageSources().sonicBoom(shooter), DAMAGE)) {
-            return;
-        }
+    static void damageAndKnockBack(ServerLevel level, Player shooter, LivingEntity target, Vec3 direction, float damage) {
+        if (!target.hurtServer(level, level.damageSources().sonicBoom(shooter), damage)) return;
 
         double resistance = target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
         double horizontal = HypersonicCannonRules.adjustedKnockback(HORIZONTAL_KNOCKBACK, resistance);
@@ -119,21 +173,22 @@ public class HypersonicCannonItem extends Item {
         target.push(direction.x * horizontal, direction.y * vertical, direction.z * horizontal);
     }
 
-    static List<Vec3> particlePositions(Vec3 source, Vec3 direction, double distance) {
-        int count = HypersonicCannonRules.particleCount(distance);
-        List<Vec3> positions = new ArrayList<>(count);
+    private static void sendSonicTrail(ServerLevel level, Vec3 source, Vec3 direction, double distance, boolean wardenTail) {
+        int count = wardenTail ? HypersonicCannonRules.particleCount(distance) : Math.max(1, (int) Math.ceil(distance));
         for (int i = 1; i <= count; i++) {
-            positions.add(source.add(direction.scale(i)));
+            Vec3 particlePos = source.add(direction.scale(i));
+            level.sendParticles(ParticleTypes.SONIC_BOOM, particlePos.x, particlePos.y, particlePos.z,
+                    1, 0.0, 0.0, 0.0, 0.0);
         }
-        return positions;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> builder, TooltipFlag flag) {
-        builder.accept(Component.translatable("tooltip.avoidminer.hypersonic_cannon.attack")
+        builder.accept(Component.translatable("tooltip.avoidminer.hypersonic_cannon.tier_" + cannonTier.tier())
                 .withStyle(ChatFormatting.DARK_AQUA));
-        builder.accept(Component.translatable("tooltip.avoidminer.hypersonic_cannon.cooldown")
+        builder.accept(Component.translatable("tooltip.avoidminer.hypersonic_cannon.stats",
+                        cannonTier.range(), cannonTier.cooldownTicks() / 20.0F)
                 .withStyle(ChatFormatting.GRAY));
     }
 }

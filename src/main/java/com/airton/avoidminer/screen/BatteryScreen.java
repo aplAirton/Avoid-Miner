@@ -28,16 +28,17 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
     private static final int CHAMBER_X1 = 82;
     private static final int CHAMBER_Y1 = 196;
 
-    private static final int ACCENT = 0xFF33DDCC;
-    private static final int ACCENT_DIM = 0xFF1A7A72;
+    private static final int ACCENT = 0xFFFF353D;
+    private static final int ACCENT_BRIGHT = 0xFFFF7A73;
+    private static final int ACCENT_DIM = 0xFF7F171D;
     private static final int TEXT_WHITE = 0xFFFFFFFF;
-    private static final int TEXT_DIM = 0xFF9BC9C4;
-    private static final int TEXT_DISABLED = 0xFF3E6B66;
+    private static final int TEXT_DIM = 0xFFE4A6A6;
+    private static final int TEXT_DISABLED = 0xFF785458;
 
-    private static final int SLOT_BORDER = 0xFF1A5550;
-    private static final int SLOT_BORDER_LT = 0xFF339988;
-    private static final int SLOT_BORDER_DK = 0xFF0A2A28;
-    private static final int SLOT_INNER = 0xFF0E3E3A;
+    private static final int SLOT_BORDER = 0xFF641B20;
+    private static final int SLOT_BORDER_LT = 0xFFBE3A3F;
+    private static final int SLOT_BORDER_DK = 0xFF26090C;
+    private static final int SLOT_INNER = 0xFF271417;
 
     private int tickCounter = 0;
 
@@ -62,19 +63,48 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
         drawInfoPanel(extractor, x, y);
         drawEnergyCore(extractor, x, y);
         drawEnergyText(extractor, x, y);
-        drawCapacityGrid(extractor, x, y);
+        drawRedstoneCircuit(extractor, x, y);
 
         super.extractContents(extractor, mouseX, mouseY, partialTick);
     }
 
-    private void drawCapacityGrid(GuiGraphicsExtractor extractor, int gx, int gy) {
-        for (int row = 0; row < BatteryMenu.CAPACITY_ROWS; row++) {
-            for (int col = 0; col < BatteryMenu.CAPACITY_COLS; col++) {
-                int sx = gx + BatteryMenu.CAPACITY_GRID_X + col * 18;
-                int sy = gy + BatteryMenu.CAPACITY_GRID_Y + row * 18;
-                drawSlotBg(extractor, sx, sy);
-            }
+    private void drawRedstoneCircuit(GuiGraphicsExtractor extractor, int gx, int gy) {
+        int left = gx + BatteryMenu.MAIN_X + 6;
+        int right = gx + BatteryMenu.MAIN_RIGHT - 6;
+        int gaugeY = gy + 39;
+        int gap = 2;
+        int segmentW = (right - left - (BatteryMenu.GAUGE_SEGMENTS - 1) * gap) / BatteryMenu.GAUGE_SEGMENTS;
+        float fill = (float) menu.getEnergyStored() / Math.max(1, menu.getEffectiveCapacity());
+        int activeSegments = Math.round(fill * BatteryMenu.GAUGE_SEGMENTS);
+
+        for (int i = 0; i < BatteryMenu.GAUGE_SEGMENTS; i++) {
+            int sx = left + i * (segmentW + gap);
+            boolean active = i < activeSegments;
+            extractor.fill(sx, gaugeY, sx + segmentW, gaugeY + 7, active ? ACCENT : 0xFF291417);
+            if (active) extractor.fill(sx, gaugeY, sx + segmentW, gaugeY + 1, ACCENT_BRIGHT);
         }
+
+        int wireY = gy + BatteryMenu.CAPACITY_UPG_Y + 8;
+        int slotCenter = gx + BatteryMenu.CAPACITY_UPG_X + 8;
+        extractor.fill(left, wireY, slotCenter - 12, wireY + 2, ACCENT_DIM);
+        extractor.fill(slotCenter + 12, wireY, right, wireY + 2, ACCENT_DIM);
+        extractor.fill(left, gaugeY + 7, left + 2, wireY + 2, ACCENT_DIM);
+        extractor.fill(right - 2, gaugeY + 7, right, wireY + 2, ACCENT_DIM);
+
+        for (int nodeX = left + 14; nodeX < right; nodeX += 34) {
+            extractor.fill(nodeX, wireY - 2, nodeX + 5, wireY + 4, SLOT_BORDER_DK);
+            extractor.fill(nodeX + 1, wireY - 1, nodeX + 4, wireY + 3, ACCENT);
+        }
+
+        drawSlotBg(extractor, gx + BatteryMenu.CAPACITY_UPG_X, gy + BatteryMenu.CAPACITY_UPG_Y);
+
+        Component installed = Component.translatable(
+                "screen.avoidminer.battery.installed",
+                menu.getInstalledCapacityUpgrades()
+        );
+        extractor.text(font, installed,
+                gx + (MAIN_LEFT + MAIN_RIGHT) / 2 - font.width(installed) / 2,
+                gy + 91, TEXT_DIM);
     }
 
     private void drawBanner(GuiGraphicsExtractor extractor, int gx, int gy) {
@@ -115,7 +145,7 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
             int cy = y1 - (i + 1) * cellH - i * gap;
             int x0 = cx - cellW / 2;
             boolean lit = i < litCells;
-            extractor.fill(x0, cy, x0 + cellW, cy + cellH, lit ? ACCENT : 0xFF10201E);
+            extractor.fill(x0, cy, x0 + cellW, cy + cellH, lit ? ACCENT : 0xFF241315);
             if (lit) {
                 extractor.fill(x0, cy, x0 + cellW, cy + 1, 0x88FFFFFF);
                 if (i == litCells - 1) {
@@ -128,8 +158,8 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
 
         if (menu.getActiveLinks() > 0) {
             int sparkY = y0 + (tickCounter * 3) % Math.max(1, y1 - y0);
-            extractor.fill(gx + CHAMBER_X0 + 4, sparkY, gx + CHAMBER_X0 + 7, sparkY + 2, 0xAAAAFFEE);
-            extractor.fill(gx + CHAMBER_X1 - 7, (y1 - (sparkY - y0)), gx + CHAMBER_X1 - 4, (y1 - (sparkY - y0)) + 2, 0xAAAAFFEE);
+            extractor.fill(gx + CHAMBER_X0 + 4, sparkY, gx + CHAMBER_X0 + 7, sparkY + 2, ACCENT_BRIGHT);
+            extractor.fill(gx + CHAMBER_X1 - 7, (y1 - (sparkY - y0)), gx + CHAMBER_X1 - 4, (y1 - (sparkY - y0)) + 2, ACCENT_BRIGHT);
         }
     }
 
@@ -157,7 +187,7 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
                 ? Component.translatable("status.avoidminer.full")
                 : Component.translatable(menu.isCharging()
                         ? "status.avoidminer.battery.charging" : "status.avoidminer.idle");
-        int statusColor = full ? ACCENT : menu.isCharging() ? 0xFF55FF55 : TEXT_DIM;
+        int statusColor = full ? ACCENT : menu.isCharging() ? ACCENT_BRIGHT : TEXT_DIM;
         extractor.text(font, status, px, gy + 32, statusColor);
 
         int pct = (int) (energy * 100L / menu.getEffectiveCapacity());
@@ -190,7 +220,7 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
     }
 
     private void drawPanelDivider(GuiGraphicsExtractor extractor, int px, int y) {
-        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x4433DDCC);
+        extractor.fill(px - 1, y, px + PANEL_INNER_W + 1, y + 1, 0x66FF353D);
     }
 
     @Override
@@ -218,16 +248,12 @@ public class BatteryScreen extends AbstractContainerScreen<BatteryMenu> {
             return;
         }
 
-        if (relY >= BatteryMenu.CAPACITY_GRID_Y - 1 && relY < BatteryMenu.CAPACITY_GRID_Y + BatteryMenu.CAPACITY_ROWS * 18
-                && relX >= BatteryMenu.CAPACITY_GRID_X - 1 && relX < BatteryMenu.CAPACITY_GRID_X + BatteryMenu.CAPACITY_COLS * 18) {
-            int col = (relX - BatteryMenu.CAPACITY_GRID_X) / 18;
-            int row = (relY - BatteryMenu.CAPACITY_GRID_Y) / 18;
-            int slotIndex = BatteryBlockEntity.CAPACITY_SLOT_START + row * BatteryMenu.CAPACITY_COLS + col;
-            if (slotIndex < BatteryBlockEntity.CAPACITY_SLOT_END && menu.getSlot(slotIndex).getItem().isEmpty()) {
-                extractor.setTooltipForNextFrame(
-                        Component.translatable("tooltip.avoidminer.slot.capacity_only"), mouseX, mouseY);
-                return;
-            }
+        if (relX >= BatteryMenu.CAPACITY_UPG_X - 1 && relX < BatteryMenu.CAPACITY_UPG_X + 18
+                && relY >= BatteryMenu.CAPACITY_UPG_Y - 1 && relY < BatteryMenu.CAPACITY_UPG_Y + 18
+                && menu.getSlot(BatteryBlockEntity.CAPACITY_INSTALL_SLOT).getItem().isEmpty()) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("tooltip.avoidminer.slot.capacity_install"), mouseX, mouseY);
+            return;
         }
 
         boolean overChamber = relX >= CHAMBER_X0 && relX < CHAMBER_X1

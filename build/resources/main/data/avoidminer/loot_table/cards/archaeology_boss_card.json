@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [{
+    "rolls": 1,
+    "entries": [
+      { "type": "minecraft:item", "name": "avoidminer:warden_card" },
+      { "type": "minecraft:item", "name": "avoidminer:wither_card" },
+      { "type": "minecraft:item", "name": "avoidminer:ender_dragon_card" }
+    ]
+  }]
+}
