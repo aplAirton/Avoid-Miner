@@ -1,21 +1,3 @@
-/gamemode creative
-/gamemode survival
-/gamemode creative
-/time pause
-/time set 0
-/time set 200
-/time set 600
-/gamemode survival
-/gamemode creative
-/time pause
-/time set minecraft:day
-/time pause
-/fill 99 68 -223
-/fill 99 68 -223 145 70 -265 air replace
-/fill 99 70 -223 145 0 -265 air replace
-/fill 99 70 -223 145 50 -265 air replace
-/fill 99 70 -223 145 65 -265 air replace
-/fill 99 50 -223 145 65 -265 air replace
 /fill 99 50 -223 145 35 -265 air replace
 /fill 99 20 -223 145 35 -265 air replace
 /fill 99 20 -223 145 5 -265 air replace
@@ -48,3 +30,21 @@
 /give @a minecraft:golden_apple 50
 /gamemode creative
 /gamemode survival
+/locate structure minecraft:ancient_city
+/tp @s 1728 ~ 1360
+/effect give @a minecraft:night_vision infinite
+/tp @a 0 70 0
+/setblock ~2 ~-1 ~ minecraft:stone/setblock ~2 ~ ~ minecraft:suspicious_sand{LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}
+/setblock ~2 ~-1 ~ minecraft:stone/setblock 2 1 3 minecraft:suspicious_sand{LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}
+/setblock ~2 ~-1 ~ minecraft:stone/setblock ~2 ~ ~ minecraft:suspicious_sand{LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}
+/loot give @s loot avoidminer:cards/archaeology_boss_card
+/setblock ~2 ~-1 ~ minecraft:stone/setblock ~2 ~ ~ minecraft:suspicious_sand/data merge block ~2 ~ ~ {LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}
+/give @s minecraft:suspicious_sand[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/desert_pyramid",LootTableSeed:1L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:2L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:3L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:4L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:5L}]
+/give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:2L}]
+/loot give @s loot avoidminer:cards/archaeology_boss_card
+/give @s minecraft:suspicious_sand[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"avoidminer:cards/archaeology_boss_card"}]

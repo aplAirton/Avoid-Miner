@@ -1,5 +1,10 @@
 [
   {"version":1},
+  {"ingredient":{"id":"avoidminer:avoid_miner_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:enchanted_book","components":{"minecraft:stored_enchantments":{"avoidminer:sonic_protection":4}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:book"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:enchanted_book","components":{"minecraft:stored_enchantments":{"avoidminer:sonic_protection":3}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:warden_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:resonant_retaliation_shield"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:hypersonic_smithing_template"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:glass_sword","components":{"minecraft:damage":30}},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -14,7 +19,6 @@
   {"ingredient":{"id":"avoidminer:blank_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:sculk_shrieker"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_miner_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:ocean_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:deep_dark_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:end_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -27,7 +31,6 @@
   {"ingredient":{"id":"avoidminer:bogged_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:wither_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:ender_dragon_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:warden_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:cow_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:magma_cube_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:shulker_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -87,7 +90,6 @@
   {"ingredient":{"id":"avoidminer:speed_upgrade_tier_1"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:energy_upgrade_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:energy_upgrade_tier_1"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:book"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:wheat_seeds"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:guide_book"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:silk_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -97,7 +99,5 @@
   {"ingredient":{"id":"avoidminer:magnetite_nugget"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:raw_magnetite_block"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:gilded_blackstone"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:mangrove_door"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:ghast_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:ghast_tear"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"minecraft:mangrove_door"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

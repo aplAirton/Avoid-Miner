@@ -1,5 +1,5 @@
 {
-  "type": "neoforge:add_table",
+  "type": "avoidminer:replace_with_table",
   "conditions": [
     {
       "condition": "minecraft:any_of",
@@ -12,7 +12,7 @@
         { "condition": "neoforge:loot_table_id", "loot_table_id": "minecraft:archaeology/trail_ruins_rare" }
       ]
     },
-    { "condition": "minecraft:random_chance", "chance": 0.01 }
+    { "condition": "minecraft:random_chance", "chance": 0.05 }
   ],
   "table": "avoidminer:cards/archaeology_boss_card"
 }
