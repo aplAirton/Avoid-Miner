@@ -159,6 +159,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> BLANK_UPGRADE_PATTERN = ITEMS.registerSimpleItem("blank_upgrade_pattern");
 
+    public static final DeferredItem<Item> BLANK_CARD = ITEMS.registerSimpleItem("blank_card");
+
     // Cartões de mob - um item por MobCardType. Cada cartão rastreia kills via
     // CustomData (Kills, 0..requiredKills). Quando completo, ganha foil (encantado).
     public static final DeferredItem<MobCardItem> SKELETON_CARD = ITEMS.registerItem("skeleton_card",

@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GMG", "EBE", "GTG"],
+  "pattern": ["GMG", "EBE", "GKG"],
   "key": {
     "G": "minecraft:gold_ingot",
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:ender_eye",
     "B": "minecraft:slime_ball",
-    "T": "minecraft:ghast_tear"
+    "K": "avoidminer:blank_card"
   },
   "result": { "id": "avoidminer:slime_card", "count": 1 }
 }

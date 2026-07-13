@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GMG", "ECE", "GTG"],
+  "pattern": ["GMG", "ECE", "GKG"],
   "key": {
     "G": "minecraft:netherite_ingot",
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:ender_eye",
     "C": "minecraft:wither_skeleton_skull",
-    "T": "minecraft:nether_star"
+    "K": "avoidminer:blank_card"
   },
   "result": { "id": "avoidminer:wither_skeleton_card", "count": 1 }
 }

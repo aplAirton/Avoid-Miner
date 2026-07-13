@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GMG", "BIB", "GSG"],
+  "pattern": ["GMG", "BIB", "GKG"],
   "key": {
     "G": "minecraft:gold_ingot",
     "M": "avoidminer:magnetite_ingot",
     "B": "minecraft:bone",
     "I": "minecraft:packed_ice",
-    "S": "minecraft:snow_block"
+    "K": "avoidminer:blank_card"
   },
   "result": { "id": "avoidminer:stray_card", "count": 1 }
 }

@@ -60,6 +60,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.FORTUNE_UPGRADE.get());
                         output.accept(ModItems.SILK_UPGRADE.get());
                         output.accept(ModItems.BLANK_UPGRADE_PATTERN.get());
+                        output.accept(ModItems.BLANK_CARD.get());
                         output.accept(ModItems.GUIDE_BOOK.get());
                     })
                     .build());

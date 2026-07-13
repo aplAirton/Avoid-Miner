@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GMG", "EAE", "GCG"],
+  "pattern": ["GMG", "ECE", "GKG"],
   "key": {
     "G": "minecraft:gold_ingot",
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:emerald",
-    "A": "minecraft:arrow",
-    "C": "minecraft:crossbow"
+    "C": "minecraft:crossbow",
+    "K": "avoidminer:blank_card"
   },
   "result": { "id": "avoidminer:pillager_card", "count": 1 }
 }
