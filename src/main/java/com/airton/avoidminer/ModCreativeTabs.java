@@ -30,6 +30,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.HYPERSONIC_CANNON.get());
                         output.accept(ModItems.HYPERSONIC_CANNON_TIER_2.get());
                         output.accept(ModItems.HYPERSONIC_CANNON_TIER_3.get());
+                        output.accept(ModItems.WARDEN_HEART.get());
+                        output.accept(ModItems.TEMPORAL_CLOCK.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
                         for (var card : ModItems.MOB_CARDS) {

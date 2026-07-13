@@ -262,5 +262,13 @@
   "tooltip.avoidminer.hypersonic_cannon.stats": "Alcance: %s blocos | Recarga: %s s",
   "tooltip.avoidminer.mobcard.boss_source.warden": "Encontrado apenas em baús da Cidade Ancestral ou em areia/cascalho suspeito",
   "tooltip.avoidminer.mobcard.boss_source.wither": "Encontrado apenas em baús de tesouro de Bastião ou em areia/cascalho suspeito",
-  "tooltip.avoidminer.mobcard.boss_source.ender_dragon": "Encontrado apenas em baús da Cidade do End ou em areia/cascalho suspeito"
+  "tooltip.avoidminer.mobcard.boss_source.ender_dragon": "Encontrado apenas em baús da Cidade do End ou em areia/cascalho suspeito",
+  "enchantment.avoidminer.sonic_protection": "Proteção Sônica",
+  "item.avoidminer.warden_heart": "Coração do Warden",
+  "tooltip.avoidminer.warden_heart.drop": "5% de chance de ser obtido ao matar um Warden",
+  "item.avoidminer.temporal_clock": "Relógio Temporal",
+  "tooltip.avoidminer.temporal_clock.effect": "Congela mundo, entidades e projéteis por 5 segundos",
+  "tooltip.avoidminer.temporal_clock.balance": "Recarga de 30 segundos | 50 usos",
+  "tooltip.avoidminer.temporal_clock.heart": "Criado com um Coração do Warden (5% de drop)",
+  "message.avoidminer.temporal_clock.already_frozen": "O tempo já está congelado"
 }

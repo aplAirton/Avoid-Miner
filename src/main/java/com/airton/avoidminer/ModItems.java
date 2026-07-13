@@ -3,6 +3,8 @@ package com.airton.avoidminer;
 import com.airton.avoidminer.item.GuideBookItem;
 import com.airton.avoidminer.item.HypersonicCannonItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
+import com.airton.avoidminer.item.TemporalClockItem;
+import com.airton.avoidminer.item.WardenHeartItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
 import net.minecraft.ChatFormatting;
@@ -166,6 +168,8 @@ public class ModItems {
             props -> new HypersonicCannonItem(props, 2));
     public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON_TIER_3 = ITEMS.registerItem("hypersonic_cannon_tier_3",
             props -> new HypersonicCannonItem(props, 3));
+    public static final DeferredItem<Item> WARDEN_HEART = ITEMS.registerItem("warden_heart", WardenHeartItem::new);
+    public static final DeferredItem<Item> TEMPORAL_CLOCK = ITEMS.registerItem("temporal_clock", TemporalClockItem::new);
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {

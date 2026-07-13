@@ -1,11 +1,15 @@
 [
   {"version":1},
+  {"ingredient":{"id":"avoidminer:temporal_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:hypersonic_cannon"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:warden_heart"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:copper_nugget"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:battery"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:chicken_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:blank_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:sculk_shrieker"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:avoid_miner_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:ocean_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:deep_dark_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -71,7 +75,6 @@
   {"ingredient":{"id":"minecraft:breeze_rod"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:fortune_upgrade"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:avoid_processor_tier_1"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:battery"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:magnetite_powder"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:range_upgrade_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:energy_upgrade_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -96,8 +99,5 @@
   {"ingredient":{"id":"minecraft:happy_ghast_spawn_egg"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:wind_charge"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:guster_banner_pattern"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:ancient_debris"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:emerald"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:raw_copper"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:copper_ingot"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"minecraft:ancient_debris"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

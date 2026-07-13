@@ -34,6 +34,7 @@
   },
   "minecraft:adventure/kill_all_mobs": {
     "criteria": {
+      "minecraft:skeleton": "2026-07-13 09:34:31 -0300",
       "minecraft:creeper": "2026-07-11 22:06:29 -0300"
     },
     "done": false
@@ -821,6 +822,18 @@
   "minecraft:recipes/transportation/dark_oak_boat": {
     "criteria": {
       "in_water": "2026-07-12 23:46:19 -0300"
+    },
+    "done": true
+  },
+  "minecraft:adventure/avoid_vibration": {
+    "criteria": {
+      "avoid_vibration": "2026-07-13 09:16:56 -0300"
+    },
+    "done": true
+  },
+  "minecraft:nether/netherite_armor": {
+    "criteria": {
+      "netherite_armor": "2026-07-13 09:19:46 -0300"
     },
     "done": true
   },

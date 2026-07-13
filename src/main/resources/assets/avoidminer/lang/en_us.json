@@ -262,5 +262,13 @@
   "tooltip.avoidminer.hypersonic_cannon.stats": "Range: %s blocks | Cooldown: %s s",
   "tooltip.avoidminer.mobcard.boss_source.warden": "Found only in Ancient City chests or suspicious sand/gravel",
   "tooltip.avoidminer.mobcard.boss_source.wither": "Found only in Bastion treasure chests or suspicious sand/gravel",
-  "tooltip.avoidminer.mobcard.boss_source.ender_dragon": "Found only in End City chests or suspicious sand/gravel"
+  "tooltip.avoidminer.mobcard.boss_source.ender_dragon": "Found only in End City chests or suspicious sand/gravel",
+  "enchantment.avoidminer.sonic_protection": "Sonic Protection",
+  "item.avoidminer.warden_heart": "Warden Heart",
+  "tooltip.avoidminer.warden_heart.drop": "5% chance to drop when a Warden is killed",
+  "item.avoidminer.temporal_clock": "Temporal Clock",
+  "tooltip.avoidminer.temporal_clock.effect": "Freezes world ticks, entities and projectiles for 5 seconds",
+  "tooltip.avoidminer.temporal_clock.balance": "30 second cooldown | 50 uses",
+  "tooltip.avoidminer.temporal_clock.heart": "Crafted with a Warden Heart (5% Warden drop)",
+  "message.avoidminer.temporal_clock.already_frozen": "Time is already frozen"
 }

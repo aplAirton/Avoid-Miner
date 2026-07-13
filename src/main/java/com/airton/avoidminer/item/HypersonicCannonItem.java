@@ -43,7 +43,7 @@ public class HypersonicCannonItem extends Item {
     }
 
     public HypersonicCannonItem(Properties properties, int tier) {
-        super(properties.stacksTo(1));
+        super(properties.durability(HypersonicCannonRules.forTier(tier).durability()).enchantable(15));
         this.cannonTier = HypersonicCannonRules.forTier(tier);
     }
 
@@ -82,6 +82,7 @@ public class HypersonicCannonItem extends Item {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel) {
             fire(serverLevel, player);
             player.getCooldowns().addCooldown(stack, cannonTier.cooldownTicks());
+            stack.hurtAndBreak(1, player, player.getUsedItemHand());
             player.awardStat(Stats.ITEM_USED.get(this));
         }
         return stack;

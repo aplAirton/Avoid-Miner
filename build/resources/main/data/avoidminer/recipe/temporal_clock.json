@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NEN",
+    "EHE",
+    "NCN"
+  ],
+  "key": {
+    "N": "minecraft:nether_star",
+    "E": "minecraft:echo_shard",
+    "H": "avoidminer:warden_heart",
+    "C": "minecraft:clock"
+  },
+  "result": {
+    "id": "avoidminer:temporal_clock",
+    "count": 1
+  }
+}

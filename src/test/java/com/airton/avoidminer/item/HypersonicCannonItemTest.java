@@ -1,5 +1,6 @@
 package com.airton.avoidminer.item;
 
+import com.airton.avoidminer.enchantment.SonicProtectionRules;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +12,27 @@ public class HypersonicCannonItemTest {
         assertEquals(200, HypersonicCannonRules.TIER_1.cooldownTicks());
         assertEquals(160, HypersonicCannonRules.TIER_2.cooldownTicks());
         assertEquals(120, HypersonicCannonRules.TIER_3.cooldownTicks());
+    }
+
+    @Test
+    public void cannonDurabilityProgressesByTier() {
+        assertEquals(100, HypersonicCannonRules.TIER_1.durability());
+        assertEquals(200, HypersonicCannonRules.TIER_2.durability());
+        assertEquals(300, HypersonicCannonRules.TIER_3.durability());
+    }
+
+    @Test
+    public void temporalClockHasBalancedLimits() {
+        assertEquals(50, TemporalFreezeRules.DURABILITY);
+        assertEquals(100, TemporalFreezeRules.FREEZE_TICKS);
+        assertEquals(600, TemporalFreezeRules.COOLDOWN_TICKS);
+    }
+
+    @Test
+    public void sonicProtectionUsesVanillaProtectionReductionAndCap() {
+        assertEquals(8.4, SonicProtectionRules.reduceDamage(10.0F, 4), 0.0001);
+        assertEquals(3.6, SonicProtectionRules.reduceDamage(10.0F, 16), 0.0001);
+        assertEquals(2.0, SonicProtectionRules.reduceDamage(10.0F, 24), 0.0001);
     }
 
     @Test

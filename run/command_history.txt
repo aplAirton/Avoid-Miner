@@ -38,3 +38,10 @@
 /weather clear
 /give @a minecraft:netherite_pickaxe
 /weather clear
+/fill 125 78 -205
+/fill 125 72 -205 98 82 -227 minecraft:grass_block
+/fill 125 72 -205 98 62 -227 minecraft:grass_block
+/fill 125 72 -205 98 62 -227 minecraft:dirt
+/fill 125 72 -205 98 81 -227 minecraft:dirt
+/gamerule advance_weather false
+/gamemode creative
