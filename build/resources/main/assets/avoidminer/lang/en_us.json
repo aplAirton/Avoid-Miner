@@ -270,5 +270,21 @@
   "tooltip.avoidminer.temporal_clock.effect": "Freezes world ticks, entities and projectiles for 5 seconds",
   "tooltip.avoidminer.temporal_clock.balance": "30 second cooldown | 50 uses",
   "tooltip.avoidminer.temporal_clock.heart": "Crafted with a Warden Heart (5% Warden drop)",
-  "message.avoidminer.temporal_clock.already_frozen": "Time is already frozen"
+  "message.avoidminer.temporal_clock.already_frozen": "Time is already frozen",
+  "item.avoidminer.glass_sword": "Glass Sword",
+  "tooltip.avoidminer.glass_sword.wave": "Hold for 1 second and release: advancing pressure wave (%s blocks)",
+  "tooltip.avoidminer.glass_sword.enchantments": "Supports every enchantment compatible with vanilla swords",
+  "item.avoidminer.hypersonic_smithing_template": "Hypersonic Smithing Template",
+  "item.avoidminer.hypersonic_smithing_template.applies_to": "Netherite Sword, Shield or Netherite Boots",
+  "item.avoidminer.hypersonic_smithing_template.ingredients": "Magnetite Ingot",
+  "item.avoidminer.hypersonic_smithing_template.base_slot_description": "Add Netherite Sword, Shield or Netherite Boots",
+  "item.avoidminer.hypersonic_smithing_template.additions_slot_description": "Add Magnetite Ingot",
+  "tooltip.avoidminer.hypersonic_smithing_template.source": "5% chance in Ancient City chests, matching the Ward template",
+  "item.avoidminer.resonant_retaliation_shield": "Resonant Retaliation Shield",
+  "tooltip.avoidminer.resonant_shield.charge": "Sonic Charge: %s/%s",
+  "tooltip.avoidminer.resonant_shield.block": "Successful physical and projectile blocks accumulate charge",
+  "tooltip.avoidminer.resonant_shield.release": "At full charge, use twice quickly to stun and repel enemies",
+  "item.avoidminer.seismic_propulsion_boots": "Seismic Propulsion Boots",
+  "tooltip.avoidminer.seismic_boots.arm": "Sneak during a significant fall to arm the impact",
+  "tooltip.avoidminer.seismic_boots.impact": "Cancels fall damage and damages monsters in an %s-%s block seismic area"
 }

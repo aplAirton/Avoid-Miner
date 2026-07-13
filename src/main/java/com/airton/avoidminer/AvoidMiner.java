@@ -17,6 +17,7 @@ public class AvoidMiner {
         LOGGER.info("Avoid Miner inicializado com sucesso!");
 
         ModBlocks.BLOCKS.register(modEventBus);
+        ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);

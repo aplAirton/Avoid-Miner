@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.item.HypersonicCannonItemTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-13T12:32:27.232Z" hostname="MacBook-Air-de-Airton.local" time="0.023">
+<testsuite name="com.airton.avoidminer.item.HypersonicCannonItemTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-13T14:03:12.479Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
   <properties/>
-  <testcase name="temporalClockHasBalancedLimits" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.01"/>
-  <testcase name="knockbackRespectsTargetResistance" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.002"/>
-  <testcase name="sonicProtectionUsesVanillaProtectionReductionAndCap" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.001"/>
+  <testcase name="temporalClockHasBalancedLimits" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
+  <testcase name="knockbackRespectsTargetResistance" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
+  <testcase name="sonicProtectionUsesVanillaProtectionReductionAndCap" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
   <testcase name="cannonDurabilityProgressesByTier" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
-  <testcase name="sonicTrailUsesWardenSpacing" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
+  <testcase name="sonicTrailUsesWardenSpacing" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.001"/>
   <testcase name="weaponTimingMatchesSpecification" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
-  <testcase name="upgradedDamageFallsWithDistance" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.001"/>
+  <testcase name="upgradedDamageFallsWithDistance" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
   <testcase name="tierThreeAddsWideConePenetrationAndRicochets" classname="com.airton.avoidminer.item.HypersonicCannonItemTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

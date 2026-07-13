@@ -1,5 +1,9 @@
 [
   {"version":1},
+  {"ingredient":{"id":"avoidminer:resonant_retaliation_shield"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:hypersonic_smithing_template"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:glass_sword","components":{"minecraft:damage":30}},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:glass_sword","components":{"minecraft:damage":5}},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:temporal_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:hypersonic_cannon"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:warden_heart"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -95,9 +99,5 @@
   {"ingredient":{"id":"minecraft:gilded_blackstone"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"minecraft:mangrove_door"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:ghast_card"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:ghast_tear"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:happy_ghast_spawn_egg"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:wind_charge"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:guster_banner_pattern"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:ancient_debris"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"minecraft:ghast_tear"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

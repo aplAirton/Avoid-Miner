@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "avoidminer:hypersonic_smithing_template",
+  "base": "minecraft:netherite_sword",
+  "addition": "avoidminer:magnetite_ingot",
+  "result": {
+    "id": "avoidminer:glass_sword"
+  }
+}

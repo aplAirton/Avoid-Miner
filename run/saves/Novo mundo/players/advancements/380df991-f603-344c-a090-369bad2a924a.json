@@ -35,6 +35,7 @@
   "minecraft:adventure/kill_all_mobs": {
     "criteria": {
       "minecraft:skeleton": "2026-07-13 09:34:31 -0300",
+      "minecraft:zombie": "2026-07-13 09:59:24 -0300",
       "minecraft:creeper": "2026-07-11 22:06:29 -0300"
     },
     "done": false
@@ -834,6 +835,36 @@
   "minecraft:nether/netherite_armor": {
     "criteria": {
       "netherite_armor": "2026-07-13 09:19:46 -0300"
+    },
+    "done": true
+  },
+  "minecraft:husbandry/root": {
+    "criteria": {
+      "consumed_item": "2026-07-13 09:40:27 -0300"
+    },
+    "done": true
+  },
+  "minecraft:husbandry/balanced_diet": {
+    "criteria": {
+      "golden_apple": "2026-07-13 09:40:27 -0300"
+    },
+    "done": false
+  },
+  "minecraft:recipes/misc/bone_meal": {
+    "criteria": {
+      "has_bone": "2026-07-13 09:59:46 -0300"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/composter": {
+    "criteria": {
+      "has_wood_slab": "2026-07-13 10:03:41 -0300"
+    },
+    "done": true
+  },
+  "minecraft:story/deflect_arrow": {
+    "criteria": {
+      "deflected_projectile": "2026-07-13 10:40:58 -0300"
     },
     "done": true
   },

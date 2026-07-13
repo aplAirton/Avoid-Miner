@@ -270,5 +270,21 @@
   "tooltip.avoidminer.temporal_clock.effect": "Congela mundo, entidades e projéteis por 5 segundos",
   "tooltip.avoidminer.temporal_clock.balance": "Recarga de 30 segundos | 50 usos",
   "tooltip.avoidminer.temporal_clock.heart": "Criado com um Coração do Warden (5% de drop)",
-  "message.avoidminer.temporal_clock.already_frozen": "O tempo já está congelado"
+  "message.avoidminer.temporal_clock.already_frozen": "O tempo já está congelado",
+  "item.avoidminer.glass_sword": "Espada de Vidro",
+  "tooltip.avoidminer.glass_sword.wave": "Segure por 1 segundo e solte: onda de pressão progressiva (%s blocos)",
+  "tooltip.avoidminer.glass_sword.enchantments": "Aceita todos os encantamentos compatíveis com espadas vanilla",
+  "item.avoidminer.hypersonic_smithing_template": "Molde de Ferraria Hipersônico",
+  "item.avoidminer.hypersonic_smithing_template.applies_to": "Espada de Netherita, Escudo ou Botas de Netherita",
+  "item.avoidminer.hypersonic_smithing_template.ingredients": "Barra de Magnetita",
+  "item.avoidminer.hypersonic_smithing_template.base_slot_description": "Adicione uma Espada de Netherita, Escudo ou Botas de Netherita",
+  "item.avoidminer.hypersonic_smithing_template.additions_slot_description": "Adicione uma Barra de Magnetita",
+  "tooltip.avoidminer.hypersonic_smithing_template.source": "5% de chance em baús da Cidade Ancestral, igual ao molde Ward",
+  "item.avoidminer.resonant_retaliation_shield": "Escudo de Retaliação Ressonante",
+  "tooltip.avoidminer.resonant_shield.charge": "Carga Sônica: %s/%s",
+  "tooltip.avoidminer.resonant_shield.block": "Bloqueios físicos e de projéteis bem-sucedidos acumulam carga",
+  "tooltip.avoidminer.resonant_shield.release": "Com carga máxima, use duas vezes rapidamente para atordoar e repelir inimigos",
+  "item.avoidminer.seismic_propulsion_boots": "Botas de Propulsão Sísmica",
+  "tooltip.avoidminer.seismic_boots.arm": "Agache durante uma queda considerável para armar o impacto",
+  "tooltip.avoidminer.seismic_boots.impact": "Cancela a queda e causa dano em monstros numa área sísmica de %s-%s blocos"
 }

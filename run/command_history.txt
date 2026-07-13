@@ -45,3 +45,6 @@
 /fill 125 72 -205 98 81 -227 minecraft:dirt
 /gamerule advance_weather false
 /gamemode creative
+/give @a minecraft:golden_apple 50
+/gamemode creative
+/gamemode survival

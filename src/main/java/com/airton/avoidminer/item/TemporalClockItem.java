@@ -40,6 +40,8 @@ public class TemporalClockItem extends Item {
 
         serverLevel.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT,
                 SoundSource.PLAYERS, 2.0F, 0.7F);
+        serverLevel.playSound(null, player.blockPosition(), SoundEvents.TOTEM_USE,
+                SoundSource.PLAYERS, 1.0F, 1.0F);
         serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, true, true,
                 player.getX(), player.getY() + player.getBbHeight() * 0.5, player.getZ(),
                 100, 0.6, 0.9, 0.6, 0.18);

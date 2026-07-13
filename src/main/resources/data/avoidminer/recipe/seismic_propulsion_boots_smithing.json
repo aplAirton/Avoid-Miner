@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "avoidminer:hypersonic_smithing_template",
+  "base": "minecraft:netherite_boots",
+  "addition": "avoidminer:magnetite_ingot",
+  "result": {
+    "id": "avoidminer:seismic_propulsion_boots"
+  }
+}

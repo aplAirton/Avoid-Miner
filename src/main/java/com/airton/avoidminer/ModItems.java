@@ -1,8 +1,12 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.item.GuideBookItem;
+import com.airton.avoidminer.item.GlassSwordItem;
 import com.airton.avoidminer.item.HypersonicCannonItem;
+import com.airton.avoidminer.item.HypersonicSmithingTemplateItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
+import com.airton.avoidminer.item.ResonantRetaliationShieldItem;
+import com.airton.avoidminer.item.SeismicPropulsionBootsItem;
 import com.airton.avoidminer.item.TemporalClockItem;
 import com.airton.avoidminer.item.WardenHeartItem;
 import com.airton.avoidminer.lootr.MobCardItem;
@@ -170,6 +174,13 @@ public class ModItems {
             props -> new HypersonicCannonItem(props, 3));
     public static final DeferredItem<Item> WARDEN_HEART = ITEMS.registerItem("warden_heart", WardenHeartItem::new);
     public static final DeferredItem<Item> TEMPORAL_CLOCK = ITEMS.registerItem("temporal_clock", TemporalClockItem::new);
+    public static final DeferredItem<Item> HYPERSONIC_SMITHING_TEMPLATE = ITEMS.registerItem(
+            "hypersonic_smithing_template", HypersonicSmithingTemplateItem::new);
+    public static final DeferredItem<Item> GLASS_SWORD = ITEMS.registerItem("glass_sword", GlassSwordItem::new);
+    public static final DeferredItem<ResonantRetaliationShieldItem> RESONANT_RETALIATION_SHIELD = ITEMS.registerItem(
+            "resonant_retaliation_shield", ResonantRetaliationShieldItem::new);
+    public static final DeferredItem<SeismicPropulsionBootsItem> SEISMIC_PROPULSION_BOOTS = ITEMS.registerItem(
+            "seismic_propulsion_boots", SeismicPropulsionBootsItem::new);
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {
