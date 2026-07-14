@@ -3,7 +3,7 @@ package com.airton.avoidminer;
 public final class ResonantShieldRules {
     public static final int MAX_CHARGE = 5;
     public static final int DOUBLE_USE_WINDOW_TICKS = 8;
-    public static final double BLAST_RANGE = 8.0;
+    public static final double BLAST_RANGE = 13.0;
     public static final double BLAST_HALF_ANGLE_DEGREES = 32.0;
     public static final int STUN_TICKS = 50;
     public static final float BLAST_DAMAGE = 6.0F;

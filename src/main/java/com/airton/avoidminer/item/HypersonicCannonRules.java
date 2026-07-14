@@ -1,9 +1,9 @@
 package com.airton.avoidminer.item;
 
 public final class HypersonicCannonRules {
-    public static final CannonTier TIER_1 = new CannonTier(1, 100, 200, 34, 15.0, 10.0F, 10.0F, 0.0, 1, 0, 0.0);
-    public static final CannonTier TIER_2 = new CannonTier(2, 200, 160, 30, 20.0, 14.0F, 7.0F, 7.0, 4, 0, 0.0);
-    public static final CannonTier TIER_3 = new CannonTier(3, 300, 120, 26, 26.0, 18.0F, 9.0F, 12.0, 8, 2, 8.0);
+    public static final CannonTier TIER_1 = new CannonTier(1, 100, 200, 34, 15.0, 10.0F, 10.0F, 2.0, 1, 0, 0.0);
+    public static final CannonTier TIER_2 = new CannonTier(2, 200, 160, 30, 20.0, 14.0F, 7.0F, 11.0, 4, 0, 0.0);
+    public static final CannonTier TIER_3 = new CannonTier(3, 300, 120, 26, 26.0, 18.0F, 9.0F, 20.0, 8, 2, 8.0);
 
     private HypersonicCannonRules() {
     }
@@ -22,6 +22,17 @@ public final class HypersonicCannonRules {
 
     public static double adjustedKnockback(double strength, double resistance) {
         return strength * (1.0 - resistance);
+    }
+
+    public static boolean coneIntersectsTarget(double forwardDistance, double lateralDistance,
+                                               double targetRadius, double range, double coneDegrees) {
+        if (forwardDistance + targetRadius < 0.0 || forwardDistance - targetRadius > range) {
+            return false;
+        }
+
+        double clampedForward = Math.clamp(forwardDistance, 0.0, range);
+        double coneRadius = Math.tan(Math.toRadians(coneDegrees)) * clampedForward;
+        return lateralDistance <= coneRadius + targetRadius;
     }
 
     public static float damageAtDistance(CannonTier tier, double distance) {

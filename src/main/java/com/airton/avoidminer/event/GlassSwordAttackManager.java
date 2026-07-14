@@ -23,6 +23,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -124,6 +125,7 @@ public final class GlassSwordAttackManager {
         private final ItemStack weapon;
         private final Set<UUID> hitTargets = new HashSet<>();
         private int step;
+        private UUID lastHitUuid;
 
         private PressureWave(ResourceKey<Level> dimension, UUID ownerId, Vec3 origin,
                              Vec3 direction, ItemStack weapon) {
@@ -138,6 +140,9 @@ public final class GlassSwordAttackManager {
             ServerLevel level = server.getLevel(dimension);
             ServerPlayer owner = server.getPlayerList().getPlayer(ownerId);
             if (level == null || owner == null || owner.level() != level || step >= GlassSwordRules.WAVE_RANGE) {
+                if (level != null && owner != null && lastHitUuid != null) {
+                    triggerRicochet(level, owner);
+                }
                 return false;
             }
 
@@ -155,11 +160,35 @@ public final class GlassSwordAttackManager {
                         && Math.abs(relative.dot(direction)) <= 0.9
                         && Math.abs(relative.dot(up)) <= 1.7) {
                     hitTargets.add(target.getUUID());
+                    lastHitUuid = target.getUUID();
                     damageTarget(level, owner, weapon, target, direction,
                             GlassSwordRules.BASE_DAMAGE, 0.55F);
                 }
             }
             return step < GlassSwordRules.WAVE_RANGE;
+        }
+
+        private void triggerRicochet(ServerLevel level, ServerPlayer owner) {
+            for (int bounce = 0; bounce < 2; bounce++) {
+                LivingEntity origin = (LivingEntity) level.getEntity(lastHitUuid);
+                if (origin == null) return;
+
+                Vec3 originPos = origin.getEyePosition();
+                LivingEntity next = level.getEntitiesOfClass(LivingEntity.class,
+                                origin.getBoundingBox().inflate(8.0),
+                                target -> isValidTarget(owner, target) && !hitTargets.contains(target.getUUID()))
+                        .stream()
+                        .min(Comparator.comparingDouble(t -> originPos.distanceToSqr(t.getEyePosition())))
+                        .orElse(null);
+                if (next == null) return;
+
+                Vec3 delta = next.getEyePosition().subtract(originPos);
+                Vec3 bounceDirection = delta.normalize();
+                damageTarget(level, owner, weapon, next, bounceDirection,
+                        GlassSwordRules.BASE_DAMAGE * 0.5F, 0.55F);
+                hitTargets.add(next.getUUID());
+                lastHitUuid = next.getUUID();
+            }
         }
     }
 }

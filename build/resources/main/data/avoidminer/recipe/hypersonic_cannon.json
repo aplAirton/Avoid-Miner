@@ -10,7 +10,7 @@
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:echo_shard",
     "S": "minecraft:sculk",
-    "H": "minecraft:goat_horn",
+    "H": "#avoidminer:goat_horns",
     "C": "minecraft:sculk_catalyst"
   },
   "result": {

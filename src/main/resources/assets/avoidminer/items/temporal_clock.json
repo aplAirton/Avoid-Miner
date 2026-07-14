@@ -1,6 +1,3 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "minecraft:item/clock_00"
-  }
+  "model": { "type": "model", "model": "avoidminer:item/temporal_clock" }
 }

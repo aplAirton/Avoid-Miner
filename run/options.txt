@@ -18,7 +18,7 @@ prioritizeChunkUpdates:1
 fullscreen:false
 exclusiveFullscreen:false
 gamma:1.0
-guiScale:3
+guiScale:0
 maxAnisotropyBit:1
 textureFiltering:1
 maxFps:120

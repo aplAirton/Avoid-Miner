@@ -1,4 +1,4 @@
 {
-  "model": { "type": "minecraft:model", "model": "minecraft:item/echo_shard" },
+  "model": { "type": "model", "model": "avoidminer:item/deep_dark_upgrade" },
   "properties": { "hand_animation_on_swap": true }
 }

@@ -1,6 +1,3 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "minecraft:item/netherite_upgrade_smithing_template"
-  }
+  "model": { "type": "model", "model": "avoidminer:item/hypersonic_smithing_template" }
 }

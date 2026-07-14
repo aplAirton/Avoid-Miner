@@ -4,6 +4,8 @@ import com.airton.avoidminer.enchantment.SonicProtectionRules;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class HypersonicCannonItemTest {
     @Test
@@ -56,8 +58,24 @@ public class HypersonicCannonItemTest {
 
     @Test
     public void tierThreeAddsWideConePenetrationAndRicochets() {
-        assertEquals(12.0, HypersonicCannonRules.TIER_3.coneDegrees(), 0.0001);
+        assertEquals(20.0, HypersonicCannonRules.TIER_3.coneDegrees(), 0.0001);
         assertEquals(8, HypersonicCannonRules.TIER_3.maxTargets());
         assertEquals(2, HypersonicCannonRules.TIER_3.ricochets());
+    }
+
+    @Test
+    public void tierOneHitsWhenTheShotCrossesAnyPartOfTheTargetHitbox() {
+        assertTrue(HypersonicCannonRules.coneIntersectsTarget(10.0, 0.8, 1.0, 15.0, 2.0));
+    }
+
+    @Test
+    public void targetBehindShooterOrBeyondRangeIsRejected() {
+        assertFalse(HypersonicCannonRules.coneIntersectsTarget(-2.0, 0.0, 0.5, 15.0, 2.0));
+        assertFalse(HypersonicCannonRules.coneIntersectsTarget(17.0, 0.0, 0.5, 15.0, 2.0));
+    }
+
+    @Test
+    public void targetOutsideTierOneConeAndHitboxIsRejected() {
+        assertFalse(HypersonicCannonRules.coneIntersectsTarget(10.0, 2.0, 0.5, 15.0, 2.0));
     }
 }

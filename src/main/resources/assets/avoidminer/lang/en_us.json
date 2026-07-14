@@ -267,7 +267,7 @@
   "item.avoidminer.warden_heart": "Warden Heart",
   "tooltip.avoidminer.warden_heart.drop": "5% chance to drop when a Warden is killed",
   "item.avoidminer.temporal_clock": "Temporal Clock",
-  "tooltip.avoidminer.temporal_clock.effect": "Freezes world ticks, entities and projectiles for 5 seconds",
+  "tooltip.avoidminer.temporal_clock.effect": "Freezes world ticks, entities and projectiles for 8 seconds",
   "tooltip.avoidminer.temporal_clock.balance": "30 second cooldown | 50 uses",
   "tooltip.avoidminer.temporal_clock.heart": "Crafted with a Warden Heart (5% Warden drop)",
   "message.avoidminer.temporal_clock.already_frozen": "Time is already frozen",
@@ -286,5 +286,11 @@
   "tooltip.avoidminer.resonant_shield.release": "At full charge, use twice quickly to stun and repel enemies",
   "item.avoidminer.seismic_propulsion_boots": "Seismic Propulsion Boots",
   "tooltip.avoidminer.seismic_boots.arm": "Sneak during a significant fall to arm the impact",
-  "tooltip.avoidminer.seismic_boots.impact": "Cancels fall damage and damages monsters in an %s-%s block seismic area"
+  "tooltip.avoidminer.seismic_boots.impact": "Cancels fall damage and damages monsters in an %s-%s block seismic area",
+  "item.avoidminer.temporal_clock_creative": "Creative Temporal Clock",
+  "tooltip.avoidminer.temporal_clock_creative.effect": "Freezes world ticks for 8 seconds",
+  "tooltip.avoidminer.temporal_clock_creative.toggle": "Second click unfreezes | No cooldown",
+  "item.avoidminer.hypersonic_cannon_creative": "Creative Hypersonic Cannon",
+  "tooltip.avoidminer.hypersonic_cannon_creative.effect": "Maximum power sonic blast with no cooldown",
+  "tooltip.avoidminer.hypersonic_cannon_creative.stats": "Range: %s blocks | Instant recharge"
 }

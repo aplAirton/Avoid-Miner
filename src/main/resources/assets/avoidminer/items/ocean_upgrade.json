@@ -1,4 +1,4 @@
 {
-  "model": { "type": "minecraft:model", "model": "minecraft:item/nautilus_shell" },
+  "model": { "type": "model", "model": "avoidminer:item/ocean_upgrade" },
   "properties": { "hand_animation_on_swap": true }
 }

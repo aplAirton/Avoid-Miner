@@ -267,7 +267,7 @@
   "item.avoidminer.warden_heart": "Coração do Warden",
   "tooltip.avoidminer.warden_heart.drop": "5% de chance de ser obtido ao matar um Warden",
   "item.avoidminer.temporal_clock": "Relógio Temporal",
-  "tooltip.avoidminer.temporal_clock.effect": "Congela mundo, entidades e projéteis por 5 segundos",
+  "tooltip.avoidminer.temporal_clock.effect": "Congela mundo, entidades e projéteis por 8 segundos",
   "tooltip.avoidminer.temporal_clock.balance": "Recarga de 30 segundos | 50 usos",
   "tooltip.avoidminer.temporal_clock.heart": "Criado com um Coração do Warden (5% de drop)",
   "message.avoidminer.temporal_clock.already_frozen": "O tempo já está congelado",
@@ -286,5 +286,11 @@
   "tooltip.avoidminer.resonant_shield.release": "Com carga máxima, use duas vezes rapidamente para atordoar e repelir inimigos",
   "item.avoidminer.seismic_propulsion_boots": "Botas de Propulsão Sísmica",
   "tooltip.avoidminer.seismic_boots.arm": "Agache durante uma queda considerável para armar o impacto",
-  "tooltip.avoidminer.seismic_boots.impact": "Cancela a queda e causa dano em monstros numa área sísmica de %s-%s blocos"
+  "tooltip.avoidminer.seismic_boots.impact": "Cancela a queda e causa dano em monstros numa área sísmica de %s-%s blocos",
+  "item.avoidminer.temporal_clock_creative": "Relógio Temporal Criativo",
+  "tooltip.avoidminer.temporal_clock_creative.effect": "Congela o mundo por 8 segundos",
+  "tooltip.avoidminer.temporal_clock_creative.toggle": "Segundo clique despausa | Sem recarga",
+  "item.avoidminer.hypersonic_cannon_creative": "Canhão Hipersônico Criativo",
+  "tooltip.avoidminer.hypersonic_cannon_creative.effect": "Rajada sônica de potência máxima sem recarga",
+  "tooltip.avoidminer.hypersonic_cannon_creative.stats": "Alcance: %s blocos | Recarga instantânea"
 }

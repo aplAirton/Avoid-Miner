@@ -1,21 +1,3 @@
-/fill 99 50 -223 145 35 -265 air replace
-/fill 99 20 -223 145 35 -265 air replace
-/fill 99 20 -223 145 5 -265 air replace
-/fill 99 0 -223 145 5 -265 air replace
-/fill 99 0 -223 145 -15 -265 air replace minecraft:stone
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate
-/fill 99 0 -223 145 -15 -265 air replace minecraft:tuff
-/fill 99 0 -223 145 -15 -265 air replace minecraft:diamond_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_diamond_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_gold_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_redstone_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:oak_planks
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_iron_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_lapis_ore
-/fill 99 0 -223 145 -15 -265 air replace minecraft:deepslate_copper_ore
-/weather clear
-/time pause
-/time set minecraft:day
 /give @a minecraft:netherite_pickaxe
 /weather clear
 /give @a minecraft:netherite_pickaxe
@@ -48,3 +30,21 @@
 /give @s minecraft:suspicious_gravel[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"minecraft:archaeology/trail_ruins_rare",LootTableSeed:2L}]
 /loot give @s loot avoidminer:cards/archaeology_boss_card
 /give @s minecraft:suspicious_sand[minecraft:block_entity_data={id:"minecraft:brushable_block",LootTable:"avoidminer:cards/archaeology_boss_card"}]
+/time pause
+/gamerule advance_time false
+/time set minecraft:midnight
+/locate biome minecraft:desert
+/tp @s 266 91 307
+/spawnpoint @a 225 69 541
+/give @a minecraft:netherite_sword 1
+/enchant @a minecraft:sharpness 200
+/enchant @a minecraft:sharpness 5
+/summon minecraft:villager ~ ~ ~
+/summon minecraft:iron_golem ~ ~ ~
+/summon minecraft:ghast ~ ~ ~
+/summon minecraft:iron_golem ~ ~ ~
+/summon minecraft:ghast ~ ~ ~
+/summon minecraft:guardian ~ ~ ~
+/summon minecraft:warden ~ ~ ~
+/summon minecraft:zoglin ~ ~ ~
+/summon minecraft:iron_golem ~ ~ ~
