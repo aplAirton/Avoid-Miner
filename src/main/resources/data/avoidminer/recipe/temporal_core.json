@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "avoidminer:temporal_fragment",
+    "avoidminer:temporal_fragment",
+    "avoidminer:temporal_fragment",
+    "avoidminer:temporal_fragment"
+  ],
+  "result": {
+    "id": "avoidminer:temporal_core",
+    "count": 1
+  }
+}

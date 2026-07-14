@@ -9,7 +9,7 @@
     "N": "minecraft:nether_star",
     "E": "minecraft:echo_shard",
     "H": "avoidminer:warden_heart",
-    "C": "minecraft:clock"
+    "C": "avoidminer:temporal_slow_clock"
   },
   "result": {
     "id": "avoidminer:temporal_clock",

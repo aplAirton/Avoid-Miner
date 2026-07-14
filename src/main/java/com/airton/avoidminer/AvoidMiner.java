@@ -41,6 +41,8 @@ public class AvoidMiner {
                 ModBlocks.AVOID_LOOTR.get());
         event.modify(ModBlockEntities.BATTERY.getKey(),
                 ModBlocks.BATTERY.get());
+        event.modify(ModBlockEntities.CREATIVE_BATTERY.getKey(),
+                ModBlocks.CREATIVE_BATTERY.get());
     }
 
     private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -52,5 +54,7 @@ public class AvoidMiner {
                 (be, side) -> be.getItemHandler(side));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.BATTERY.get(),
                 (be, side) -> be.getItemHandler(side));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.CREATIVE_BATTERY.get(),
+                (be, side) -> null);
     }
 }

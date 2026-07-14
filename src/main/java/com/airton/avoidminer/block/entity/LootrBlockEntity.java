@@ -3,6 +3,7 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.LootrBlock;
+import com.airton.avoidminer.energy.EnergyReceiver;
 import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LootrBlockEntity extends BlockEntity {
+public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
     public static final int FUEL_SLOT = 0;
     public static final int CARD_SLOT = 1;
     public static final int OUTPUT_START = 2;
@@ -321,6 +322,17 @@ public class LootrBlockEntity extends BlockEntity {
                 toPlace -= add;
             }
         }
+    }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int maxAdd = Math.min(maxReceive, ENERGY_CAPACITY - energyBuffer);
+        if (maxAdd <= 0) return 0;
+        if (!simulate) {
+            energyBuffer += maxAdd;
+            setChanged();
+        }
+        return maxAdd;
     }
 
     public void openMenu(ServerPlayer player) {

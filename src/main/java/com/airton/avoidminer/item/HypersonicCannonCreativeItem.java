@@ -43,6 +43,9 @@ public class HypersonicCannonCreativeItem extends Item {
     }
 
     @Override
+    public boolean isFoil(ItemStack stack) { return true; }
+
+    @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
         if (!level.isClientSide()) {

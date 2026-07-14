@@ -4,6 +4,7 @@ import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity.UpgradeType;
+import com.airton.avoidminer.energy.EnergyReceiver;
 import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ProcessorBlockEntity extends BlockEntity {
+public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver {
     public static final int FUEL_SLOT = 0;
     public static final int MAX_INPUTS = 5;
     public static final int UPGRADE_COUNT = 2;
@@ -422,6 +423,17 @@ public class ProcessorBlockEntity extends BlockEntity {
     }
 
     public boolean isBurning() { return energyBuffer > 0; }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int maxAdd = Math.min(maxReceive, tier.energyCapacity - energyBuffer);
+        if (maxAdd <= 0) return 0;
+        if (!simulate) {
+            energyBuffer += maxAdd;
+            setChanged();
+        }
+        return maxAdd;
+    }
 
     public void openMenu(ServerPlayer player) {
         player.openMenu(getMenuProvider(), worldPosition);

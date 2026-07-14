@@ -3,6 +3,7 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.AvoidMinerBlock;
+import com.airton.avoidminer.energy.EnergyReceiver;
 import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.menu.AvoidMinerMenu;
 import net.minecraft.core.BlockPos;
@@ -31,7 +32,7 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-public class AvoidMinerBlockEntity extends BlockEntity {
+public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver {
     public static final int FUEL_SLOT = 0;
     public static final int OUTPUT_START = 1;
     public static final int OUTPUT_COUNT = 27;
@@ -321,8 +322,7 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.AZURE_BLUET), 12),
                     new WeightedResource(new ItemStack(Items.CORNFLOWER), 8),
                     new WeightedResource(new ItemStack(Items.OXEYE_DAISY), 8),
-                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 8),
-                    new WeightedResource(new ItemStack(Items.TORCHFLOWER), 8)
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 8)
                 );
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 180),
@@ -355,7 +355,6 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.CORNFLOWER), 6),
                     new WeightedResource(new ItemStack(Items.OXEYE_DAISY), 6),
                     new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 6),
-                    new WeightedResource(new ItemStack(Items.TORCHFLOWER), 6),
                     new WeightedResource(new ItemStack(Items.RED_TULIP), 8),
                     new WeightedResource(new ItemStack(Items.ORANGE_TULIP), 8),
                     new WeightedResource(new ItemStack(Items.WHITE_TULIP), 8),
@@ -364,32 +363,30 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.LILAC), 6),
                     new WeightedResource(new ItemStack(Items.ROSE_BUSH), 6),
                     new WeightedResource(new ItemStack(Items.PEONY), 6),
-                    new WeightedResource(new ItemStack(Items.PINK_PETALS), 6),
-                    new WeightedResource(new ItemStack(Items.PITCHER_PLANT), 4)
+                    new WeightedResource(new ItemStack(Items.PINK_PETALS), 6)
                 );
             };
             this.netherResources = switch (this) {
                 case TIER_1 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.QUARTZ), 680),
                     new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 240),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 45)
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 5)
                 );
                 case TIER_2 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.QUARTZ), 530),
                     new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 330),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 90)
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 10)
                 );
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.QUARTZ), 380),
                     new WeightedResource(new ItemStack(Items.GOLD_NUGGET), 420),
-                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 130)
+                    new WeightedResource(new ItemStack(Items.ANCIENT_DEBRIS), 14)
                 );
             };
             this.endResources = switch (this) {
                 case TIER_1 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.END_STONE), 580),
                     new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 250),
-                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 80),
                     new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 30),
                     new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 30),
                     new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 20),
@@ -399,7 +396,6 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                 case TIER_2 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.END_STONE), 430),
                     new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 270),
-                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 150),
                     new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 50),
                     new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 40),
                     new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 40),
@@ -409,7 +405,6 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.END_STONE), 330),
                     new WeightedResource(new ItemStack(Items.CHORUS_FRUIT), 280),
-                    new WeightedResource(new ItemStack(Items.ENDER_PEARL), 200),
                     new WeightedResource(new ItemStack(Items.PURPUR_BLOCK), 60),
                     new WeightedResource(new ItemStack(Items.POPPED_CHORUS_FRUIT), 50),
                     new WeightedResource(new ItemStack(Items.END_STONE_BRICKS), 40),
@@ -424,41 +419,39 @@ public class AvoidMinerBlockEntity extends BlockEntity {
                     new WeightedResource(new ItemStack(Items.SCULK_SENSOR), 120),
                     new WeightedResource(new ItemStack(Items.AMETHYST_SHARD), 80),
                     new WeightedResource(new ItemStack(Items.GLOW_BERRIES), 60),
-                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 35),
+                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 2),
                     new WeightedResource(new ItemStack(Items.DISC_FRAGMENT_5), 20),
                     new WeightedResource(new ItemStack(Items.SCULK_CATALYST), 18),
                     new WeightedResource(new ItemStack(Items.SCULK_SHRIEKER), 8),
-                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 3),
-                    new WeightedResource(new ItemStack(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE), 1)
+                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 2),
+                    new WeightedResource(new ItemStack(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE), 2)
                 );
                 case TIER_2 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.SCULK), 400),
                     new WeightedResource(new ItemStack(Items.SCULK_VEIN), 140),
                     new WeightedResource(new ItemStack(Items.SCULK_SENSOR), 130),
-                    new WeightedResource(new ItemStack(Items.CALIBRATED_SCULK_SENSOR), 45),
                     new WeightedResource(new ItemStack(Items.AMETHYST_SHARD), 70),
                     new WeightedResource(new ItemStack(Items.GLOW_BERRIES), 45),
-                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 75),
+                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 5),
                     new WeightedResource(new ItemStack(Items.DISC_FRAGMENT_5), 30),
                     new WeightedResource(new ItemStack(Items.SCULK_CATALYST), 42),
                     new WeightedResource(new ItemStack(Items.SCULK_SHRIEKER), 22),
-                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 7),
+                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 2),
                     new WeightedResource(new ItemStack(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE), 2)
                 );
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.SCULK), 280),
                     new WeightedResource(new ItemStack(Items.SCULK_VEIN), 90),
                     new WeightedResource(new ItemStack(Items.SCULK_SENSOR), 110),
-                    new WeightedResource(new ItemStack(Items.CALIBRATED_SCULK_SENSOR), 80),
                     new WeightedResource(new ItemStack(Items.AMETHYST_SHARD), 55),
                     new WeightedResource(new ItemStack(Items.GLOW_BERRIES), 35),
-                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 120),
+                    new WeightedResource(new ItemStack(Items.ECHO_SHARD), 7),
                     new WeightedResource(new ItemStack(Items.DISC_FRAGMENT_5), 45),
                     new WeightedResource(new ItemStack(Items.SCULK_CATALYST), 70),
                     new WeightedResource(new ItemStack(Items.SCULK_SHRIEKER), 40),
                     new WeightedResource(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE), 2),
-                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 12),
-                    new WeightedResource(new ItemStack(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE), 4)
+                    new WeightedResource(new ItemStack(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE), 2),
+                    new WeightedResource(new ItemStack(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE), 2)
                 );
             };
             this.oceanResources = switch (this) {
@@ -762,6 +755,17 @@ public class AvoidMinerBlockEntity extends BlockEntity {
     }
 
     public boolean isBurning() { return energyBuffer > 0; }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int maxAdd = Math.min(maxReceive, getEnergyCapacity() - energyBuffer);
+        if (maxAdd <= 0) return 0;
+        if (!simulate) {
+            energyBuffer += maxAdd;
+            setChanged();
+        }
+        return maxAdd;
+    }
 
     public void openMenu(ServerPlayer player) {
         player.openMenu(getMenuProvider(), worldPosition);

@@ -24,6 +24,9 @@ public class TemporalClockCreativeItem extends Item {
     }
 
     @Override
+    public boolean isFoil(ItemStack stack) { return true; }
+
+    @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!(level instanceof ServerLevel serverLevel)) {
             return InteractionResult.SUCCESS;
@@ -32,9 +35,6 @@ public class TemporalClockCreativeItem extends Item {
         if (serverLevel.tickRateManager().isFrozen()) {
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK,
                     SoundSource.PLAYERS, 1.0F, 1.2F);
-            serverLevel.sendParticles(ParticleTypes.SONIC_BOOM, true, true,
-                    player.getX(), player.getY() + player.getBbHeight() * 0.5, player.getZ(),
-                    30, 0.4, 0.4, 0.4, 0.01);
             TemporalFreezeManager.unfreeze(serverLevel.getServer());
         } else {
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.WARDEN_HEARTBEAT,

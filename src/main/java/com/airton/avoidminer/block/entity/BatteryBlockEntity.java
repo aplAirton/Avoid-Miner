@@ -3,6 +3,7 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.BatteryBlock;
+import com.airton.avoidminer.energy.EnergyReceiver;
 import com.airton.avoidminer.menu.BatteryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -193,6 +194,20 @@ public class BatteryBlockEntity extends BlockEntity {
                         be.energyBuffer += energy;
                         be.itemHandler.set(FUEL_SLOT, fuelRes, fuelAmt - 1);
                         be.chargingTicks = 8;
+                        dirty = true;
+                    }
+                }
+            }
+        }
+
+        if (be.energyBuffer > 0) {
+            for (Direction dir : Direction.values()) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof EnergyReceiver receiver) {
+                    int transferred = Math.min(100, be.energyBuffer);
+                    int accepted = receiver.receiveEnergy(transferred, false);
+                    if (accepted > 0) {
+                        be.energyBuffer -= accepted;
                         dirty = true;
                     }
                 }

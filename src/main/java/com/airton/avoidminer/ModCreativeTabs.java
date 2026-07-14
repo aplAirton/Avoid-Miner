@@ -32,8 +32,12 @@ public class ModCreativeTabs {
                         output.accept(ModItems.HYPERSONIC_CANNON_TIER_3.get());
                         output.accept(ModItems.HYPERSONIC_CANNON_CREATIVE.get());
                         output.accept(ModItems.WARDEN_HEART.get());
+                        output.accept(ModItems.TEMPORAL_FRAGMENT.get());
+                        output.accept(ModItems.TEMPORAL_CORE.get());
                         output.accept(ModItems.TEMPORAL_CLOCK.get());
                         output.accept(ModItems.TEMPORAL_CLOCK_CREATIVE.get());
+                        output.accept(ModItems.TEMPORAL_SLOW_CLOCK.get());
+                        output.accept(ModItems.TEMPORAL_SLOW_CLOCK_CREATIVE.get());
                         output.accept(ModItems.HYPERSONIC_SMITHING_TEMPLATE.get());
                         output.accept(ModItems.GLASS_SWORD.get());
                         output.accept(ModItems.RESONANT_RETALIATION_SHIELD.get());
@@ -47,6 +51,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LOOT_UPGRADE.get());
                         output.accept(ModBlocks.AVOID_LOOTR.get());
                         output.accept(ModItems.BATTERY.get());
+                        output.accept(ModItems.CREATIVE_BATTERY.get());
                         output.accept(ModItems.ENERGY_LINK.get());
                         output.accept(ModItems.CAPACITY_UPGRADE_TIER_1.get());
                         output.accept(ModItems.CAPACITY_UPGRADE_TIER_2.get());

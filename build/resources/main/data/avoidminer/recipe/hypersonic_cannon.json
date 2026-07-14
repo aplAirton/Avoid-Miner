@@ -4,14 +4,14 @@
   "pattern": [
     "MEM",
     "SHS",
-    "MCM"
+    "MWM"
   ],
   "key": {
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:echo_shard",
-    "S": "minecraft:sculk",
+    "S": "minecraft:sculk_catalyst",
     "H": "#avoidminer:goat_horns",
-    "C": "minecraft:sculk_catalyst"
+    "W": "avoidminer:warden_heart"
   },
   "result": {
     "id": "avoidminer:hypersonic_cannon",

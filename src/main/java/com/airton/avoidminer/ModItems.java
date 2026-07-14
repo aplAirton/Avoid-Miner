@@ -10,6 +10,10 @@ import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.item.ResonantRetaliationShieldItem;
 import com.airton.avoidminer.item.SeismicPropulsionBootsItem;
 import com.airton.avoidminer.item.TemporalClockItem;
+import com.airton.avoidminer.item.TemporalCoreItem;
+import com.airton.avoidminer.item.TemporalFragmentItem;
+import com.airton.avoidminer.item.TemporalSlowClockCreativeItem;
+import com.airton.avoidminer.item.TemporalSlowClockItem;
 import com.airton.avoidminer.item.WardenHeartItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
@@ -178,8 +182,16 @@ public class ModItems {
     public static final DeferredItem<Item> TEMPORAL_CLOCK = ITEMS.registerItem("temporal_clock", TemporalClockItem::new);
     public static final DeferredItem<TemporalClockCreativeItem> TEMPORAL_CLOCK_CREATIVE = ITEMS.registerItem(
             "temporal_clock_creative", TemporalClockCreativeItem::new);
+    public static final DeferredItem<TemporalSlowClockItem> TEMPORAL_SLOW_CLOCK = ITEMS.registerItem(
+            "temporal_slow_clock", TemporalSlowClockItem::new);
+    public static final DeferredItem<TemporalSlowClockCreativeItem> TEMPORAL_SLOW_CLOCK_CREATIVE = ITEMS.registerItem(
+            "temporal_slow_clock_creative", TemporalSlowClockCreativeItem::new);
     public static final DeferredItem<HypersonicCannonCreativeItem> HYPERSONIC_CANNON_CREATIVE = ITEMS.registerItem(
             "hypersonic_cannon_creative", HypersonicCannonCreativeItem::new);
+    public static final DeferredItem<Item> TEMPORAL_FRAGMENT = ITEMS.registerItem(
+            "temporal_fragment", TemporalFragmentItem::new);
+    public static final DeferredItem<Item> TEMPORAL_CORE = ITEMS.registerItem(
+            "temporal_core", TemporalCoreItem::new);
     public static final DeferredItem<Item> HYPERSONIC_SMITHING_TEMPLATE = ITEMS.registerItem(
             "hypersonic_smithing_template", HypersonicSmithingTemplateItem::new);
     public static final DeferredItem<Item> GLASS_SWORD = ITEMS.registerItem("glass_sword", GlassSwordItem::new);
@@ -285,6 +297,23 @@ public class ModItems {
 
     public static final DeferredItem<BlockItem> AVOID_LOOTR = ITEMS.registerItem("avoid_lootr",
             props -> new BlockItem(ModBlocks.AVOID_LOOTR.get(), props.stacksTo(1)));
+
+    // Bateria Criativa (energia infinita)
+    public static final DeferredItem<BlockItem> CREATIVE_BATTERY = ITEMS.registerItem("creative_battery",
+            props -> new BlockItem(ModBlocks.CREATIVE_BATTERY.get(), props.stacksTo(1)) {
+                @Override
+                public boolean isFoil(ItemStack stack) { return true; }
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+                                            Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.creative_battery.desc")
+                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                    builder.accept(Component.translatable("tooltip.avoidminer.creative_battery.usage")
+                            .withStyle(ChatFormatting.GRAY));
+                    builder.accept(Component.translatable("tooltip.avoidminer.creative_battery.stored")
+                            .withStyle(ChatFormatting.RED));
+                }
+            });
 
     // Bateria + Link de Energia
     public static final DeferredItem<BlockItem> BATTERY = ITEMS.registerItem("battery",
