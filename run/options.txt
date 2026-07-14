@@ -18,7 +18,7 @@ prioritizeChunkUpdates:1
 fullscreen:false
 exclusiveFullscreen:false
 gamma:1.0
-guiScale:0
+guiScale:4
 maxAnisotropyBit:1
 textureFiltering:1
 maxFps:120
@@ -64,7 +64,7 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:[]
+resourcePacks:["vanilla","mod_resources"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:pt_br
@@ -167,6 +167,17 @@ key_key.debug.profilingChart:key.keyboard.1
 key_key.debug.fpsCharts:key.keyboard.2
 key_key.debug.networkCharts:key.keyboard.3
 key_key.debug.lightmapTexture:key.keyboard.4
+key_key.jade.config:key.keyboard.keypad.0
+key_key.jade.show_overlay:key.keyboard.keypad.1
+key_key.jade.toggle_liquid:key.keyboard.keypad.2
+key_key.jade.show_recipes:key.keyboard.keypad.3
+key_key.jade.show_uses:key.keyboard.keypad.4
+key_key.jade.narrate:key.keyboard.keypad.5
+key_key.jade.show_details:key.keyboard.left.shift
+key_key.jade.profile.0:key.keyboard.unknown
+key_key.jade.profile.1:key.keyboard.unknown
+key_key.jade.profile.2:key.keyboard.unknown
+key_key.jade.profile.3:key.keyboard.unknown
 key_key.jei.toggleOverlay:key.keyboard.o:CONTROL_OR_COMMAND
 key_key.jei.focusSearch:key.keyboard.f:CONTROL_OR_COMMAND
 key_key.jei.previousPage:key.keyboard.unknown

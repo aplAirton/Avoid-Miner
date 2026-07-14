@@ -2,6 +2,7 @@ package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.event.GlassSwordAttackManager;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -61,14 +63,15 @@ public class GlassSwordItem extends Item {
             return;
         }
 
+        int chargeTicks = getChargeTicks(stack, level);
         int heldTicks = getUseDuration(stack, entity) - ticksRemaining;
-        if (heldTicks == GlassSwordRules.CHARGE_TICKS) {
+        if (heldTicks == chargeTicks) {
             emitReadyBurst(serverLevel, player);
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.WARDEN_TENDRIL_CLICKS,
                     SoundSource.PLAYERS, 0.55F, 1.35F);
-        } else if (heldTicks < GlassSwordRules.CHARGE_TICKS && heldTicks % 2 == 0) {
-            emitChargingSpiral(serverLevel, player, heldTicks);
-        } else if (heldTicks > GlassSwordRules.CHARGE_TICKS && heldTicks % 3 == 0) {
+        } else if (heldTicks < chargeTicks && heldTicks % 2 == 0) {
+            emitChargingSpiral(serverLevel, player, heldTicks, chargeTicks);
+        } else if (heldTicks > chargeTicks && heldTicks % 3 == 0) {
             emitChargedHalo(serverLevel, player, heldTicks);
         }
     }
@@ -78,12 +81,13 @@ public class GlassSwordItem extends Item {
         if (!(entity instanceof Player player)) {
             return false;
         }
+        int chargeTicks = getChargeTicks(stack, level);
         int heldTicks = getUseDuration(stack, entity) - remainingTime;
         if (!(level instanceof ServerLevel serverLevel)) {
             return true;
         }
 
-        if (GlassSwordRules.isCharged(heldTicks)) {
+        if (heldTicks >= chargeTicks) {
             GlassSwordAttackManager.launchPressureWave(serverLevel, player, stack.copy());
             completeSpecialAttack(player, stack);
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.BREEZE_SHOOT,
@@ -99,8 +103,18 @@ public class GlassSwordItem extends Item {
         player.awardStat(Stats.ITEM_USED.get(this));
     }
 
-    private static void emitChargingSpiral(ServerLevel level, Player player, int heldTicks) {
-        double progress = Math.min(1.0, heldTicks / (double) GlassSwordRules.CHARGE_TICKS);
+    private static int getChargeTicks(ItemStack stack, Level level) {
+        var lookup = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        var holderResult = lookup.get(GlassSwordRules.SONIC_CHARGE);
+        if (holderResult.isPresent()) {
+            int enchantLevel = stack.getEnchantments().getLevel(holderResult.get());
+            return GlassSwordRules.getChargeTicks(enchantLevel);
+        }
+        return GlassSwordRules.CHARGE_TICKS;
+    }
+
+    private static void emitChargingSpiral(ServerLevel level, Player player, int heldTicks, int chargeTicks) {
+        double progress = Math.min(1.0, heldTicks / (double) chargeTicks);
         Vec3 focus = chargeFocus(player);
         Vec3 side = horizontalSide(player);
         double radius = 0.72 - progress * 0.48;
@@ -158,7 +172,5 @@ public class GlassSwordItem extends Item {
                                 Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(Component.translatable("tooltip.avoidminer.glass_sword.wave", GlassSwordRules.WAVE_RANGE)
                 .withStyle(ChatFormatting.AQUA));
-        builder.accept(Component.translatable("tooltip.avoidminer.glass_sword.enchantments")
-                .withStyle(ChatFormatting.GRAY));
     }
 }

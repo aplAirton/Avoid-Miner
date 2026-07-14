@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "pattern": ["RER", "SCS", "RER"],
+  "pattern": ["RER", "SCS", "RAR"],
   "key": {
-    "R": "avoidminer:raw_magnetite_block",
+    "R": "avoidminer:magnetite_block",
     "E": "minecraft:echo_shard",
     "S": "minecraft:sculk_shrieker",
+    "A": "avoidminer:warden_heart",
     "C": "avoidminer:hypersonic_cannon_tier_2"
   },
   "result": { "id": "avoidminer:hypersonic_cannon_tier_3", "count": 1 }

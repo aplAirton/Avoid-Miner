@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "pattern": ["MEM", "SCS", "MEM"],
+  "pattern": ["MEM", "SCS", "MAM"],
   "key": {
     "M": "avoidminer:magnetite_ingot",
-    "E": "minecraft:echo_shard",
+    "A": "avoidminer:warden_heart",
     "S": "minecraft:sculk_sensor",
+    "E": "minecraft:echo_shard",
     "C": "avoidminer:hypersonic_cannon"
   },
   "result": { "id": "avoidminer:hypersonic_cannon_tier_2", "count": 1 }
