@@ -203,6 +203,8 @@
   "item.avoidminer.shulker_card": "Shulker Card",
   "block.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
   "item.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
+  "block.avoidminer.magnetite_block": "Block of Magnetite",
+  "item.avoidminer.magnetite_block": "Block of Magnetite",
   "item.avoidminer.magnetite_nugget": "Magnetite Nugget",
   "item.avoidminer.magnetite_powder": "Magnetite Powder",
 

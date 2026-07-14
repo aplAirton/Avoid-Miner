@@ -1,4 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": { "layer0": "avoidminer:item/creative_battery" }
+  "parent": "avoidminer:block/creative_battery"
 }

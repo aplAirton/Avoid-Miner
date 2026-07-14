@@ -66,6 +66,13 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.NETHERITE_BLOCK));
 
+    public static final DeferredBlock<Block> MAGNETITE_BLOCK = BLOCKS.registerBlock("magnetite_block",
+            Block::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(5.0f, 6.0f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL));
+
     public static final DeferredBlock<Block> AVOID_LOOTR = BLOCKS.registerBlock("avoid_lootr",
             LootrBlock::new,
             () -> BlockBehaviour.Properties.of()

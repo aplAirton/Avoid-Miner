@@ -168,6 +168,7 @@ public class ModItems {
 
     public static final DeferredItem<BlockItem> MAGNETITE_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_ORE);
     public static final DeferredItem<BlockItem> RAW_MAGNETITE_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RAW_MAGNETITE_BLOCK);
+    public static final DeferredItem<BlockItem> MAGNETITE_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_BLOCK);
     public static final DeferredItem<Item> RAW_MAGNETITE = ITEMS.registerSimpleItem("raw_magnetite");
     public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
     public static final DeferredItem<Item> MAGNETITE_NUGGET = ITEMS.registerSimpleItem("magnetite_nugget");

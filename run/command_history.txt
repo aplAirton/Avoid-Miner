@@ -1,11 +1,3 @@
-/fill 125 72 -205 98 62 -227 minecraft:dirt
-/fill 125 72 -205 98 81 -227 minecraft:dirt
-/gamerule advance_weather false
-/gamemode creative
-/give @a minecraft:golden_apple 50
-/gamemode creative
-/gamemode survival
-/locate structure minecraft:ancient_city
 /tp @s 1728 ~ 1360
 /effect give @a minecraft:night_vision infinite
 /tp @a 0 70 0
@@ -47,4 +39,12 @@
 /time set minecraft:day
 /time set minecraft:night
 /time set minecraft:midnight
+/time set minecraft:day
+/time set minecraft:500
+/time set minecraft:day
+/time set minecraft:night
+/time set minecraft:midnight
+/time set minecraft:day
+/time set minecraft:midnight
+/summon minecraft:ghast ~ ~ ~
 /time set minecraft:day

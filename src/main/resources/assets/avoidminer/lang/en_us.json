@@ -203,6 +203,8 @@
   "item.avoidminer.shulker_card": "Shulker Card",
   "block.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
   "item.avoidminer.raw_magnetite_block": "Block of Raw Magnetite",
+  "block.avoidminer.magnetite_block": "Block of Magnetite",
+  "item.avoidminer.magnetite_block": "Block of Magnetite",
   "item.avoidminer.magnetite_nugget": "Magnetite Nugget",
   "item.avoidminer.magnetite_powder": "Magnetite Powder",
 
@@ -301,6 +303,7 @@
   "tooltip.avoidminer.temporal_slow_clock_creative.effect": "Slows world ticks by 80%%",
   "tooltip.avoidminer.temporal_slow_clock_creative.toggle": "Second click resumes normal speed | No cooldown",
   "block.avoidminer.creative_battery": "Creative Battery",
+  "item.avoidminer.creative_battery": "Creative Battery",
   "tooltip.avoidminer.creative_battery.desc": "Infinite energy source",
   "tooltip.avoidminer.creative_battery.usage": "Place adjacent to machines to power them",
   "tooltip.avoidminer.creative_battery.stored": "Energy: ∞ / ∞",

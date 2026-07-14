@@ -265,7 +265,7 @@ public class AvoidMinerScreen extends AbstractContainerScreen<AvoidMinerMenu> {
         };
         int enchantAccent = switch (menu.getEnchantMode()) {
             case 1 -> 0xFFFFDD44;
-            case 2 -> 0xFFDDDDFF;
+            case 2 -> 0xFF55CC55;
             default -> 0xFF555544;
         };
 

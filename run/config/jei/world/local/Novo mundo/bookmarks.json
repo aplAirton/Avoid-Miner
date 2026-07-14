@@ -1,5 +1,6 @@
 [
   {"version":3},
   {"ingredient":{"id":"avoidminer:temporal_slow_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:temporal_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"avoidminer:temporal_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:spruce_pressure_plate"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

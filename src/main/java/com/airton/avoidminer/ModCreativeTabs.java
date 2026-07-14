@@ -23,6 +23,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.AVOID_MINER_TIER_3.get());
                         output.accept(ModItems.MAGNETITE_ORE.get());
                         output.accept(ModItems.RAW_MAGNETITE_BLOCK.get());
+                        output.accept(ModItems.MAGNETITE_BLOCK.get());
                         output.accept(ModItems.RAW_MAGNETITE.get());
                         output.accept(ModItems.MAGNETITE_INGOT.get());
                         output.accept(ModItems.MAGNETITE_NUGGET.get());
