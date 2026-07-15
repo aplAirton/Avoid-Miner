@@ -1,8 +1,11 @@
 package com.airton.avoidminer.screen;
 
+import com.airton.avoidminer.ModItems;
+import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity.Tier;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceRules;
 import com.airton.avoidminer.menu.MagnetiteFurnaceMenu;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -38,6 +41,10 @@ public final class MagnetiteFurnaceScreen extends AbstractContainerScreen<Magnet
     private static final int TEXT_DISABLED = 0xFF747A7E;
 
     private static final List<RecipeSample> RECIPE_SAMPLES = List.of(
+            sample(Items.RAW_IRON_BLOCK, Items.IRON_BLOCK),
+            sample(Items.RAW_COPPER_BLOCK, Items.COPPER_BLOCK),
+            sample(Items.RAW_GOLD_BLOCK, Items.GOLD_BLOCK),
+            sample(ModItems.RAW_MAGNETITE_BLOCK.get(), ModItems.MAGNETITE_BLOCK.get()),
             sample(Items.RAW_IRON, Items.IRON_INGOT),
             sample(Items.RAW_COPPER, Items.COPPER_INGOT),
             sample(Items.RAW_GOLD, Items.GOLD_INGOT),
@@ -299,7 +306,8 @@ public final class MagnetiteFurnaceScreen extends AbstractContainerScreen<Magnet
 
     private int energyCostPerItem() {
         return MagnetiteFurnaceRules.energyPerItem(
-                menu.getBaseTicksPerProcess(), menu.getEnergyUpgradeTier());
+                menu.getBaseTicksPerProcess(), menu.getTier().baseEnergyPerTick,
+                menu.getEnergyUpgradeTier(), false);
     }
 
     private void drawRecipeSamples(GuiGraphicsExtractor extractor, int x, int y,
@@ -352,10 +360,15 @@ public final class MagnetiteFurnaceScreen extends AbstractContainerScreen<Magnet
         int recipe = hoveredRecipe(relativeX, relativeY);
         if (recipe >= 0) {
             RecipeSample sample = RECIPE_SAMPLES.get(recipe);
-            extractor.setTooltipForNextFrame(font, List.of(
-                    sample.input().getHoverName(),
-                    Component.translatable("screen.avoidminer.recipe.gives", 1, sample.output().getHoverName())
-            ), Optional.empty(), ItemStack.EMPTY, mouseX, mouseY);
+            List<Component> tooltip = new ArrayList<>();
+            tooltip.add(sample.input().getHoverName());
+            tooltip.add(Component.translatable(
+                    "screen.avoidminer.recipe.gives", 1, sample.output().getHoverName()));
+            if (MagnetiteFurnaceBlockEntity.isRawOreBlock(sample.input())) {
+                tooltip.add(Component.translatable("tooltip.avoidminer.magnetite_furnace.raw_block_energy"));
+            }
+            extractor.setTooltipForNextFrame(
+                    font, tooltip, Optional.empty(), ItemStack.EMPTY, mouseX, mouseY);
             return;
         }
 

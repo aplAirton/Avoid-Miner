@@ -25,8 +25,8 @@ public class HypersonicCannonItemTest {
 
     @Test
     public void temporalClockHasBalancedLimits() {
-        assertEquals(50, TemporalFreezeRules.DURABILITY);
-        assertEquals(100, TemporalFreezeRules.FREEZE_TICKS);
+        assertEquals(100, TemporalFreezeRules.DURABILITY);
+        assertEquals(160, TemporalFreezeRules.FREEZE_TICKS);
         assertEquals(600, TemporalFreezeRules.COOLDOWN_TICKS);
     }
 

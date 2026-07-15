@@ -1,6 +1,7 @@
 package com.airton.avoidminer.block.entity;
 
 import com.airton.avoidminer.ModBlockEntities;
+import com.airton.avoidminer.ModBlocks;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.MagnetiteFurnaceBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity.UpgradeType;
@@ -37,19 +38,21 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
     public static final int MAX_INPUTS = 5;
 
     public enum Tier {
-        TIER_1(1, 4_000, 100, 1),
-        TIER_2(3, 8_000, 80, 2),
-        TIER_3(5, 12_000, 60, 3);
+        TIER_1(1, 4_000, 200, 0.2F, 1),
+        TIER_2(3, 8_000, 100, 0.8F, 2),
+        TIER_3(5, 12_000, 50, 3.2F, 3);
 
         public final int inputCount;
         public final int energyCapacity;
         public final int ticksPerProcess;
+        public final float baseEnergyPerTick;
         public final int tierLevel;
 
-        Tier(int inputCount, int energyCapacity, int ticksPerProcess, int tierLevel) {
+        Tier(int inputCount, int energyCapacity, int ticksPerProcess, float baseEnergyPerTick, int tierLevel) {
             this.inputCount = inputCount;
             this.energyCapacity = energyCapacity;
             this.ticksPerProcess = ticksPerProcess;
+            this.baseEnergyPerTick = baseEnergyPerTick;
             this.tierLevel = tierLevel;
         }
 
@@ -130,6 +133,13 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
     public static boolean isSmeltable(@Nullable Level level, ItemStack stack) {
         return level != null && !stack.isEmpty()
                 && level.recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
+    }
+
+    public static boolean isRawOreBlock(ItemStack stack) {
+        return stack.is(Items.RAW_IRON_BLOCK)
+                || stack.is(Items.RAW_COPPER_BLOCK)
+                || stack.is(Items.RAW_GOLD_BLOCK)
+                || stack.is(ModBlocks.RAW_MAGNETITE_BLOCK.asItem());
     }
 
     @Nullable
@@ -275,12 +285,13 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
         boolean dirty = false;
         boolean anyProcessing = false;
         int maxProgress = be.getEffectiveTicks();
-        float rawCostPerTick = be.getEnergyMultiplier() * be.getSpeedMultiplier();
+        float rawCostPerTick = be.tier.baseEnergyPerTick * be.getEnergyMultiplier() * be.getSpeedMultiplier();
 
         for (int i = 0; i < be.tier.inputCount; i++) {
             int inputSlot = be.tier.getInputStart() + i;
             int outputSlot = be.tier.getOutputStart() + i;
             ItemStack input = be.getStackIn(inputSlot);
+            boolean isBlockRecipe = isRawOreBlock(input);
             ItemStack result = getRecipeResult(level, input);
             if (result == null || !be.canOutputAccept(outputSlot, result)) {
                 if (be.progress[i] != 0) {
@@ -291,10 +302,13 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
             }
 
             if (be.energyBuffer > 0) {
-                be.energyFraction += rawCostPerTick;
-                int cost = (int) be.energyFraction;
-                be.energyFraction -= cost;
-                be.energyBuffer = Math.max(0, be.energyBuffer - cost);
+                float recipeCost = rawCostPerTick * (isBlockRecipe
+                        ? MagnetiteFurnaceRules.RAW_ORE_BLOCK_ENERGY_MULTIPLIER : 1);
+                float accumulatedCost = be.energyFraction + recipeCost;
+                int cost = (int) accumulatedCost;
+                if (cost > be.energyBuffer) continue;
+                be.energyFraction = accumulatedCost - cost;
+                be.energyBuffer -= cost;
                 be.progress[i]++;
                 anyProcessing = true;
                 dirty = true;

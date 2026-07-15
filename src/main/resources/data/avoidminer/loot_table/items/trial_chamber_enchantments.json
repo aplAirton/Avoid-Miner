@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            {
+              "function": "minecraft:set_enchantments",
+              "add": false,
+              "enchantments": {
+                "avoidminer:thor_thunder": {
+                  "type": "minecraft:uniform",
+                  "min": 2.0,
+                  "max": 3.0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:resonant_echo" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:dissonance" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:resonant_miner" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:sonic_charge" }
+          ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 15
+        }
+      ]
+    }
+  ]
+}

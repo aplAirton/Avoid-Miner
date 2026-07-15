@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Define os cartões de mob do Avoid Lootr: mob alvo, abates necessários e as
@@ -56,6 +57,10 @@ public enum MobCardType {
         this.id = id;
         this.entityType = entityType;
         this.requiredKills = requiredKills;
+    }
+
+    public static MobCardType byId(String id) {
+        return Arrays.stream(values()).filter(type -> type.id.equals(id)).findFirst().orElse(null);
     }
 
     /** Drop comum: chance por operação, faixa de quantidade, e se escala com Saque. */

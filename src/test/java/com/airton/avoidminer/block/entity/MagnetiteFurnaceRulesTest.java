@@ -6,24 +6,31 @@ import static org.junit.Assert.assertEquals;
 
 public class MagnetiteFurnaceRulesTest {
     @Test
-    public void energyUpgradesMatchProcessorEfficiency() {
-        assertEquals(100, MagnetiteFurnaceRules.energyPerItem(100, 0));
-        assertEquals(80, MagnetiteFurnaceRules.energyPerItem(100, 1));
-        assertEquals(70, MagnetiteFurnaceRules.energyPerItem(100, 2));
-        assertEquals(60, MagnetiteFurnaceRules.energyPerItem(100, 3));
+    public void rawOreBlocksConsumeEightTimesTheNormalEnergy() {
+        assertEquals(40, MagnetiteFurnaceRules.energyPerItem(200, 0.2F, 0, false));
+        assertEquals(320, MagnetiteFurnaceRules.energyPerItem(200, 0.2F, 0, true));
+        assertEquals(640, MagnetiteFurnaceRules.energyPerItem(100, 0.8F, 0, true));
+        assertEquals(1_280, MagnetiteFurnaceRules.energyPerItem(50, 3.2F, 0, true));
+    }
+
+    @Test
+    public void energyUpgradesAlsoApplyToRawOreBlocks() {
+        assertEquals(256, MagnetiteFurnaceRules.energyPerItem(200, 0.2F, 1, true));
+        assertEquals(224, MagnetiteFurnaceRules.energyPerItem(200, 0.2F, 2, true));
+        assertEquals(192, MagnetiteFurnaceRules.energyPerItem(200, 0.2F, 3, true));
     }
 
     @Test
     public void speedUpgradesShortenEachTierCycle() {
-        assertEquals(100, MagnetiteFurnaceRules.effectiveTicks(100, 0));
-        assertEquals(66, MagnetiteFurnaceRules.effectiveTicks(100, 1));
-        assertEquals(47, MagnetiteFurnaceRules.effectiveTicks(80, 2));
-        assertEquals(30, MagnetiteFurnaceRules.effectiveTicks(60, 3));
+        assertEquals(200, MagnetiteFurnaceRules.effectiveTicks(200, 0));
+        assertEquals(133, MagnetiteFurnaceRules.effectiveTicks(200, 1));
+        assertEquals(58, MagnetiteFurnaceRules.effectiveTicks(100, 2));
+        assertEquals(25, MagnetiteFurnaceRules.effectiveTicks(50, 3));
     }
 
     @Test
     public void unsupportedUpgradeTiersFallBackToBaseValues() {
-        assertEquals(80, MagnetiteFurnaceRules.energyPerItem(80, 99));
-        assertEquals(60, MagnetiteFurnaceRules.effectiveTicks(60, -1));
+        assertEquals(80, MagnetiteFurnaceRules.energyPerItem(100, 0.8F, 99, false));
+        assertEquals(50, MagnetiteFurnaceRules.effectiveTicks(50, -1));
     }
 }

@@ -1,10 +1,6 @@
 package com.airton.avoidminer.item;
 
-import com.airton.avoidminer.AvoidMiner;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.enchantment.Enchantment;
+
 
 public final class GlassSwordRules {
     public static final float BASE_DAMAGE = 16.0F;
@@ -12,10 +8,11 @@ public final class GlassSwordRules {
     public static final int WAVE_RANGE = (int) HypersonicCannonRules.TIER_1.range();
     public static final int SPECIAL_COOLDOWN_TICKS = 10;
 
-    public static final ResourceKey<Enchantment> SONIC_CHARGE = ResourceKey.create(
-            Registries.ENCHANTMENT, Identifier.parse("avoidminer:sonic_charge"));
-
     private GlassSwordRules() {
+    }
+
+    public static boolean isCharged(int heldTicks) {
+        return heldTicks >= CHARGE_TICKS;
     }
 
     public static int getChargeTicks(int enchantLevel) {

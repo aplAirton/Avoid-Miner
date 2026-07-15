@@ -1,6 +1,8 @@
 package com.airton.avoidminer.block.entity;
 
 public final class MagnetiteFurnaceRules {
+    public static final int RAW_ORE_BLOCK_ENERGY_MULTIPLIER = 8;
+
     private MagnetiteFurnaceRules() {
     }
 
@@ -26,7 +28,10 @@ public final class MagnetiteFurnaceRules {
         return Math.max(1, (int) (baseTicks / speedMultiplier(speedUpgradeTier)));
     }
 
-    public static int energyPerItem(int baseTicks, int energyUpgradeTier) {
-        return Math.max(1, Math.round(baseTicks * energyMultiplier(energyUpgradeTier)));
+    public static int energyPerItem(int baseTicks, float baseEnergyPerTick,
+                                    int energyUpgradeTier, boolean rawOreBlock) {
+        int recipeMultiplier = rawOreBlock ? RAW_ORE_BLOCK_ENERGY_MULTIPLIER : 1;
+        return Math.max(1, Math.round(baseTicks * baseEnergyPerTick
+                * energyMultiplier(energyUpgradeTier) * recipeMultiplier));
     }
 }

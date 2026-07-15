@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "group": "raw_ore_block_smelting",
+  "ingredient": "minecraft:raw_gold_block",
+  "result": { "id": "minecraft:gold_block", "count": 1 },
+  "experience": 9.0,
+  "cookingtime": 200
+}

@@ -47,8 +47,16 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RESONANT_PICKAXE.get());
                         output.accept(ModItems.RESONANT_RETALIATION_SHIELD.get());
                         output.accept(ModItems.SEISMIC_PROPULSION_BOOTS.get());
+                        output.accept(ModItems.THOR_HAMMER.get());
+                        output.accept(ModItems.ELECTRIC_CORE.get());
                         output.accept(ModItems.MINING_CORE.get());
                         output.accept(ModItems.PROCESSING_CORE.get());
+                        output.accept(ModItems.TRIAL_SPAWNER_CORE.get());
+                        output.accept(ModItems.VAULT_CORE.get());
+                        output.accept(ModItems.OMINOUS_VAULT_CORE.get());
+                        output.accept(ModItems.CONFIGURED_TRIAL_SPAWNER.get());
+                        output.accept(ModItems.CONFIGURED_VAULT.get());
+                        output.accept(ModItems.CONFIGURED_OMINOUS_VAULT.get());
                         for (var card : ModItems.MOB_CARDS) {
                             output.accept(card.get());
                         }

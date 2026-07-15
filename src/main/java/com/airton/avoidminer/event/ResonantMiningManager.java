@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -54,18 +55,37 @@ public final class ResonantMiningManager {
         }
 
         ItemStack stack = event.getEntity().getItemInHand(event.getHand());
-        boolean resonantPickaxe = stack.is(ModItems.RESONANT_PICKAXE.get());
+        // A Picareta Ressonante agora carrega segurando o uso (ver
+        // ResonantPickaxeItem); aqui fica só o caminho das picaretas comuns
+        // encantadas com Minerador Ressonante, que disparam na hora.
+        if (stack.is(ModItems.RESONANT_PICKAXE.get())) {
+            return;
+        }
         int enchantmentLevel = getEnchantmentLevel(event.getEntity().level(), stack);
-        int forwardRange = ResonantMiningRules.forwardRange(resonantPickaxe, enchantmentLevel);
+        int forwardRange = ResonantMiningRules.forwardRange(false, enchantmentLevel);
         if (forwardRange <= 0) {
             return;
         }
 
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
-        if (event.getEntity() instanceof ServerPlayer player && !ACTIVE_WAVES.containsKey(player.getUUID())) {
-            launch(player, stack, resonantPickaxe, enchantmentLevel, forwardRange);
+        if (event.getEntity() instanceof ServerPlayer player
+                && !player.getCooldowns().isOnCooldown(stack)
+                && tryLaunch(player, stack)) {
+            player.getCooldowns().addCooldown(stack, ResonantMiningRules.COOLDOWN_TICKS);
         }
+    }
+
+    /** Dispara a onda para o jogador se ele ainda não tiver uma ativa. */
+    public static boolean tryLaunch(ServerPlayer player, ItemStack stack) {
+        boolean resonantPickaxe = stack.is(ModItems.RESONANT_PICKAXE.get());
+        int enchantmentLevel = getEnchantmentLevel(player.level(), stack);
+        int forwardRange = ResonantMiningRules.forwardRange(resonantPickaxe, enchantmentLevel);
+        if (forwardRange <= 0 || ACTIVE_WAVES.containsKey(player.getUUID())) {
+            return false;
+        }
+        launch(player, stack, resonantPickaxe, enchantmentLevel, forwardRange);
+        return true;
     }
 
     @SubscribeEvent
@@ -112,12 +132,30 @@ public final class ResonantMiningManager {
                 .orElse(0);
     }
 
+    // Ondas em paleta dourada: mesma geometria da frente de onda original,
+    // trocando o visual sônico do warden por poeira dourada + faíscas de cera
+    private static final DustParticleOptions GOLD_RING = new DustParticleOptions(0xFFC838, 1.6f);
+    private static final DustParticleOptions GOLD_HAZE = new DustParticleOptions(0xFFE28A, 1.1f);
+
     private static void emitWaveFront(ServerLevel level, Vec3 center, Vec3 direction) {
-        level.sendParticles(ParticleTypes.SONIC_BOOM, true, true,
-                center.x, center.y, center.z, 1, 0.0, 0.0, 0.0, 0.0);
-        level.sendParticles(ParticleTypes.SCULK_SOUL, true, true,
+        // anel dourado perpendicular à direção (substitui o SONIC_BOOM)
+        Vec3 side = direction.cross(new Vec3(0.0, 1.0, 0.0));
+        if (side.lengthSqr() < 1.0E-6) {
+            side = direction.cross(new Vec3(1.0, 0.0, 0.0));
+        }
+        side = side.normalize();
+        Vec3 up = side.cross(direction).normalize();
+        for (int i = 0; i < 20; i++) {
+            double angle = Math.PI * 2.0 * i / 20.0;
+            Vec3 point = center
+                    .add(side.scale(Math.cos(angle) * 1.6))
+                    .add(up.scale(Math.sin(angle) * 1.6));
+            level.sendParticles(GOLD_RING, true, true,
+                    point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
+        }
+        level.sendParticles(GOLD_HAZE, true, true,
                 center.x, center.y, center.z, 12, 1.35, 1.35, 1.35, 0.025);
-        level.sendParticles(ParticleTypes.SCULK_CHARGE_POP, true, true,
+        level.sendParticles(ParticleTypes.WAX_ON, true, true,
                 center.x, center.y, center.z, 8,
                 Math.abs(direction.x) + 0.4, Math.abs(direction.y) + 0.4,
                 Math.abs(direction.z) + 0.4, 0.02);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.airton.avoidminer.item.GlassSwordRulesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-15T12:40:50.941Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
+  <properties/>
+  <testcase name="chargedWaveRequiresOneSecondAndMatchesTheTierOneCannonRange" classname="com.airton.avoidminer.item.GlassSwordRulesTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,1 +1,9 @@
-{"type":"minecraft:smelting","category":"misc","group":"magnetite_ingot","ingredient":"avoidminer:raw_magnetite_block","result":{"id":"avoidminer:magnetite_ingot"},"experience":6.3,"cookingtime":1800}
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "group": "raw_ore_block_smelting",
+  "ingredient": "avoidminer:raw_magnetite_block",
+  "result": { "id": "avoidminer:magnetite_block", "count": 1 },
+  "experience": 6.3,
+  "cookingtime": 200
+}

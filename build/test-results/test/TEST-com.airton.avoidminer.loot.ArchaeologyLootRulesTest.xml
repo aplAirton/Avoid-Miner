@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.airton.avoidminer.loot.ArchaeologyLootRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T12:40:50.949Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
+  <properties/>
+  <testcase name="replacementAlwaysLeavesExactlyOneArchaeologyResult" classname="com.airton.avoidminer.loot.ArchaeologyLootRulesTest" time="0.0"/>
+  <testcase name="successfulCardRollReplacesVanillaArchaeologyResult" classname="com.airton.avoidminer.loot.ArchaeologyLootRulesTest" time="0.001"/>
+  <testcase name="emptyReplacementKeepsVanillaArchaeologyResult" classname="com.airton.avoidminer.loot.ArchaeologyLootRulesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

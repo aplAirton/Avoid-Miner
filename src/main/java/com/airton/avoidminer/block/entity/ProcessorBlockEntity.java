@@ -39,19 +39,21 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
     public static final int UPGRADE_COUNT = 2;
 
     public enum Tier {
-        TIER_1(1, 4000, 100, 1),
-        TIER_2(3, 8000, 80, 2),
-        TIER_3(5, 12000, 60, 3);
+        TIER_1(1, 4000, 200, 0.2F, 1),
+        TIER_2(3, 8000, 100, 0.8F, 2),
+        TIER_3(5, 12000, 50, 3.2F, 3);
 
         public final int inputCount;
         public final int energyCapacity;
         public final int ticksPerProcess;
+        public final float baseEnergyPerTick;
         public final int tierLevel;
 
-        Tier(int inputCount, int energyCapacity, int ticksPerProcess, int tierLevel) {
+        Tier(int inputCount, int energyCapacity, int ticksPerProcess, float baseEnergyPerTick, int tierLevel) {
             this.inputCount = inputCount;
             this.energyCapacity = energyCapacity;
             this.ticksPerProcess = ticksPerProcess;
+            this.baseEnergyPerTick = baseEnergyPerTick;
             this.tierLevel = tierLevel;
         }
 
@@ -359,7 +361,7 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
             if (be.energyBuffer > 0) {
                 // Custo por tick = 1 * energyMult * speedMult; custo total por processo
                 // independe da velocidade (speed encurta o ciclo na mesma proporção)
-                float rawCostPerTick = energyMult * speedMult;
+                float rawCostPerTick = be.tier.baseEnergyPerTick * energyMult * speedMult;
                 be.energyFraction += rawCostPerTick;
                 int cost = (int) be.energyFraction;
                 be.energyFraction -= cost;

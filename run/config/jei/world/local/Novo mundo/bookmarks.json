@@ -1,11 +1,4 @@
 [
   {"version":3},
-  {"ingredient":{"id":"avoidminer:temporal_slow_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:temporal_clock"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:spruce_pressure_plate"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"minecraft:armor_stand","components":{"minecraft:entity_data":{"DisabledSlots":4144959,"Pose":{"RightArm":[0,0,90],"LeftArm":[0,0,270]},"NoBasePlate":0,"equipment":{"head":{"count":1,"id":"minecraft:hay_block"},"chest":{"components":{"minecraft:trim":{"material":"minecraft:redstone","pattern":"minecraft:eye"}},"count":1,"id":"minecraft:leather_chestplate"}},"Invulnerable":1,"ShowArms":1,"id":"minecraft:armor_stand","Tags":["target_dummy.entity","target_dummy.dummy"]},"minecraft:custom_name":{"translate":"Dummy","italic":false},"minecraft:custom_data":{"target_dummy.dummy":1}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:hypersonic_cannon_creative"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"avoidminer:resonant_pickaxe"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

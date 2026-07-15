@@ -15,7 +15,10 @@ import com.airton.avoidminer.item.TemporalCoreItem;
 import com.airton.avoidminer.item.TemporalFragmentItem;
 import com.airton.avoidminer.item.TemporalSlowClockCreativeItem;
 import com.airton.avoidminer.item.TemporalSlowClockItem;
+import com.airton.avoidminer.item.ThorHammerItem;
 import com.airton.avoidminer.item.WardenHeartItem;
+import com.airton.avoidminer.item.ConfiguredTrialSpawnerItem;
+import com.airton.avoidminer.item.ConfiguredVaultItem;
 import com.airton.avoidminer.lootr.MobCardItem;
 import com.airton.avoidminer.lootr.MobCardType;
 import net.minecraft.ChatFormatting;
@@ -24,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -233,6 +237,17 @@ public class ModItems {
             "resonant_retaliation_shield", ResonantRetaliationShieldItem::new);
     public static final DeferredItem<SeismicPropulsionBootsItem> SEISMIC_PROPULSION_BOOTS = ITEMS.registerItem(
             "seismic_propulsion_boots", SeismicPropulsionBootsItem::new);
+    public static final DeferredItem<ThorHammerItem> THOR_HAMMER = ITEMS.registerItem(
+            "thor_hammer", ThorHammerItem::new);
+    public static final DeferredItem<Item> ELECTRIC_CORE = ITEMS.registerItem("electric_core",
+            props -> new Item(props.stacksTo(1).rarity(Rarity.EPIC)) {
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+                                            Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.electric_core.obtain")
+                            .withStyle(ChatFormatting.GRAY));
+                }
+            });
 
     public static final DeferredItem<Item> PROCESSING_CORE = ITEMS.registerItem("processing_core",
             props -> new Item(props) {
@@ -241,6 +256,19 @@ public class ModItems {
                     builder.accept(Component.translatable("tooltip.avoidminer.processing_core").withStyle(ChatFormatting.GRAY));
                 }
             });
+
+    public static final DeferredItem<Item> TRIAL_SPAWNER_CORE = ITEMS.registerItem("trial_spawner_core",
+            props -> new Item(props.stacksTo(1).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> VAULT_CORE = ITEMS.registerItem("vault_core",
+            props -> new Item(props.stacksTo(1).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> OMINOUS_VAULT_CORE = ITEMS.registerItem("ominous_vault_core",
+            props -> new Item(props.stacksTo(1).rarity(Rarity.EPIC)));
+    public static final DeferredItem<ConfiguredTrialSpawnerItem> CONFIGURED_TRIAL_SPAWNER = ITEMS.registerItem(
+            "configured_trial_spawner", ConfiguredTrialSpawnerItem::new);
+    public static final DeferredItem<ConfiguredVaultItem> CONFIGURED_VAULT = ITEMS.registerItem(
+            "configured_vault", props -> new ConfiguredVaultItem(props, false));
+    public static final DeferredItem<ConfiguredVaultItem> CONFIGURED_OMINOUS_VAULT = ITEMS.registerItem(
+            "configured_ominous_vault", props -> new ConfiguredVaultItem(props, true));
 
     public static final DeferredItem<Item> BLANK_UPGRADE_PATTERN = ITEMS.registerSimpleItem("blank_upgrade_pattern");
 
