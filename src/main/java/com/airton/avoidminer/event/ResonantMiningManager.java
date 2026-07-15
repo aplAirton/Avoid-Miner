@@ -2,6 +2,7 @@ package com.airton.avoidminer.event;
 
 import com.airton.avoidminer.AvoidMiner;
 import com.airton.avoidminer.ModItems;
+import com.airton.avoidminer.ModParticleTypes;
 import com.airton.avoidminer.item.ResonantMiningRules;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -132,29 +133,30 @@ public final class ResonantMiningManager {
                 .orElse(0);
     }
 
-    // Ondas em paleta dourada: mesma geometria da frente de onda original,
-    // trocando o visual sônico do warden por poeira dourada + faíscas de cera
     private static final DustParticleOptions GOLD_RING = new DustParticleOptions(0xFFC838, 1.6f);
     private static final DustParticleOptions GOLD_HAZE = new DustParticleOptions(0xFFE28A, 1.1f);
 
     private static void emitWaveFront(ServerLevel level, Vec3 center, Vec3 direction) {
-        // anel dourado perpendicular à direção (substitui o SONIC_BOOM)
+        level.sendParticles(ModParticleTypes.GOLDEN_SONIC_BOOM.get(), true, true,
+                center.x, center.y, center.z, 1, 0.0, 0.0, 0.0, 0.0);
+
         Vec3 side = direction.cross(new Vec3(0.0, 1.0, 0.0));
         if (side.lengthSqr() < 1.0E-6) {
             side = direction.cross(new Vec3(1.0, 0.0, 0.0));
         }
         side = side.normalize();
         Vec3 up = side.cross(direction).normalize();
-        for (int i = 0; i < 20; i++) {
-            double angle = Math.PI * 2.0 * i / 20.0;
+        double radius = ResonantMiningRules.SIDE_RADIUS + 0.15;
+        for (int i = 0; i < 28; i++) {
+            double angle = Math.PI * 2.0 * i / 28.0;
             Vec3 point = center
-                    .add(side.scale(Math.cos(angle) * 1.6))
-                    .add(up.scale(Math.sin(angle) * 1.6));
+                    .add(side.scale(Math.cos(angle) * radius))
+                    .add(up.scale(Math.sin(angle) * radius));
             level.sendParticles(GOLD_RING, true, true,
                     point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
         level.sendParticles(GOLD_HAZE, true, true,
-                center.x, center.y, center.z, 12, 1.35, 1.35, 1.35, 0.025);
+                center.x, center.y, center.z, 10, radius * 0.65, radius * 0.65, radius * 0.65, 0.02);
         level.sendParticles(ParticleTypes.WAX_ON, true, true,
                 center.x, center.y, center.z, 8,
                 Math.abs(direction.x) + 0.4, Math.abs(direction.y) + 0.4,

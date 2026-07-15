@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.ResonantShieldRulesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-15T15:51:23.445Z" hostname="MacBook-Air-de-Airton.local" time="0.004">
+<testsuite name="com.airton.avoidminer.ResonantShieldRulesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-15T17:24:33.529Z" hostname="MacBook-Air-de-Airton.local" time="0.022">
   <properties/>
-  <testcase name="retaliationRequiresTwoUsesInsideTheWindow" classname="com.airton.avoidminer.ResonantShieldRulesTest" time="0.003"/>
+  <testcase name="retaliationRequiresTwoUsesInsideTheWindow" classname="com.airton.avoidminer.ResonantShieldRulesTest" time="0.017"/>
   <testcase name="chargeStopsAtFiveAndEnablesRetaliation" classname="com.airton.avoidminer.ResonantShieldRulesTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

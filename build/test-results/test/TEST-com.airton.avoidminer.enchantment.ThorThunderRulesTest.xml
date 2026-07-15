@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.enchantment.ThorThunderRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T15:51:23.455Z" hostname="MacBook-Air-de-Airton.local" time="0.0">
+<testsuite name="com.airton.avoidminer.enchantment.ThorThunderRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T17:24:33.637Z" hostname="MacBook-Air-de-Airton.local" time="0.002">
   <properties/>
-  <testcase name="chainTargetsIncreaseAtLevelsTwoAndThree" classname="com.airton.avoidminer.enchantment.ThorThunderRulesTest" time="0.0"/>
-  <testcase name="hammerProvidesLevelOneAndOnlyTwoAndThreeImproveIt" classname="com.airton.avoidminer.enchantment.ThorThunderRulesTest" time="0.0"/>
+  <testcase name="chainTargetsIncreaseAtLevelsTwoAndThree" classname="com.airton.avoidminer.enchantment.ThorThunderRulesTest" time="0.001"/>
+  <testcase name="hammerProvidesLevelOneAndOnlyTwoAndThreeImproveIt" classname="com.airton.avoidminer.enchantment.ThorThunderRulesTest" time="0.001"/>
   <testcase name="chargeCooldownAndDamageMatchSpecification" classname="com.airton.avoidminer.enchantment.ThorThunderRulesTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

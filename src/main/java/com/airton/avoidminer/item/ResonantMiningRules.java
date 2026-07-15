@@ -1,7 +1,7 @@
 package com.airton.avoidminer.item;
 
 public final class ResonantMiningRules {
-    public static final int RESONANT_PICKAXE_DURABILITY = 1_800;
+    public static final int RESONANT_PICKAXE_DURABILITY = 3_000;
     public static final int NATIVE_FORWARD_RANGE = 4;
     public static final int SIDE_RADIUS = 2;
     public static final int CHARGE_TICKS = 20;

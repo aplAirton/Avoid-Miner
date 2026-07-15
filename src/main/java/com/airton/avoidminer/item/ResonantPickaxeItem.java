@@ -2,6 +2,7 @@ package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.event.ResonantMiningManager;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -17,11 +18,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Consumer;
@@ -37,10 +41,40 @@ public final class ResonantPickaxeItem extends Item {
 
     public ResonantPickaxeItem(Properties properties) {
         super(properties
-                .pickaxe(ToolMaterial.NETHERITE, 1.0F, -2.8F)
-                .durability(ResonantMiningRules.RESONANT_PICKAXE_DURABILITY)
+                .pickaxe(resonantMaterial(), 1.0F, -2.8F)
                 .fireResistant()
                 .rarity(Rarity.EPIC));
+    }
+
+    /** Copies every netherite tool characteristic, changing only durability. */
+    private static ToolMaterial resonantMaterial() {
+        ToolMaterial netherite = ToolMaterial.NETHERITE;
+        return new ToolMaterial(
+                netherite.incorrectBlocksForDrops(),
+                ResonantMiningRules.RESONANT_PICKAXE_DURABILITY,
+                netherite.speed(),
+                netherite.attackDamageBonus(),
+                netherite.enchantmentValue(),
+                netherite.repairItems()
+        );
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return vanillaNetheriteTool().getMiningSpeed(state);
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+        return vanillaNetheriteTool().isCorrectForDrops(state);
+    }
+
+    private static Tool vanillaNetheriteTool() {
+        Tool tool = Items.NETHERITE_PICKAXE.components().get(DataComponents.TOOL);
+        if (tool == null) {
+            throw new IllegalStateException("Vanilla netherite pickaxe has no tool component");
+        }
+        return tool;
     }
 
     @Override
@@ -73,10 +107,10 @@ public final class ResonantPickaxeItem extends Item {
         if (heldTicks == ResonantMiningRules.CHARGE_TICKS) {
             emitReadyBurst(serverLevel, player);
             serverLevel.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME,
-                    SoundSource.PLAYERS, 0.8F, 1.3F);
-        } else if (heldTicks < ResonantMiningRules.CHARGE_TICKS && heldTicks % 3 == 0) {
+                    SoundSource.PLAYERS, 0.55F, 1.55F);
+        } else if (heldTicks < ResonantMiningRules.CHARGE_TICKS && heldTicks % 2 == 0) {
             emitChargingOrbit(serverLevel, player, heldTicks);
-        } else if (heldTicks > ResonantMiningRules.CHARGE_TICKS && heldTicks % 5 == 0) {
+        } else if (heldTicks > ResonantMiningRules.CHARGE_TICKS && heldTicks % 4 == 0) {
             emitChargedHalo(serverLevel, player, heldTicks);
         }
     }
@@ -101,37 +135,52 @@ public final class ResonantPickaxeItem extends Item {
         return false;
     }
 
-    // Carga discreta: duas fagulhas douradas orbitando junto à mão da
-    // picareta, fora da linha da mira
     private static void emitChargingOrbit(ServerLevel level, Player player, int heldTicks) {
         double progress = Math.min(1.0, heldTicks / (double) ResonantMiningRules.CHARGE_TICKS);
         Vec3 anchor = chargeAnchor(player);
         Vec3 side = horizontalSide(player);
-        double radius = 0.28 - progress * 0.14;
+        Vec3 look = player.getLookAngle().normalize();
+        double radius = 0.32 - progress * 0.12;
+        int sparks = 3 + (int) Math.floor(progress * 3.0);
 
-        for (int i = 0; i < 2; i++) {
-            double angle = heldTicks * 0.45 + i * Math.PI;
+        for (int i = 0; i < sparks; i++) {
+            double angle = heldTicks * 0.42 + Math.PI * 2.0 * i / sparks;
             Vec3 point = anchor.add(side.scale(Math.cos(angle) * radius))
                     .add(0.0, Math.sin(angle) * radius, 0.0);
             level.sendParticles(i % 2 == 0 ? GOLD_SPARK : GOLD_PALE, true, true,
                     point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
+
+        Vec3 focus = anchor.add(look.scale(0.08 + progress * 0.42));
+        level.sendParticles(GOLD_PALE, true, true,
+                focus.x, focus.y, focus.z, 1, 0.015, 0.015, 0.015, 0.0);
     }
 
     private static void emitReadyBurst(ServerLevel level, Player player) {
         Vec3 anchor = chargeAnchor(player);
+        Vec3 look = player.getLookAngle().normalize();
+        Vec3 side = horizontalSide(player);
+        Vec3 up = side.cross(look).normalize();
+        for (int i = 0; i < 18; i++) {
+            double angle = Math.PI * 2.0 * i / 18.0;
+            Vec3 point = anchor
+                    .add(side.scale(Math.cos(angle) * 0.38))
+                    .add(up.scale(Math.sin(angle) * 0.38));
+            level.sendParticles(i % 2 == 0 ? GOLD_SPARK : GOLD_PALE, true, true,
+                    point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
+        }
         level.sendParticles(ParticleTypes.WAX_ON, true, true,
-                anchor.x, anchor.y, anchor.z, 10, 0.2, 0.2, 0.2, 0.03);
+                anchor.x, anchor.y, anchor.z, 8, 0.16, 0.16, 0.16, 0.02);
     }
 
-    // Mantida carregada: halo dourado pequeno e lento na altura da mão
     private static void emitChargedHalo(ServerLevel level, Player player, int heldTicks) {
         Vec3 anchor = chargeAnchor(player);
         Vec3 side = horizontalSide(player);
-        for (int i = 0; i < 3; i++) {
-            double angle = -heldTicks * 0.18 + Math.PI * 2.0 * i / 3.0;
-            Vec3 point = anchor.add(side.scale(Math.cos(angle) * 0.18))
-                    .add(0.0, Math.sin(angle) * 0.18, 0.0);
+        double pulse = 0.22 + Math.sin(heldTicks * 0.22) * 0.04;
+        for (int i = 0; i < 6; i++) {
+            double angle = -heldTicks * 0.16 + Math.PI * 2.0 * i / 6.0;
+            Vec3 point = anchor.add(side.scale(Math.cos(angle) * pulse))
+                    .add(0.0, Math.sin(angle) * pulse, 0.0);
             level.sendParticles(i % 2 == 0 ? GOLD_SPARK : GOLD_PALE, true, true,
                     point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
         }

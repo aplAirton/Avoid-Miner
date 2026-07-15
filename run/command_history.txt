@@ -1,15 +1,3 @@
-/tp @s 267 114 305
-/time set minecraft:day
-/time set minecraft:night
-/time set minecraft:midnight
-/time set minecraft:day
-/time set minecraft:500
-/time set minecraft:day
-/time set minecraft:night
-/time set minecraft:midnight
-/time set minecraft:day
-/time set minecraft:midnight
-/summon minecraft:ghast ~ ~ ~
 /time set minecraft:day
 /fill
 /fill 235 71 753
@@ -48,3 +36,15 @@
 /summon minecraft:husk 261.74 72.00
 /summon minecraft:husk 261.74 72.00 ~
 /weather clear
+/xp set @a 1000
+/xp set @a 100
+/xp add @a 100 levels
+/give @a minecraft:netherite_block 3
+/fill 285 71 710
+/fill 285 71 710 271 71 691 minecraft:netherite_block
+/fill 265 71 702
+/fill 265 71 702 281 71 688 minecraft:polished_andesite
+/fill 291 71 672
+/fill 291 71 672 259 71 731 minecraft:polished_deepslate
+/time set minecraft:night
+/time set minecraft:midnight

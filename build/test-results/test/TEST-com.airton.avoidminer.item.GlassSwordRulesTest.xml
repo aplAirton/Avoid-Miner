@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.item.GlassSwordRulesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-15T15:51:23.456Z" hostname="MacBook-Air-de-Airton.local" time="0.0">
+<testsuite name="com.airton.avoidminer.item.GlassSwordRulesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-15T17:24:33.643Z" hostname="MacBook-Air-de-Airton.local" time="0.004">
   <properties/>
-  <testcase name="chargedWaveRequiresOneSecondAndMatchesTheTierOneCannonRange" classname="com.airton.avoidminer.item.GlassSwordRulesTest" time="0.0"/>
+  <testcase name="chargedWaveRequiresOneSecondAndMatchesTheTierOneCannonRange" classname="com.airton.avoidminer.item.GlassSwordRulesTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

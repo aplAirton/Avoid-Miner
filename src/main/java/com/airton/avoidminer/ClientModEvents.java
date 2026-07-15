@@ -6,13 +6,25 @@ import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
+import net.minecraft.client.particle.SonicBoomParticle;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 @EventBusSubscriber(modid = AvoidMiner.MODID, value = Dist.CLIENT)
 public class ClientModEvents {
+    @SubscribeEvent
+    public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticleTypes.GOLDEN_SONIC_BOOM.get(), sprites ->
+                (options, level, x, y, z, xSpeed, ySpeed, zSpeed, random) -> {
+                    SonicBoomParticle particle = new SonicBoomParticle(level, x, y, z, 0.0, sprites);
+                    particle.setColor(1.0F, 0.68F, 0.08F);
+                    return particle;
+                });
+    }
+
     @SubscribeEvent
     public static void onRegisterScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.AVOID_MINER.get(), AvoidMinerScreen::new);

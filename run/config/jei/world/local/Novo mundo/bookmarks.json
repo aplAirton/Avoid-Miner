@@ -1,4 +1,5 @@
 [
   {"version":3},
-  {"ingredient":{"id":"avoidminer:resonant_pickaxe"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"avoidminer:resonant_pickaxe"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"avoidminer:xp_vault"},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]

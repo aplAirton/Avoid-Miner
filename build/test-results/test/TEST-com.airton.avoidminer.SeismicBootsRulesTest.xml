@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.SeismicBootsRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T15:51:23.450Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
+<testsuite name="com.airton.avoidminer.SeismicBootsRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T17:24:33.571Z" hostname="MacBook-Air-de-Airton.local" time="0.008">
   <properties/>
-  <testcase name="shockwaveScalesWithFallEnergyAndHasCaps" classname="com.airton.avoidminer.SeismicBootsRulesTest" time="0.0"/>
-  <testcase name="impactOnlyArmsDuringAConsiderableSneakingFall" classname="com.airton.avoidminer.SeismicBootsRulesTest" time="0.0"/>
+  <testcase name="shockwaveScalesWithFallEnergyAndHasCaps" classname="com.airton.avoidminer.SeismicBootsRulesTest" time="0.004"/>
+  <testcase name="impactOnlyArmsDuringAConsiderableSneakingFall" classname="com.airton.avoidminer.SeismicBootsRulesTest" time="0.001"/>
   <testcase name="impactAcceptsTrackedSneakOrShiftHeldAtLanding" classname="com.airton.avoidminer.SeismicBootsRulesTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
