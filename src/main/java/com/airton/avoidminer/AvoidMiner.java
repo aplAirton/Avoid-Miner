@@ -37,6 +37,10 @@ public class AvoidMiner {
                 ModBlocks.AVOID_PROCESSOR_TIER_1.get(),
                 ModBlocks.AVOID_PROCESSOR_TIER_2.get(),
                 ModBlocks.AVOID_PROCESSOR_TIER_3.get());
+        event.modify(ModBlockEntities.MAGNETITE_FURNACE.getKey(),
+                ModBlocks.MAGNETITE_FURNACE_TIER_1.get(),
+                ModBlocks.MAGNETITE_FURNACE_TIER_2.get(),
+                ModBlocks.MAGNETITE_FURNACE_TIER_3.get());
         event.modify(ModBlockEntities.LOOTR.getKey(),
                 ModBlocks.AVOID_LOOTR.get());
         event.modify(ModBlockEntities.BATTERY.getKey(),
@@ -49,6 +53,8 @@ public class AvoidMiner {
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.AVOID_MINER.get(),
                 (be, side) -> be.getItemHandler(side));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.PROCESSOR.get(),
+                (be, side) -> be.getItemHandler(side));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.MAGNETITE_FURNACE.get(),
                 (be, side) -> be.getItemHandler(side));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.LOOTR.get(),
                 (be, side) -> be.getItemHandler(side));

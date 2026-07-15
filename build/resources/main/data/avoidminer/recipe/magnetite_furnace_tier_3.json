@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["NEN", "SCS", "NBN"],
+  "key": {
+    "N": "minecraft:netherite_ingot",
+    "E": "minecraft:end_crystal",
+    "S": "minecraft:sculk_catalyst",
+    "C": "avoidminer:magnetite_furnace_tier_2",
+    "B": "minecraft:blast_furnace"
+  },
+  "result": { "id": "avoidminer:magnetite_furnace_tier_3", "count": 1 }
+}

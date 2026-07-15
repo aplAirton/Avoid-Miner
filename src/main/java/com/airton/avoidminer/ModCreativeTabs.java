@@ -18,6 +18,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.AVOID_PROCESSOR_TIER_1.get());
                         output.accept(ModItems.AVOID_PROCESSOR_TIER_2.get());
                         output.accept(ModItems.AVOID_PROCESSOR_TIER_3.get());
+                        output.accept(ModItems.MAGNETITE_FURNACE_TIER_1.get());
+                        output.accept(ModItems.MAGNETITE_FURNACE_TIER_2.get());
+                        output.accept(ModItems.MAGNETITE_FURNACE_TIER_3.get());
                         output.accept(ModItems.AVOID_MINER_TIER_1.get());
                         output.accept(ModItems.AVOID_MINER_TIER_2.get());
                         output.accept(ModItems.AVOID_MINER_TIER_3.get());
@@ -41,6 +44,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.TEMPORAL_SLOW_CLOCK_CREATIVE.get());
                         output.accept(ModItems.HYPERSONIC_SMITHING_TEMPLATE.get());
                         output.accept(ModItems.GLASS_SWORD.get());
+                        output.accept(ModItems.RESONANT_PICKAXE.get());
                         output.accept(ModItems.RESONANT_RETALIATION_SHIELD.get());
                         output.accept(ModItems.SEISMIC_PROPULSION_BOOTS.get());
                         output.accept(ModItems.MINING_CORE.get());

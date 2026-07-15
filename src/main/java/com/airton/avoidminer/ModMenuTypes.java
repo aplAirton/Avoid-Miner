@@ -4,6 +4,7 @@ import com.airton.avoidminer.menu.AvoidMinerMenu;
 import com.airton.avoidminer.menu.BatteryMenu;
 import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
+import com.airton.avoidminer.menu.MagnetiteFurnaceMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +22,9 @@ public class ModMenuTypes {
     // enviado pelo servidor para montar o menu com o tier correto.
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessorMenu>> PROCESSOR = MENUS.register("processor",
             () -> IMenuTypeExtension.create(ProcessorMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<MagnetiteFurnaceMenu>> MAGNETITE_FURNACE =
+            MENUS.register("magnetite_furnace", () -> IMenuTypeExtension.create(MagnetiteFurnaceMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<LootrMenu>> LOOTR = MENUS.register("lootr",
             () -> new MenuType<>(LootrMenu::new, FeatureFlags.DEFAULT_FLAGS));

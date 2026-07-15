@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "MEM",
+    "EDE",
+    "MCM"
+  ],
+  "key": {
+    "M": "avoidminer:magnetite_ingot",
+    "C": "avoidminer:mining_core",
+    "E": "minecraft:echo_shard",
+    "D": "minecraft:diamond_pickaxe"
+  },
+  "result": {
+    "id": "avoidminer:resonant_pickaxe",
+    "count": 1
+  }
+}

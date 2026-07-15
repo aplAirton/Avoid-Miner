@@ -5,6 +5,7 @@ import com.airton.avoidminer.block.entity.ProcessorBlockEntity.Tier;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -99,6 +100,7 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         drawUpgradeArea(extractor, x, y);
         drawEnergyBar(extractor, x, y);
         drawFuelGlow(extractor, x, y);
+        drawAutoBalanceButton(extractor, x, y);
         drawInfoPanel(extractor, x, y, t);
         drawRecipeChamber(extractor, x, y, mouseX, mouseY);
 
@@ -252,6 +254,39 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         }
     }
 
+    private void drawAutoBalanceButton(GuiGraphicsExtractor extractor, int gx, int gy) {
+        if (menu.getTier().inputCount <= 1) return;
+        int x = gx + ProcessorMenu.AUTO_BALANCE_X;
+        int y = gy + ProcessorMenu.AUTO_BALANCE_Y;
+        int size = ProcessorMenu.AUTO_BALANCE_SIZE;
+        boolean enabled = menu.isAutoBalanceEnabled();
+        int frame = enabled ? ACCENT : SLOT_BORDER_LT;
+        int inner = enabled ? 0xFF5A3A18 : 0xFF261A0D;
+        extractor.fill(x, y, x + size, y + size, frame);
+        extractor.fill(x + 1, y + 1, x + size - 1, y + size - 1, inner);
+        extractor.fill(x + 4, y + 4, x + 11, y + 6, frame);
+        extractor.fill(x + 9, y + 3, x + 12, y + 7, frame);
+        extractor.fill(x + 5, y + 10, x + 12, y + 12, frame);
+        extractor.fill(x + 4, y + 9, x + 7, y + 13, frame);
+    }
+
+    private boolean isAutoBalanceButton(double mouseX, double mouseY) {
+        if (menu.getTier().inputCount <= 1) return false;
+        int x = (width - imageWidth) / 2 + ProcessorMenu.AUTO_BALANCE_X;
+        int y = (height - imageHeight) / 2 + ProcessorMenu.AUTO_BALANCE_Y;
+        return mouseX >= x && mouseX < x + ProcessorMenu.AUTO_BALANCE_SIZE
+                && mouseY >= y && mouseY < y + ProcessorMenu.AUTO_BALANCE_SIZE;
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (event.button() == 0 && isAutoBalanceButton(event.x(), event.y()) && minecraft.gameMode != null) {
+            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, ProcessorMenu.AUTO_BALANCE_BUTTON);
+            return true;
+        }
+        return super.mouseClicked(event, doubleClick);
+    }
+
     // Painel lateral enxuto: título + tier, status com linhas ativas e custo
     private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy, Tier t) {
         int px = gx + PANEL_X;
@@ -330,6 +365,14 @@ public class ProcessorScreen extends AbstractContainerScreen<ProcessorMenu> {
         int y = (height - imageHeight) / 2;
         int relX = mouseX - x;
         int relY = mouseY - y;
+
+        if (isAutoBalanceButton(mouseX, mouseY)) {
+            extractor.setTooltipForNextFrame(Component.translatable(
+                    menu.isAutoBalanceEnabled()
+                            ? "tooltip.avoidminer.auto_balance.on"
+                            : "tooltip.avoidminer.auto_balance.off"), mouseX, mouseY);
+            return;
+        }
 
         if (relX >= ENERGY_X && relX < ENERGY_X + ENERGY_W
                 && relY >= ENERGY_Y && relY < ENERGY_Y + ENERGY_H) {

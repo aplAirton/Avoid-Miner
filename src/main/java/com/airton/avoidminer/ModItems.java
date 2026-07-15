@@ -8,6 +8,7 @@ import com.airton.avoidminer.item.HypersonicSmithingTemplateItem;
 import com.airton.avoidminer.item.TemporalClockCreativeItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.item.ResonantRetaliationShieldItem;
+import com.airton.avoidminer.item.ResonantPickaxeItem;
 import com.airton.avoidminer.item.SeismicPropulsionBootsItem;
 import com.airton.avoidminer.item.TemporalClockItem;
 import com.airton.avoidminer.item.TemporalCoreItem;
@@ -57,6 +58,36 @@ public class ModItems {
                     builder.accept(Component.translatable("tooltip.avoidminer.processor_t3.upgrades").withStyle(ChatFormatting.GRAY));
                 }
             });
+
+    public static final DeferredItem<BlockItem> MAGNETITE_FURNACE_TIER_1 = ITEMS.registerItem(
+            "magnetite_furnace_tier_1",
+            props -> magnetiteFurnaceItem(ModBlocks.MAGNETITE_FURNACE_TIER_1.get(), props, 1));
+    public static final DeferredItem<BlockItem> MAGNETITE_FURNACE_TIER_2 = ITEMS.registerItem(
+            "magnetite_furnace_tier_2",
+            props -> magnetiteFurnaceItem(ModBlocks.MAGNETITE_FURNACE_TIER_2.get(), props, 2));
+    public static final DeferredItem<BlockItem> MAGNETITE_FURNACE_TIER_3 = ITEMS.registerItem(
+            "magnetite_furnace_tier_3",
+            props -> magnetiteFurnaceItem(ModBlocks.MAGNETITE_FURNACE_TIER_3.get(), props, 3));
+
+    private static BlockItem magnetiteFurnaceItem(net.minecraft.world.level.block.Block block,
+                                                   Item.Properties properties, int tier) {
+        return new BlockItem(block, properties.stacksTo(1)) {
+            @Override
+            public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+                                        Consumer<Component> builder, TooltipFlag flag) {
+                builder.accept(Component.translatable("tooltip.avoidminer.magnetite_furnace_t" + tier + ".desc")
+                        .withStyle(ChatFormatting.GRAY));
+                builder.accept(Component.translatable("tooltip.avoidminer.magnetite_furnace.upgrades")
+                        .withStyle(ChatFormatting.GRAY));
+                var data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+                if (data != null) {
+                    int energy = data.copyTagWithoutId().getIntOr("Energy", 0);
+                    builder.accept(Component.translatable("tooltip.avoidminer.machine.stored_energy", energy)
+                            .withStyle(ChatFormatting.DARK_GRAY));
+                }
+            }
+        };
+    }
 
     public static final DeferredItem<BlockItem> AVOID_MINER_TIER_1 = ITEMS.registerItem("avoid_miner_tier_1",
             props -> new BlockItem(ModBlocks.AVOID_MINER_TIER_1.get(), props.stacksTo(1)) {
@@ -196,6 +227,8 @@ public class ModItems {
     public static final DeferredItem<Item> HYPERSONIC_SMITHING_TEMPLATE = ITEMS.registerItem(
             "hypersonic_smithing_template", HypersonicSmithingTemplateItem::new);
     public static final DeferredItem<Item> GLASS_SWORD = ITEMS.registerItem("glass_sword", GlassSwordItem::new);
+    public static final DeferredItem<ResonantPickaxeItem> RESONANT_PICKAXE = ITEMS.registerItem(
+            "resonant_pickaxe", ResonantPickaxeItem::new);
     public static final DeferredItem<ResonantRetaliationShieldItem> RESONANT_RETALIATION_SHIELD = ITEMS.registerItem(
             "resonant_retaliation_shield", ResonantRetaliationShieldItem::new);
     public static final DeferredItem<SeismicPropulsionBootsItem> SEISMIC_PROPULSION_BOOTS = ITEMS.registerItem(

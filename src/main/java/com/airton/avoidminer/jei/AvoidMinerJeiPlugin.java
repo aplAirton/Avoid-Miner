@@ -6,6 +6,7 @@ import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.lootr.MobCardType;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -145,6 +146,14 @@ public class AvoidMinerJeiPlugin implements IModPlugin {
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_1.get()));
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_2.get()));
         registration.addCraftingStation(ProcessorJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_PROCESSOR_TIER_3.get()));
+
+        ItemStack[] furnaces = {
+                new ItemStack(ModBlocks.MAGNETITE_FURNACE_TIER_1.get()),
+                new ItemStack(ModBlocks.MAGNETITE_FURNACE_TIER_2.get()),
+                new ItemStack(ModBlocks.MAGNETITE_FURNACE_TIER_3.get())
+        };
+        registration.addCraftingStation(RecipeTypes.SMELTING, furnaces);
+        registration.addCraftingStation(RecipeTypes.SMELTING_FUEL, furnaces);
 
         registration.addCraftingStation(LootrJeiCategory.TYPE, new ItemStack(ModBlocks.AVOID_LOOTR.get()));
     }

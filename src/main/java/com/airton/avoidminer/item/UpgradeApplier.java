@@ -3,6 +3,7 @@ package com.airton.avoidminer.item;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.BatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
+import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -63,6 +64,7 @@ public final class UpgradeApplier {
     private static ResourceHandler<ItemResource> machineHandler(@Nullable BlockEntity be) {
         if (be instanceof AvoidMinerBlockEntity miner) return miner.getItemHandler();
         if (be instanceof ProcessorBlockEntity processor) return processor.getItemHandler();
+        if (be instanceof MagnetiteFurnaceBlockEntity furnace) return furnace.getItemHandler();
         if (be instanceof LootrBlockEntity lootr) return lootr.getItemHandler();
         if (be instanceof BatteryBlockEntity battery) return battery.getItemHandler();
         return null;

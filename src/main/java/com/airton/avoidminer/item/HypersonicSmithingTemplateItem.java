@@ -24,6 +24,7 @@ public class HypersonicSmithingTemplateItem extends SmithingTemplateItem {
                 Component.translatable("item.avoidminer.hypersonic_smithing_template.additions_slot_description"),
                 List.of(
                         Identifier.withDefaultNamespace("container/slot/sword"),
+                        Identifier.withDefaultNamespace("container/slot/pickaxe"),
                         Identifier.withDefaultNamespace("container/slot/boots")
                 ),
                 List.of(Identifier.withDefaultNamespace("container/slot/ingot")),

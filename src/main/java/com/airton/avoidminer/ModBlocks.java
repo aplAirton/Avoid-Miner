@@ -4,9 +4,11 @@ import com.airton.avoidminer.block.AvoidMinerBlock;
 import com.airton.avoidminer.block.BatteryBlock;
 import com.airton.avoidminer.block.CreativeBatteryBlock;
 import com.airton.avoidminer.block.LootrBlock;
+import com.airton.avoidminer.block.MagnetiteFurnaceBlock;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
+import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.SoundType;
@@ -51,6 +53,27 @@ public class ModBlocks {
             () -> BlockBehaviour.Properties.of()
                     .strength(3.5f)
                     .requiresCorrectToolForDrops());
+
+    public static final DeferredBlock<Block> MAGNETITE_FURNACE_TIER_1 = BLOCKS.registerBlock("magnetite_furnace_tier_1",
+            p -> new MagnetiteFurnaceBlock(MagnetiteFurnaceBlockEntity.Tier.TIER_1, p),
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.NETHERITE_BLOCK));
+
+    public static final DeferredBlock<Block> MAGNETITE_FURNACE_TIER_2 = BLOCKS.registerBlock("magnetite_furnace_tier_2",
+            p -> new MagnetiteFurnaceBlock(MagnetiteFurnaceBlockEntity.Tier.TIER_2, p),
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.NETHERITE_BLOCK));
+
+    public static final DeferredBlock<Block> MAGNETITE_FURNACE_TIER_3 = BLOCKS.registerBlock("magnetite_furnace_tier_3",
+            p -> new MagnetiteFurnaceBlock(MagnetiteFurnaceBlockEntity.Tier.TIER_3, p),
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.NETHERITE_BLOCK));
 
     public static final DeferredBlock<Block> MAGNETITE_ORE = BLOCKS.registerBlock("magnetite_ore",
             Block::new,

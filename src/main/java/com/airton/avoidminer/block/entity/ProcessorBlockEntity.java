@@ -132,14 +132,16 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
     private int energyBuffer;
     private final int[] progress = new int[MAX_INPUTS];
     private float energyFraction;
+    private boolean autoBalance;
 
     // Data layout: 0=energy, 1=capacity, 2=effectiveTicks, 3=tierLevel, 4=inputCount,
-    // 5=baseTicks, 6..10=progress per column, 11=stalled, 12=energyUpgTier, 13=speedUpgTier
+    // 5=baseTicks, 6..10=progress, 11=stalled, 12=energy, 13=speed, 14=auto balance
     public static final int DATA_PROGRESS = 6;
     public static final int DATA_STALLED = DATA_PROGRESS + MAX_INPUTS;
     public static final int DATA_ENERGY_UPG = DATA_STALLED + 1;
     public static final int DATA_SPEED_UPG = DATA_ENERGY_UPG + 1;
-    public static final int DATA_SIZE = DATA_SPEED_UPG + 1;
+    public static final int DATA_AUTO_BALANCE = DATA_SPEED_UPG + 1;
+    public static final int DATA_SIZE = DATA_AUTO_BALANCE + 1;
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -156,6 +158,7 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
             if (index == DATA_STALLED) return isAnyOutputBlocked() ? 1 : 0;
             if (index == DATA_ENERGY_UPG) return upgradeTierAt(tier.getEnergyUpgradeSlot());
             if (index == DATA_SPEED_UPG) return upgradeTierAt(tier.getSpeedUpgradeSlot());
+            if (index == DATA_AUTO_BALANCE) return autoBalance ? 1 : 0;
             return 0;
         }
 
@@ -318,6 +321,10 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
         Tier tier = be.getTier();
         boolean dirty = false;
 
+        if (be.autoBalance && tier.inputCount > 1) {
+            dirty = MachineInputBalancer.balance(be.itemHandler, tier.getInputStart(), tier.inputCount);
+        }
+
         if (level.hasNeighborSignal(pos)) {
             if (state.getValue(ProcessorBlock.LIT)) {
                 level.setBlock(pos, state.setValue(ProcessorBlock.LIT, false), 3);
@@ -446,9 +453,19 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
             case TIER_3 -> "container.avoidminer.avoid_processor_tier_3";
         };
         return new SimpleMenuProvider(
-                (id, playerInventory, player) -> new ProcessorMenu(id, playerInventory, itemHandler, data, tier),
+                (id, playerInventory, player) -> new ProcessorMenu(
+                        id, playerInventory, itemHandler, data, tier, this::toggleAutoBalance),
                 Component.translatable(key)
         );
+    }
+
+    public void toggleAutoBalance() {
+        if (tier.inputCount <= 1) return;
+        autoBalance = !autoBalance;
+        if (autoBalance) {
+            MachineInputBalancer.balance(itemHandler, tier.getInputStart(), tier.inputCount);
+        }
+        setChanged();
     }
 
     public ResourceHandler<ItemResource> getItemHandler() { return itemHandler; }
@@ -469,6 +486,7 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
         output.putInt("Tier", tier.tierLevel);
         output.putInt("SlotCount", tier.getTotalSlots());
         output.putInt("LayoutVersion", 2);
+        output.putBoolean("AutoBalance", autoBalance);
         itemHandler.serialize(output.child("Inventory"));
     }
 
@@ -484,6 +502,7 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
         int oldCount = input.getIntOr("SlotCount", 0);
         if (oldCount == 0) oldCount = tier.getTotalSlots();
         int layoutVersion = input.getIntOr("LayoutVersion", 1);
+        autoBalance = tier.inputCount > 1 && input.getBooleanOr("AutoBalance", false);
 
         ItemStacksResourceHandler tmp = new ItemStacksResourceHandler(Math.max(oldCount, tier.getTotalSlots()));
         tmp.deserialize(input.childOrEmpty("Inventory"));

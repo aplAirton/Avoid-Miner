@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MIM", "RCR", "MFM"],
+  "key": {
+    "M": "avoidminer:magnetite_ingot",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "C": "avoidminer:processing_core",
+    "F": "minecraft:furnace"
+  },
+  "result": { "id": "avoidminer:magnetite_furnace_tier_1", "count": 1 }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.airton.avoidminer.block.entity.MagnetiteFurnaceRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T01:31:23.976Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
+  <properties/>
+  <testcase name="energyUpgradesMatchProcessorEfficiency" classname="com.airton.avoidminer.block.entity.MagnetiteFurnaceRulesTest" time="0.001"/>
+  <testcase name="speedUpgradesShortenEachTierCycle" classname="com.airton.avoidminer.block.entity.MagnetiteFurnaceRulesTest" time="0.0"/>
+  <testcase name="unsupportedUpgradeTiersFallBackToBaseValues" classname="com.airton.avoidminer.block.entity.MagnetiteFurnaceRulesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

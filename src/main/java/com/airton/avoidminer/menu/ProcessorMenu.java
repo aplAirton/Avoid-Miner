@@ -19,8 +19,10 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class ProcessorMenu extends AbstractContainerMenu {
+    public static final int AUTO_BALANCE_BUTTON = 0;
     private final ContainerData data;
     private final Tier tier;
+    private final Runnable toggleAutoBalance;
 
     // Geometria compartilhada com a ProcessorScreen (textura 288x206)
     public static final int TEXTURE_W = 288;
@@ -36,6 +38,9 @@ public class ProcessorMenu extends AbstractContainerMenu {
     public static final int ENERGY_H = 54;
     public static final int FUEL_X = 265;
     public static final int FUEL_Y = 80;
+    public static final int AUTO_BALANCE_X = 266;
+    public static final int AUTO_BALANCE_Y = 101;
+    public static final int AUTO_BALANCE_SIZE = 16;
 
     // Tiers 2/3: colunas verticais (entrada > progresso > saída), estilo Mekanism
     public static final int COLUMN_SPACING = 26;
@@ -83,7 +88,7 @@ public class ProcessorMenu extends AbstractContainerMenu {
 
     private ProcessorMenu(int id, Inventory playerInventory, Tier tier) {
         this(id, playerInventory, new ItemStacksResourceHandler(tier.getTotalSlots()),
-                new SimpleContainerData(ProcessorBlockEntity.DATA_SIZE), tier);
+                new SimpleContainerData(ProcessorBlockEntity.DATA_SIZE), tier, () -> {});
     }
 
     private static Tier readTier(Inventory playerInventory, RegistryFriendlyByteBuf extraData) {
@@ -96,10 +101,12 @@ public class ProcessorMenu extends AbstractContainerMenu {
         return Tier.TIER_1;
     }
 
-    public ProcessorMenu(int id, Inventory playerInventory, ResourceHandler<ItemResource> handler, ContainerData data, Tier tier) {
+    public ProcessorMenu(int id, Inventory playerInventory, ResourceHandler<ItemResource> handler,
+                         ContainerData data, Tier tier, Runnable toggleAutoBalance) {
         super(ModMenuTypes.PROCESSOR.get(), id);
         this.data = data;
         this.tier = tier;
+        this.toggleAutoBalance = toggleAutoBalance;
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
                 ProcessorBlockEntity.FUEL_SLOT, FUEL_X, FUEL_Y) {
@@ -168,6 +175,14 @@ public class ProcessorMenu extends AbstractContainerMenu {
     public boolean isOutputBlocked() { return data.get(ProcessorBlockEntity.DATA_STALLED) == 1; }
     public int getEnergyUpgradeTier() { return data.get(ProcessorBlockEntity.DATA_ENERGY_UPG); }
     public int getSpeedUpgradeTier() { return data.get(ProcessorBlockEntity.DATA_SPEED_UPG); }
+    public boolean isAutoBalanceEnabled() { return data.get(ProcessorBlockEntity.DATA_AUTO_BALANCE) == 1; }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id != AUTO_BALANCE_BUTTON || tier.inputCount <= 1) return false;
+        toggleAutoBalance.run();
+        return true;
+    }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
