@@ -1,0 +1,21 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.avoidminer.resonant_echo"
+  },
+  "max_cost": {
+    "base": 35,
+    "per_level_above_first": 0
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 12,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "mainhand",
+    "head"
+  ],
+  "supported_items": "#avoidminer:enchantable/resonant_echo",
+  "weight": 4
+}

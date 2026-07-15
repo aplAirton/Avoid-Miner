@@ -1,5 +1,7 @@
 [
   {"version":1},
+  {"ingredient":{"id":"minecraft:enchanted_book","components":{"minecraft:stored_enchantments":{"avoidminer:resonant_echo":1}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"minecraft:enchanted_book","components":{"minecraft:stored_enchantments":{"avoidminer:dissonance":2}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:mining_core"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:avoid_miner_tier_1"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:mining_upgrade_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
@@ -97,7 +99,5 @@
   {"ingredient":{"id":"minecraft:blast_furnace"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:raw_magnetite"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"avoidminer:magnetite_ore"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:creeper_card","components":{"minecraft:custom_data":{"Kills":10}}},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_miner_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_processor_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+  {"ingredient":{"id":"avoidminer:creeper_card","components":{"minecraft:custom_data":{"Kills":10}}},"type":"item_stack","bookmarkType":"INGREDIENT"}
 ]
