@@ -401,6 +401,30 @@ public class ModItems {
                 }
             });
 
+    // Barril de Magnetita: aspira itens/XP num raio de 8 blocos
+    public static final DeferredItem<BlockItem> MAGNETITE_BARREL = ITEMS.registerItem("magnetite_barrel",
+            props -> new BlockItem(ModBlocks.MAGNETITE_BARREL.get(), props) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.magnetite_barrel.desc"));
+                    builder.accept(Component.translatable("tooltip.avoidminer.magnetite_barrel.slots"));
+                    int storedXp = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                            net.minecraft.world.item.component.CustomData.EMPTY).copyTag().getIntOr("StoredXp", 0);
+                    if (storedXp > 0) {
+                        builder.accept(Component.translatable("tooltip.avoidminer.magnetite_barrel.stored_xp", storedXp));
+                    }
+                }
+            });
+
+    public static final DeferredItem<Item> ITEM_ABSORB_UPGRADE = ITEMS.registerItem("item_absorb_upgrade",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_absorb_upgrade"));
+
+    public static final DeferredItem<Item> XP_ABSORB_UPGRADE = ITEMS.registerItem("xp_absorb_upgrade",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.xp_absorb_upgrade"));
+
+    public static final DeferredItem<Item> ITEM_STACKING_UPGRADE = ITEMS.registerItem("item_stacking_upgrade",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_stacking_upgrade"));
+
     public static final DeferredItem<Item> ENERGY_LINK = ITEMS.registerItem("energy_link",
             com.airton.avoidminer.item.EnergyLinkItem::new);
 

@@ -13,6 +13,7 @@
     "avoidminer:avoid_lootr",
     "avoidminer:magnetite_ore",
     "avoidminer:raw_magnetite_block",
-    "avoidminer:battery"
+    "avoidminer:battery",
+    "avoidminer:magnetite_barrel"
   ]
 }

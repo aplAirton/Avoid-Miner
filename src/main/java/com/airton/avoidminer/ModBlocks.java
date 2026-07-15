@@ -110,6 +110,14 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.COPPER));
 
+    public static final DeferredBlock<Block> MAGNETITE_BARREL = BLOCKS.registerBlock("magnetite_barrel",
+            com.airton.avoidminer.block.MagnetiteBarrelBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .noLootTable()
+                    .sound(SoundType.METAL));
+
     public static final DeferredBlock<Block> CREATIVE_BATTERY = BLOCKS.registerBlock("creative_battery",
             CreativeBatteryBlock::new,
             () -> BlockBehaviour.Properties.of()

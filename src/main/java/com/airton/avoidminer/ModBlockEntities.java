@@ -34,4 +34,8 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CreativeBatteryBlockEntity>> CREATIVE_BATTERY = BLOCK_ENTITIES.register("creative_battery",
             () -> new BlockEntityType<>(CreativeBatteryBlockEntity::new, Collections.emptySet()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.airton.avoidminer.block.entity.MagnetiteBarrelBlockEntity>> MAGNETITE_BARREL =
+            BLOCK_ENTITIES.register("magnetite_barrel",
+                    () -> new BlockEntityType<>(com.airton.avoidminer.block.entity.MagnetiteBarrelBlockEntity::new, Collections.emptySet()));
 }

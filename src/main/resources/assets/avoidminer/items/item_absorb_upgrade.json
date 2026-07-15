@@ -1,0 +1,4 @@
+{
+  "model": { "type": "model", "model": "avoidminer:item/item_absorb_upgrade" },
+  "properties": { "hand_animation_on_swap": true }
+}

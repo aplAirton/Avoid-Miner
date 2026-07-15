@@ -67,6 +67,7 @@ public final class UpgradeApplier {
         if (be instanceof MagnetiteFurnaceBlockEntity furnace) return furnace.getItemHandler();
         if (be instanceof LootrBlockEntity lootr) return lootr.getItemHandler();
         if (be instanceof BatteryBlockEntity battery) return battery.getItemHandler();
+        if (be instanceof com.airton.avoidminer.block.entity.MagnetiteBarrelBlockEntity barrel) return barrel.getUpgradeOnlyHandler();
         return null;
     }
 }

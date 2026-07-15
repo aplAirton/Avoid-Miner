@@ -49,6 +49,21 @@ THEMES = {
         "rivet_lt":  (150, 106, 54, 255),
         "rivet_dk":  (46, 30, 14, 255),
     },
+    "barrel": {
+        "bg":        (13, 18, 13, 255),
+        "panel":     (17, 24, 16, 255),
+        "main":      (14, 20, 14, 255),
+        "right":     (14, 20, 14, 255),
+        "border_lt": (58, 88, 52, 255),
+        "border_dk": (4, 8, 4, 255),
+        "slot_bg":   (8, 12, 8, 255),
+        "slot_lt":   (44, 68, 40, 255),
+        "slot_dk":   (3, 5, 3, 255),
+        "frame":     (44, 68, 36, 255),
+        "corner":    (126, 230, 78, 255),   # verde XP
+        "rivet_lt":  (92, 124, 84, 255),
+        "rivet_dk":  (26, 38, 24, 255),
+    },
     "lootr": {
         "bg":        (18, 12, 22, 255),
         "panel":     (24, 14, 30, 255),
@@ -239,10 +254,72 @@ def gen_lootr(path):
     img.save(path)
 
 
+def gen_barrel(path):
+    """Barril de Magnetita (262x276): grade 9x9 na area principal e painel
+    lateral com cofre de XP (placas dos botoes), contadores e 2 slots de
+    melhoria. Fora do padrao 288x206: sem coluna direita."""
+    t = THEMES["barrel"]
+    bw, bh = 262, 276
+    panel_div = 88
+    main_x = 94
+    img = Image.new("RGBA", (bw, bh), t["bg"])
+    d = ImageDraw.Draw(img)
+
+    # regioes
+    d.rectangle([2, 2, panel_div - 1, bh - 3], fill=t["panel"])
+    d.rectangle([panel_div + 2, 2, bw - 3, bh - 3], fill=t["main"])
+
+    # borda externa (relevo)
+    d.rectangle([0, 0, bw - 1, bh - 1], outline=t["border_dk"])
+    d.line([1, 1, bw - 2, 1], fill=t["border_lt"])
+    d.line([1, 1, 1, bh - 2], fill=t["border_lt"])
+    d.line([1, bh - 2, bw - 2, bh - 2], fill=t["border_dk"])
+    d.line([bw - 2, 1, bw - 2, bh - 2], fill=t["border_dk"])
+
+    # divisor vertical
+    d.line([panel_div, 2, panel_div, bh - 3], fill=t["border_dk"])
+    d.line([panel_div + 1, 2, panel_div + 1, bh - 3], fill=t["border_lt"])
+
+    # grade de armazenamento 9x9 em y=18
+    for row in range(9):
+        for col in range(9):
+            slot(d, t, main_x + col * 18, 18 + row * 18)
+
+    # inventario do jogador
+    for row in range(3):
+        for col in range(9):
+            slot(d, t, main_x + col * 18, 194 + row * 18)
+    for col in range(9):
+        slot(d, t, main_x + col * 18, 252)
+
+    # painel lateral: divisores das secoes
+    d.line([4, 17, 83, 17], fill=t["border_lt"])   # abaixo do titulo
+    d.line([4, 92, 83, 92], fill=t["border_lt"])   # entre cofre de XP e status
+    d.line([4, 136, 83, 136], fill=t["border_lt"])  # abaixo das melhorias
+
+    # placas de fundo dos botoes (+100 em y=52, TUDO em y=72; 76x14 em x=6)
+    for by in (52, 72):
+        d.rectangle([6, by, 82, by + 14], fill=t["slot_bg"])
+        d.rectangle([6, by, 82, by + 14], outline=t["frame"])
+
+    # slots de melhoria (Absorcao de Itens, Absorcao de XP, Empilhamento) em y=116
+    slot(d, t, 9, 116)
+    slot(d, t, 35, 116)
+    slot(d, t, 61, 116)
+
+    # rebites nos cantos
+    for x, y in ((5, 5), (81, 5), (5, bh - 7), (81, bh - 7),
+                 (93, 4), (bw - 8, 4), (93, bh - 7), (bw - 8, bh - 7)):
+        rivet(d, t, x, y)
+
+    img.save(path)
+
+
 if __name__ == "__main__":
     import sys
     out = sys.argv[1]
     gen_miner(f"{out}/avoid_miner.png")
     gen_processor(f"{out}/avoid_processor.png")
     gen_lootr(f"{out}/avoid_lootr.png")
+    gen_barrel(f"{out}/magnetite_barrel.png")
     print("ok")

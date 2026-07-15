@@ -19,5 +19,6 @@ public class ClientModEvents {
         event.register(ModMenuTypes.MAGNETITE_FURNACE.get(), MagnetiteFurnaceScreen::new);
         event.register(ModMenuTypes.LOOTR.get(), LootrScreen::new);
         event.register(ModMenuTypes.BATTERY.get(), BatteryScreen::new);
+        event.register(ModMenuTypes.MAGNETITE_BARREL.get(), com.airton.avoidminer.screen.MagnetiteBarrelScreen::new);
     }
 }

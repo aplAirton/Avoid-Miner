@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-15T12:40:50.951Z" hostname="MacBook-Air-de-Airton.local" time="0.011">
+<testsuite name="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-15T13:56:05.747Z" hostname="MacBook-Air-de-Airton.local" time="0.006">
   <properties/>
-  <testcase name="vaultRecipesUseTheirMatchingCores" classname="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" time="0.003"/>
-  <testcase name="everyMobCardHasANativeConfiguredSpawnerRecipe" classname="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" time="0.008"/>
+  <testcase name="vaultRecipesUseTheirMatchingCores" classname="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" time="0.002"/>
+  <testcase name="everyMobCardHasANativeConfiguredSpawnerRecipe" classname="com.airton.avoidminer.recipe.ConfiguredTrialSpawnerRecipesTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

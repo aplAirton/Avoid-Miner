@@ -31,4 +31,8 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<BatteryMenu>> BATTERY = MENUS.register("battery",
             () -> new MenuType<>(BatteryMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<com.airton.avoidminer.menu.MagnetiteBarrelMenu>> MAGNETITE_BARREL =
+            MENUS.register("magnetite_barrel",
+                    () -> new MenuType<>(com.airton.avoidminer.menu.MagnetiteBarrelMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

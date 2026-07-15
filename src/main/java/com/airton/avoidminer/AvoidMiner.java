@@ -47,6 +47,8 @@ public class AvoidMiner {
                 ModBlocks.BATTERY.get());
         event.modify(ModBlockEntities.CREATIVE_BATTERY.getKey(),
                 ModBlocks.CREATIVE_BATTERY.get());
+        event.modify(ModBlockEntities.MAGNETITE_BARREL.getKey(),
+                ModBlocks.MAGNETITE_BARREL.get());
     }
 
     private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -59,6 +61,8 @@ public class AvoidMiner {
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.LOOTR.get(),
                 (be, side) -> be.getItemHandler(side));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.BATTERY.get(),
+                (be, side) -> be.getItemHandler(side));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.MAGNETITE_BARREL.get(),
                 (be, side) -> be.getItemHandler(side));
         event.registerBlockEntity(Capabilities.Item.BLOCK, ModBlockEntities.CREATIVE_BATTERY.get(),
                 (be, side) -> null);

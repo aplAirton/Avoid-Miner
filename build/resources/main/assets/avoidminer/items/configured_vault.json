@@ -1,3 +1,3 @@
 {
-  "model": { "type": "minecraft:model", "model": "avoidminer:item/configured_vault" }
+  "model": { "type": "minecraft:model", "model": "minecraft:block/vault" }
 }
