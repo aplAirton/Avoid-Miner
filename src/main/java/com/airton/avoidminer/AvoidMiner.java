@@ -47,6 +47,8 @@ public class AvoidMiner {
                 ModBlocks.BATTERY.get());
         event.modify(ModBlockEntities.CREATIVE_BATTERY.getKey(),
                 ModBlocks.CREATIVE_BATTERY.get());
+        event.modify(ModBlockEntities.XP_VAULT.getKey(),
+                ModBlocks.XP_VAULT.get());
         event.modify(ModBlockEntities.MAGNETITE_BARREL.getKey(),
                 ModBlocks.MAGNETITE_BARREL.get());
     }

@@ -14,6 +14,7 @@
     "avoidminer:magnetite_ore",
     "avoidminer:raw_magnetite_block",
     "avoidminer:battery",
-    "avoidminer:magnetite_barrel"
+    "avoidminer:magnetite_barrel",
+    "avoidminer:xp_vault"
   ]
 }

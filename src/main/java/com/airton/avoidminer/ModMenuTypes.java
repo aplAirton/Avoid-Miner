@@ -5,6 +5,7 @@ import com.airton.avoidminer.menu.BatteryMenu;
 import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import com.airton.avoidminer.menu.MagnetiteFurnaceMenu;
+import com.airton.avoidminer.menu.XpVaultMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -35,4 +36,7 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<com.airton.avoidminer.menu.MagnetiteBarrelMenu>> MAGNETITE_BARREL =
             MENUS.register("magnetite_barrel",
                     () -> new MenuType<>(com.airton.avoidminer.menu.MagnetiteBarrelMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<XpVaultMenu>> XP_VAULT = MENUS.register("xp_vault",
+            () -> new MenuType<>(XpVaultMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

@@ -6,6 +6,7 @@ import com.airton.avoidminer.block.entity.CreativeBatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
+import com.airton.avoidminer.block.entity.XpVaultBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -38,4 +39,8 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.airton.avoidminer.block.entity.MagnetiteBarrelBlockEntity>> MAGNETITE_BARREL =
             BLOCK_ENTITIES.register("magnetite_barrel",
                     () -> new BlockEntityType<>(com.airton.avoidminer.block.entity.MagnetiteBarrelBlockEntity::new, Collections.emptySet()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<XpVaultBlockEntity>> XP_VAULT =
+            BLOCK_ENTITIES.register("xp_vault",
+                    () -> new BlockEntityType<>(XpVaultBlockEntity::new, Collections.emptySet()));
 }

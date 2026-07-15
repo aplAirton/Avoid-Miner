@@ -5,6 +5,7 @@ import com.airton.avoidminer.screen.BatteryScreen;
 import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
+import com.airton.avoidminer.screen.XpVaultScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,5 +21,6 @@ public class ClientModEvents {
         event.register(ModMenuTypes.LOOTR.get(), LootrScreen::new);
         event.register(ModMenuTypes.BATTERY.get(), BatteryScreen::new);
         event.register(ModMenuTypes.MAGNETITE_BARREL.get(), com.airton.avoidminer.screen.MagnetiteBarrelScreen::new);
+        event.register(ModMenuTypes.XP_VAULT.get(), XpVaultScreen::new);
     }
 }

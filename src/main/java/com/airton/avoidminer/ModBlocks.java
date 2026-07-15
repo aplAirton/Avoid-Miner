@@ -6,6 +6,7 @@ import com.airton.avoidminer.block.CreativeBatteryBlock;
 import com.airton.avoidminer.block.LootrBlock;
 import com.airton.avoidminer.block.MagnetiteFurnaceBlock;
 import com.airton.avoidminer.block.ProcessorBlock;
+import com.airton.avoidminer.block.XpVaultBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
@@ -117,6 +118,14 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .noLootTable()
                     .sound(SoundType.METAL));
+
+    public static final DeferredBlock<Block> XP_VAULT = BLOCKS.registerBlock("xp_vault",
+            XpVaultBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(4.0f, 8.0f)
+                    .requiresCorrectToolForDrops()
+                    .noLootTable()
+                    .sound(SoundType.SCULK_CATALYST));
 
     public static final DeferredBlock<Block> CREATIVE_BATTERY = BLOCKS.registerBlock("creative_battery",
             CreativeBatteryBlock::new,

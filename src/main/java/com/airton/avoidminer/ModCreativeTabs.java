@@ -67,6 +67,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.CREATIVE_BATTERY.get());
                         output.accept(ModItems.ENERGY_LINK.get());
                         output.accept(ModItems.MAGNETITE_BARREL.get());
+                        output.accept(ModItems.XP_STORAGE_CORE.get());
+                        output.accept(ModItems.XP_VAULT.get());
                         output.accept(ModItems.ITEM_ABSORB_UPGRADE.get());
                         output.accept(ModItems.XP_ABSORB_UPGRADE.get());
                         output.accept(ModItems.ITEM_STACKING_UPGRADE.get());

@@ -416,6 +416,27 @@ public class ModItems {
                 }
             });
 
+    public static final DeferredItem<Item> XP_STORAGE_CORE = ITEMS.registerItem("xp_storage_core",
+            props -> new Item(props.rarity(Rarity.RARE)));
+
+    public static final DeferredItem<BlockItem> XP_VAULT = ITEMS.registerItem("xp_vault",
+            props -> new BlockItem(ModBlocks.XP_VAULT.get(), props.stacksTo(1).rarity(Rarity.RARE)) {
+                @Override
+                public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                            Consumer<Component> builder, TooltipFlag flag) {
+                    builder.accept(Component.translatable("tooltip.avoidminer.xp_vault.desc")
+                            .withStyle(ChatFormatting.GRAY));
+                    var data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+                    if (data != null) {
+                        int levels = data.copyTagWithoutId().getIntOr("StoredLevels", 0);
+                        if (levels > 0) {
+                            builder.accept(Component.translatable("tooltip.avoidminer.xp_vault.stored", levels)
+                                    .withStyle(ChatFormatting.GREEN));
+                        }
+                    }
+                }
+            });
+
     public static final DeferredItem<Item> ITEM_ABSORB_UPGRADE = ITEMS.registerItem("item_absorb_upgrade",
             props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_absorb_upgrade"));
 

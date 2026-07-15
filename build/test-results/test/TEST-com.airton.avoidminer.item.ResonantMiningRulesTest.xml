@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.item.ResonantMiningRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T13:56:05.745Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
+<testsuite name="com.airton.avoidminer.item.ResonantMiningRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T15:51:23.458Z" hostname="MacBook-Air-de-Airton.local" time="0.001">
   <properties/>
   <testcase name="resonantPickaxeAddsItsNativeRange" classname="com.airton.avoidminer.item.ResonantMiningRulesTest" time="0.001"/>
   <testcase name="rangeAndDurabilityMatchTheSpecification" classname="com.airton.avoidminer.item.ResonantMiningRulesTest" time="0.0"/>
