@@ -1,8 +1,0 @@
-{
-  "model": {
-    "type": "minecraft:condition",
-    "property": "minecraft:using_item",
-    "on_false": { "type": "model", "model": "avoidminer:item/hypersonic_cannon_creative" },
-    "on_true": { "type": "model", "model": "avoidminer:item/hypersonic_cannon_creative" }
-  }
-}

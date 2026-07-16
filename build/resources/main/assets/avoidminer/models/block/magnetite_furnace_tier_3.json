@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "avoidminer:block/processor_t3_top",
-    "front": "avoidminer:block/magnetite_furnace_t3_front",
-    "side": "avoidminer:block/processor_t3_side"
-  }
-}

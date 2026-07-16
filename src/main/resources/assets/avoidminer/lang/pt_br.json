@@ -401,5 +401,19 @@
   "tooltip.avoidminer.xp_vault.store_5": "Guarda até 5 dos seus níveis",
   "tooltip.avoidminer.xp_vault.store_10": "Guarda até 10 dos seus níveis",
   "tooltip.avoidminer.xp_vault.store_all": "Guarda todos os seus níveis completos",
-  "tooltip.avoidminer.xp_vault.get_all": "Obtém todos os níveis guardados no cofre"
+  "tooltip.avoidminer.xp_vault.get_all": "Obtém todos os níveis guardados no cofre",
+  "enchantment.avoidminer.projectile_deflection": "Desvio de Projéteis",
+  "enchantment.avoidminer.projectile_deflection.desc": "Redireciona projéteis recebidos para uma criatura próxima em até 8 blocos ou para uma direção aleatória quando não houver alvo.",
+  "item.avoidminer.resonant_crystal": "Cristal Ressonante",
+  "block.avoidminer.resonant_crystal_block": "Bloco de Cristal Ressonante",
+  "block.avoidminer.budding_resonant_crystal": "Matriz de Cristal Ressonante",
+  "block.avoidminer.resonant_crystal_cluster": "Aglomerado de Cristal Ressonante",
+  "block.avoidminer.large_resonant_crystal_bud": "Broto Grande de Cristal Ressonante",
+  "block.avoidminer.medium_resonant_crystal_bud": "Broto Médio de Cristal Ressonante",
+  "block.avoidminer.small_resonant_crystal_bud": "Broto Pequeno de Cristal Ressonante",
+  "block.avoidminer.resonant_repair_station": "Estação de Reparo Ressonante",
+  "container.avoidminer.resonant_repair_station": "Estação de Reparo Ressonante",
+  "item.avoidminer.resonant_scanner": "Scanner Ressonante",
+  "tooltip.avoidminer.resonant_scanner.desc": "Revela estruturas ocultas próximas sem quebrar blocos",
+  "tooltip.avoidminer.resonant_scanner.targets": "Dourado: minérios | Vermelho: lava | Azul: água | Ciano: cavidades"
 }

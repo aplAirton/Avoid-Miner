@@ -1,5 +1,7 @@
 package com.airton.avoidminer.block.entity;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.ProcessorBlock;
@@ -293,7 +295,8 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
     }
 
     private int getEffectiveTicks() {
-        return Math.max(1, (int) (tier.ticksPerProcess / getSpeedMultiplier()));
+        int upgradedTicks = Math.max(1, (int) (tier.ticksPerProcess / getSpeedMultiplier()));
+        return AvoidMinerServerConfig.machineTicks(upgradedTicks);
     }
 
     private boolean canOutputAccept(int outputSlot, ItemStack result) {
@@ -361,7 +364,9 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
             if (be.energyBuffer > 0) {
                 // Custo por tick = 1 * energyMult * speedMult; custo total por processo
                 // independe da velocidade (speed encurta o ciclo na mesma proporção)
-                float rawCostPerTick = be.tier.baseEnergyPerTick * energyMult * speedMult;
+                float rawCostPerTick = (float) (be.tier.baseEnergyPerTick * energyMult * speedMult
+                        * AvoidMinerServerConfig.machineSpeedMultiplier()
+                        * AvoidMinerServerConfig.machineEnergyMultiplier());
                 be.energyFraction += rawCostPerTick;
                 int cost = (int) be.energyFraction;
                 be.energyFraction -= cost;

@@ -1,9 +1,0 @@
-[
-  {"version":1},
-  {"ingredient":{"id":"avoidminer:upgrade_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:upgrade_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:mining_core"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_miner_tier_1"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_miner_tier_3"},"type":"item_stack","bookmarkType":"INGREDIENT"},
-  {"ingredient":{"id":"avoidminer:avoid_miner_tier_2"},"type":"item_stack","bookmarkType":"INGREDIENT"}
-]

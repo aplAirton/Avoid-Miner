@@ -1,0 +1,33 @@
+# Gradle
+.gradle/
+build/
+!build/libs/*.jar
+!build/resources/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Minecraft/NeoForge
+run/
+src/generated/resources/.cache/
+*.bbmodel
+
+# Temp
+*.log
+*.tmp
+out/
+
+# NeoForge generated sources
+/JAVA/
+/net/

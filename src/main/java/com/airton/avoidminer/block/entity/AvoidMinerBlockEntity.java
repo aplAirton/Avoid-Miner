@@ -1,5 +1,7 @@
 package com.airton.avoidminer.block.entity;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.AvoidMinerBlock;
@@ -558,7 +560,8 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
     }
 
     private int getEffectiveTicks() {
-        return Math.max(1, (int) (getTier().ticksPerGeneration / getSpeedMultiplier()));
+        int upgradedTicks = Math.max(1, (int) (getTier().ticksPerGeneration / getSpeedMultiplier()));
+        return AvoidMinerServerConfig.machineTicks(upgradedTicks);
     }
 
     private List<WeightedResource> getActivePool(Tier tier) {
@@ -598,7 +601,9 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
         if (!outputFull && be.energyBuffer > 0) {
             // Per-tick cost = energyPerTick * energyMult * speedMult
             // Total per gen = ticksPerGen * energyPerTick * energyMult (speed cancels out)
-            float rawCostPerTick = tier.energyPerTick * be.getEnergyMultiplier() * be.getSpeedMultiplier();
+            float rawCostPerTick = (float) (tier.energyPerTick * be.getEnergyMultiplier()
+                    * be.getSpeedMultiplier() * AvoidMinerServerConfig.machineSpeedMultiplier()
+                    * AvoidMinerServerConfig.machineEnergyMultiplier());
             be.energyFraction += rawCostPerTick;
             int cost = (int) be.energyFraction;
             be.energyFraction -= cost;
@@ -710,9 +715,11 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
 
         // Upgrade drops
         ItemStack upgradeDrop = null;
-        if (tier == Tier.TIER_1 && worldMode == 2 && level.getRandom().nextFloat() < 0.005f) {
+        if (tier == Tier.TIER_1 && worldMode == 2
+                && level.getRandom().nextFloat() < AvoidMinerServerConfig.lootChance(0.005f)) {
             upgradeDrop = new ItemStack(ModItems.UPGRADE_TIER_2.get());
-        } else if (tier == Tier.TIER_2 && worldMode == 2 && enchantMode == 1 && level.getRandom().nextFloat() < 0.005f) {
+        } else if (tier == Tier.TIER_2 && worldMode == 2 && enchantMode == 1
+                && level.getRandom().nextFloat() < AvoidMinerServerConfig.lootChance(0.005f)) {
             upgradeDrop = new ItemStack(ModItems.UPGRADE_TIER_3.get());
         }
         if (upgradeDrop != null) {

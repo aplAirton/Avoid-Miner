@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CC", "CC"],
+  "key": { "C": "avoidminer:resonant_crystal" },
+  "result": { "id": "avoidminer:resonant_crystal_block", "count": 1 }
+}

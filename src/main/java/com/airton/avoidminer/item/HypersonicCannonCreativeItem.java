@@ -1,5 +1,7 @@
 package com.airton.avoidminer.item;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -78,7 +80,7 @@ public class HypersonicCannonCreativeItem extends Item {
     private void fire(ServerLevel level, Player shooter) {
         Vec3 direction = shooter.getLookAngle().normalize();
         Vec3 source = shooter.getEyePosition().add(direction.scale(0.4));
-        sendSonicTrail(level, source, direction, RANGE, true);
+        sendSonicTrail(level, source, direction, AvoidMinerServerConfig.weaponRange(RANGE), true);
         level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(),
                 SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 3.0F, 1.0F);
 
@@ -96,11 +98,12 @@ public class HypersonicCannonCreativeItem extends Item {
     }
 
     private List<LivingEntity> findConeTargets(ServerLevel level, Player shooter, Vec3 source, Vec3 direction) {
-        AABB searchArea = shooter.getBoundingBox().inflate(RANGE);
+        double range = AvoidMinerServerConfig.weaponRange(RANGE);
+        AABB searchArea = shooter.getBoundingBox().inflate(range);
         return level.getEntitiesOfClass(LivingEntity.class, searchArea,
                         target -> target != shooter && isValidTarget(target)
                                 && HypersonicCannonItem.isInsideCone(
-                                        source, direction, target.getBoundingBox(), RANGE, CONE_DEGREES))
+                                        source, direction, target.getBoundingBox(), range, CONE_DEGREES))
                 .stream()
                 .sorted(Comparator.comparingDouble(target -> source.distanceToSqr(target.getEyePosition())))
                 .limit(MAX_TARGETS)
@@ -112,7 +115,7 @@ public class HypersonicCannonCreativeItem extends Item {
         for (int bounce = 0; bounce < RICOCHETS; bounce++) {
             Vec3 origin = current.getEyePosition();
             LivingEntity next = level.getEntitiesOfClass(LivingEntity.class,
-                            current.getBoundingBox().inflate(RICOCHET_RANGE),
+                            current.getBoundingBox().inflate(AvoidMinerServerConfig.weaponRange(RICOCHET_RANGE)),
                             target -> target != shooter && !hitTargets.contains(target) && isValidTarget(target))
                     .stream()
                     .min(Comparator.comparingDouble(target -> origin.distanceToSqr(target.getEyePosition())))
@@ -124,7 +127,8 @@ public class HypersonicCannonCreativeItem extends Item {
             sendSonicTrail(level, origin, bounceDirection, delta.length(), false);
             level.playSound(null, next.getX(), next.getY(), next.getZ(),
                     SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.4F, 1.15F + bounce * 0.1F);
-            damageAndKnockBack(level, shooter, next, bounceDirection, MIN_DAMAGE * 0.65F);
+            damageAndKnockBack(level, shooter, next, bounceDirection,
+                    AvoidMinerServerConfig.weaponDamage(MIN_DAMAGE * 0.65F));
             hitTargets.add(next);
             current = next;
         }
@@ -143,8 +147,9 @@ public class HypersonicCannonCreativeItem extends Item {
     }
 
     private float damageAtDistance(double distance) {
-        double progress = Math.clamp(distance / RANGE, 0.0, 1.0);
-        return (float) (MAX_DAMAGE + (MIN_DAMAGE - MAX_DAMAGE) * progress);
+        double progress = Math.clamp(distance / AvoidMinerServerConfig.weaponRange(RANGE), 0.0, 1.0);
+        return AvoidMinerServerConfig.weaponDamage(
+                (float) (MAX_DAMAGE + (MIN_DAMAGE - MAX_DAMAGE) * progress));
     }
 
     private static void sendSonicTrail(ServerLevel level, Vec3 source, Vec3 direction, double distance, boolean wardenTail) {

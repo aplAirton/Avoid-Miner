@@ -402,5 +402,19 @@
   "tooltip.avoidminer.xp_vault.store_5": "Store up to 5 of your levels",
   "tooltip.avoidminer.xp_vault.store_10": "Store up to 10 of your levels",
   "tooltip.avoidminer.xp_vault.store_all": "Store all your complete levels",
-  "tooltip.avoidminer.xp_vault.get_all": "Take every level stored in the vault"
+  "tooltip.avoidminer.xp_vault.get_all": "Take every level stored in the vault",
+  "enchantment.avoidminer.projectile_deflection": "Projectile Deflection",
+  "enchantment.avoidminer.projectile_deflection.desc": "Redirects incoming projectiles toward a nearby creature within 8 blocks, or in a random direction when no target is available.",
+  "item.avoidminer.resonant_crystal": "Resonant Crystal",
+  "block.avoidminer.resonant_crystal_block": "Block of Resonant Crystal",
+  "block.avoidminer.budding_resonant_crystal": "Budding Resonant Crystal",
+  "block.avoidminer.resonant_crystal_cluster": "Resonant Crystal Cluster",
+  "block.avoidminer.large_resonant_crystal_bud": "Large Resonant Crystal Bud",
+  "block.avoidminer.medium_resonant_crystal_bud": "Medium Resonant Crystal Bud",
+  "block.avoidminer.small_resonant_crystal_bud": "Small Resonant Crystal Bud",
+  "block.avoidminer.resonant_repair_station": "Resonant Repair Station",
+  "container.avoidminer.resonant_repair_station": "Resonant Repair Station",
+  "item.avoidminer.resonant_scanner": "Resonant Scanner",
+  "tooltip.avoidminer.resonant_scanner.desc": "Reveals nearby hidden structures without breaking blocks",
+  "tooltip.avoidminer.resonant_scanner.targets": "Gold: ores | Red: lava | Blue: water | Cyan: cavities"
 }

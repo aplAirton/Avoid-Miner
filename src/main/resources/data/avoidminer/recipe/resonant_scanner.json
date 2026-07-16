@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MCM", "ESE", "MCM"],
+  "key": {
+    "M": "avoidminer:magnetite_ingot",
+    "C": "avoidminer:resonant_crystal",
+    "E": "minecraft:echo_shard",
+    "S": "minecraft:spyglass"
+  },
+  "result": { "id": "avoidminer:resonant_scanner", "count": 1 }
+}

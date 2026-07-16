@@ -1,4 +1,0 @@
-{
-  "model": { "type": "model", "model": "avoidminer:block/magnetite_furnace_tier_1" },
-  "properties": { "hand_animation_on_swap": true, "oversized_in_gui": false, "swap_animation_scale": 1.0 }
-}

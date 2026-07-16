@@ -1,0 +1,20 @@
+{
+  "anvil_cost": 6,
+  "description": {
+    "translate": "enchantment.avoidminer.projectile_deflection"
+  },
+  "max_cost": {
+    "base": 42,
+    "per_level_above_first": 0
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 18,
+    "per_level_above_first": 0
+  },
+  "slots": [
+    "chest"
+  ],
+  "supported_items": "#avoidminer:enchantable/projectile_deflection",
+  "weight": 3
+}

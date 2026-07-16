@@ -15,6 +15,13 @@
     "avoidminer:raw_magnetite_block",
     "avoidminer:battery",
     "avoidminer:magnetite_barrel",
-    "avoidminer:xp_vault"
+    "avoidminer:xp_vault",
+    "avoidminer:resonant_crystal_block",
+    "avoidminer:budding_resonant_crystal",
+    "avoidminer:resonant_crystal_cluster",
+    "avoidminer:large_resonant_crystal_bud",
+    "avoidminer:medium_resonant_crystal_bud",
+    "avoidminer:small_resonant_crystal_bud",
+    "avoidminer:resonant_repair_station"
   ]
 }

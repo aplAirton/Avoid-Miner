@@ -1,12 +1,15 @@
 package com.airton.avoidminer;
 
 import com.airton.avoidminer.event.ResonantMiningManager;
+import com.airton.avoidminer.client.ResonantScannerRenderer;
+import com.airton.avoidminer.network.ResonantScanPayload;
 import com.airton.avoidminer.screen.AvoidMinerScreen;
 import com.airton.avoidminer.screen.BatteryScreen;
 import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
+import com.airton.avoidminer.screen.ResonantRepairStationScreen;
 import net.minecraft.client.particle.SonicBoomParticle;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -20,10 +23,29 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(modid = AvoidMiner.MODID, value = Dist.CLIENT)
 public class ClientModEvents {
+    @SubscribeEvent
+    public static void onRegisterClientPayloads(RegisterClientPayloadHandlersEvent event) {
+        event.register(ResonantScanPayload.TYPE,
+                (payload, context) -> ResonantScannerRenderer.accept(payload));
+    }
+
+    @SubscribeEvent
+    public static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
+        ResonantScannerRenderer.registerPipeline(event);
+    }
+
+    @SubscribeEvent
+    public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
+        ResonantScannerRenderer.submit(event);
+    }
+
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticleTypes.GOLDEN_SONIC_BOOM.get(), sprites ->
@@ -43,6 +65,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.BATTERY.get(), BatteryScreen::new);
         event.register(ModMenuTypes.MAGNETITE_BARREL.get(), com.airton.avoidminer.screen.MagnetiteBarrelScreen::new);
         event.register(ModMenuTypes.XP_VAULT.get(), XpVaultScreen::new);
+        event.register(ModMenuTypes.RESONANT_REPAIR_STATION.get(), ResonantRepairStationScreen::new);
     }
 
     @SubscribeEvent

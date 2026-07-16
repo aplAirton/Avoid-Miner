@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.item.NightVisionHelmetRulesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-16T11:34:16.489Z" hostname="MacBook-Air-de-Airton.local" time="0.0">
-  <properties/>
-  <testcase name="durabilityStaysBetweenIronAndDiamond" classname="com.airton.avoidminer.item.NightVisionHelmetRulesTest" time="0.0"/>
-  <testcase name="effectRefreshesBeforeNightVisionStartsFlickering" classname="com.airton.avoidminer.item.NightVisionHelmetRulesTest" time="0.0"/>
-  <testcase name="recipeMatchesTheRequestedSlotLayout" classname="com.airton.avoidminer.item.NightVisionHelmetRulesTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

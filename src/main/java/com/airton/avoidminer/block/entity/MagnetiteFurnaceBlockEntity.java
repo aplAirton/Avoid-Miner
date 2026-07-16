@@ -1,5 +1,7 @@
 package com.airton.avoidminer.block.entity;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModBlocks;
 import com.airton.avoidminer.ModItems;
@@ -252,8 +254,9 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
     }
 
     private int getEffectiveTicks() {
-        return MagnetiteFurnaceRules.effectiveTicks(
+        int upgradedTicks = MagnetiteFurnaceRules.effectiveTicks(
                 tier.ticksPerProcess, upgradeTierAt(tier.getSpeedUpgradeSlot()));
+        return AvoidMinerServerConfig.machineTicks(upgradedTicks);
     }
 
     private boolean canOutputAccept(int outputSlot, ItemStack result) {
@@ -285,7 +288,9 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
         boolean dirty = false;
         boolean anyProcessing = false;
         int maxProgress = be.getEffectiveTicks();
-        float rawCostPerTick = be.tier.baseEnergyPerTick * be.getEnergyMultiplier() * be.getSpeedMultiplier();
+        float rawCostPerTick = (float) (be.tier.baseEnergyPerTick * be.getEnergyMultiplier()
+                * be.getSpeedMultiplier() * AvoidMinerServerConfig.machineSpeedMultiplier()
+                * AvoidMinerServerConfig.machineEnergyMultiplier());
 
         for (int i = 0; i < be.tier.inputCount; i++) {
             int inputSlot = be.tier.getInputStart() + i;

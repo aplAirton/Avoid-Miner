@@ -7,12 +7,19 @@ import com.airton.avoidminer.block.LootrBlock;
 import com.airton.avoidminer.block.MagnetiteFurnaceBlock;
 import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.XpVaultBlock;
+import com.airton.avoidminer.block.BuddingResonantCrystalBlock;
+import com.airton.avoidminer.block.ResonantRepairStationBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.AmethystBlock;
+import net.minecraft.world.level.block.AmethystClusterBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -97,6 +104,36 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL));
 
+    public static final DeferredBlock<AmethystBlock> RESONANT_CRYSTAL_BLOCK = BLOCKS.registerBlock(
+            "resonant_crystal_block", AmethystBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN).strength(1.5F)
+                    .sound(SoundType.AMETHYST).requiresCorrectToolForDrops());
+
+    public static final DeferredBlock<BuddingResonantCrystalBlock> BUDDING_RESONANT_CRYSTAL = BLOCKS.registerBlock(
+            "budding_resonant_crystal", BuddingResonantCrystalBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN).randomTicks().strength(1.5F)
+                    .sound(SoundType.AMETHYST).requiresCorrectToolForDrops()
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<AmethystClusterBlock> RESONANT_CRYSTAL_CLUSTER = BLOCKS.registerBlock(
+            "resonant_crystal_cluster", p -> new AmethystClusterBlock(7.0F, 3.0F, p),
+            () -> BlockBehaviour.Properties.ofLegacyCopy(Blocks.AMETHYST_CLUSTER)
+                    .mapColor(MapColor.COLOR_CYAN));
+    public static final DeferredBlock<AmethystClusterBlock> LARGE_RESONANT_CRYSTAL_BUD = BLOCKS.registerBlock(
+            "large_resonant_crystal_bud", p -> new AmethystClusterBlock(5.0F, 3.0F, p),
+            () -> BlockBehaviour.Properties.ofLegacyCopy(Blocks.LARGE_AMETHYST_BUD)
+                    .mapColor(MapColor.COLOR_CYAN));
+    public static final DeferredBlock<AmethystClusterBlock> MEDIUM_RESONANT_CRYSTAL_BUD = BLOCKS.registerBlock(
+            "medium_resonant_crystal_bud", p -> new AmethystClusterBlock(4.0F, 3.0F, p),
+            () -> BlockBehaviour.Properties.ofLegacyCopy(Blocks.MEDIUM_AMETHYST_BUD)
+                    .mapColor(MapColor.COLOR_CYAN));
+    public static final DeferredBlock<AmethystClusterBlock> SMALL_RESONANT_CRYSTAL_BUD = BLOCKS.registerBlock(
+            "small_resonant_crystal_bud", p -> new AmethystClusterBlock(3.0F, 4.0F, p),
+            () -> BlockBehaviour.Properties.ofLegacyCopy(Blocks.SMALL_AMETHYST_BUD)
+                    .mapColor(MapColor.COLOR_CYAN));
+
     public static final DeferredBlock<Block> AVOID_LOOTR = BLOCKS.registerBlock("avoid_lootr",
             LootrBlock::new,
             () -> BlockBehaviour.Properties.of()
@@ -126,6 +163,11 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .noLootTable()
                     .sound(SoundType.SCULK_CATALYST));
+
+    public static final DeferredBlock<Block> RESONANT_REPAIR_STATION = BLOCKS.registerBlock(
+            "resonant_repair_station", ResonantRepairStationBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(4.0F, 8.0F)
+                    .requiresCorrectToolForDrops().noLootTable().sound(SoundType.AMETHYST));
 
     public static final DeferredBlock<Block> CREATIVE_BATTERY = BLOCKS.registerBlock("creative_battery",
             CreativeBatteryBlock::new,

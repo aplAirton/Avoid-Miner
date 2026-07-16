@@ -1,6 +1,7 @@
 package com.airton.avoidminer.event;
 
 import com.airton.avoidminer.AvoidMiner;
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
 import com.airton.avoidminer.item.GlassSwordRules;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -139,7 +140,9 @@ public final class GlassSwordAttackManager {
         private boolean advance(MinecraftServer server) {
             ServerLevel level = server.getLevel(dimension);
             ServerPlayer owner = server.getPlayerList().getPlayer(ownerId);
-            if (level == null || owner == null || owner.level() != level || step >= GlassSwordRules.WAVE_RANGE) {
+            int waveRange = Math.max(1, (int) Math.round(
+                    AvoidMinerServerConfig.weaponRange(GlassSwordRules.WAVE_RANGE)));
+            if (level == null || owner == null || owner.level() != level || step >= waveRange) {
                 if (level != null && owner != null && lastHitUuid != null) {
                     triggerRicochet(level, owner);
                 }
@@ -162,10 +165,10 @@ public final class GlassSwordAttackManager {
                     hitTargets.add(target.getUUID());
                     lastHitUuid = target.getUUID();
                     damageTarget(level, owner, weapon, target, direction,
-                            GlassSwordRules.BASE_DAMAGE, 0.55F);
+                            AvoidMinerServerConfig.weaponDamage(GlassSwordRules.BASE_DAMAGE), 0.55F);
                 }
             }
-            return step < GlassSwordRules.WAVE_RANGE;
+            return step < waveRange;
         }
 
         private void triggerRicochet(ServerLevel level, ServerPlayer owner) {
@@ -185,7 +188,7 @@ public final class GlassSwordAttackManager {
                 Vec3 delta = next.getEyePosition().subtract(originPos);
                 Vec3 bounceDirection = delta.normalize();
                 damageTarget(level, owner, weapon, next, bounceDirection,
-                        GlassSwordRules.BASE_DAMAGE * 0.5F, 0.55F);
+                        AvoidMinerServerConfig.weaponDamage(GlassSwordRules.BASE_DAMAGE * 0.5F), 0.55F);
                 hitTargets.add(next.getUUID());
                 lastHitUuid = next.getUUID();
             }

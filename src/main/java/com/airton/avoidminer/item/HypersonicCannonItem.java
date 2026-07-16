@@ -1,5 +1,7 @@
 package com.airton.avoidminer.item;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -80,7 +82,8 @@ public class HypersonicCannonItem extends Item {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel) {
             fire(serverLevel, player);
-            player.getCooldowns().addCooldown(stack, cannonTier.cooldownTicks());
+            player.getCooldowns().addCooldown(stack,
+                    AvoidMinerServerConfig.weaponCooldown(cannonTier.cooldownTicks()));
             stack.hurtAndBreak(1, player, player.getUsedItemHand());
             player.awardStat(Stats.ITEM_USED.get(this));
         }
@@ -90,7 +93,8 @@ public class HypersonicCannonItem extends Item {
     private void fire(ServerLevel level, Player shooter) {
         Vec3 direction = shooter.getLookAngle().normalize();
         Vec3 source = shooter.getEyePosition().add(direction.scale(0.4));
-        sendSonicTrail(level, source, direction, cannonTier.range(), true);
+        double range = AvoidMinerServerConfig.weaponRange(cannonTier.range());
+        sendSonicTrail(level, source, direction, range, true);
         level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(),
                 SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 3.0F, 1.0F);
 
@@ -98,7 +102,10 @@ public class HypersonicCannonItem extends Item {
 
         Set<LivingEntity> hitTargets = new HashSet<>();
         for (LivingEntity target : directTargets) {
-            float damage = HypersonicCannonRules.damageAtDistance(cannonTier, source.distanceTo(target.getEyePosition()));
+            double progress = Math.clamp(source.distanceTo(target.getEyePosition()) / range, 0.0, 1.0);
+            float baseDamage = (float) (cannonTier.maxDamage()
+                    + (cannonTier.minDamage() - cannonTier.maxDamage()) * progress);
+            float damage = AvoidMinerServerConfig.weaponDamage(baseDamage);
             damageAndKnockBack(level, shooter, target, direction, damage);
             applyTierEffects(target);
             hitTargets.add(target);
@@ -110,7 +117,7 @@ public class HypersonicCannonItem extends Item {
     }
 
     private List<LivingEntity> findConeTargets(ServerLevel level, Player shooter, Vec3 source, Vec3 direction) {
-        double range = cannonTier.range();
+        double range = AvoidMinerServerConfig.weaponRange(cannonTier.range());
         AABB searchArea = shooter.getBoundingBox().inflate(range);
         return level.getEntitiesOfClass(LivingEntity.class, searchArea,
                         target -> target != shooter && isValidTarget(target)
@@ -146,7 +153,8 @@ public class HypersonicCannonItem extends Item {
         for (int bounce = 0; bounce < cannonTier.ricochets(); bounce++) {
             Vec3 origin = current.getEyePosition();
             LivingEntity next = level.getEntitiesOfClass(LivingEntity.class,
-                            current.getBoundingBox().inflate(cannonTier.ricochetRange()),
+                            current.getBoundingBox().inflate(
+                                    AvoidMinerServerConfig.weaponRange(cannonTier.ricochetRange())),
                             target -> target != shooter && !hitTargets.contains(target) && isValidTarget(target))
                     .stream()
                     .min(Comparator.comparingDouble(target -> origin.distanceToSqr(target.getEyePosition())))
@@ -158,7 +166,8 @@ public class HypersonicCannonItem extends Item {
             sendSonicTrail(level, origin, bounceDirection, delta.length(), false);
             level.playSound(null, next.getX(), next.getY(), next.getZ(),
                     SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.4F, 1.15F + bounce * 0.1F);
-            damageAndKnockBack(level, shooter, next, bounceDirection, cannonTier.minDamage() * 0.65F);
+            damageAndKnockBack(level, shooter, next, bounceDirection,
+                    AvoidMinerServerConfig.weaponDamage(cannonTier.minDamage() * 0.65F));
             applyTierEffects(next);
             hitTargets.add(next);
             current = next;

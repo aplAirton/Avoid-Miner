@@ -1,6 +1,7 @@
 package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.AvoidMiner;
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
 import com.airton.avoidminer.enchantment.ThorThunderRules;
 import java.util.Comparator;
 import java.util.List;
@@ -131,7 +132,8 @@ public final class ThorHammerItem extends MaceItem {
         }
 
         fire(serverLevel, player, stack);
-        player.getCooldowns().addCooldown(stack, ThorThunderRules.COOLDOWN_TICKS);
+        player.getCooldowns().addCooldown(stack,
+                AvoidMinerServerConfig.weaponCooldown(ThorThunderRules.COOLDOWN_TICKS));
         stack.hurtAndBreak(1, player, player.getUsedItemHand());
         player.awardStat(Stats.ITEM_USED.get(this));
         return true;
@@ -141,7 +143,7 @@ public final class ThorHammerItem extends MaceItem {
         HitResult hit = ProjectileUtil.getHitResultOnViewVector(
                 player,
                 entity -> entity instanceof LivingEntity living && living.isAlive() && player.canAttack(living),
-                ThorThunderRules.RANGE
+                AvoidMinerServerConfig.weaponRange(ThorThunderRules.RANGE)
         );
         Vec3 origin = chargeFocus(player);
         Vec3 endpoint = hit.getLocation();
@@ -189,7 +191,8 @@ public final class ThorHammerItem extends MaceItem {
             return;
         }
 
-        AABB area = primary.getBoundingBox().inflate(ThorThunderRules.CHAIN_RADIUS);
+        AABB area = primary.getBoundingBox().inflate(
+                AvoidMinerServerConfig.weaponRange(ThorThunderRules.CHAIN_RADIUS));
         List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, area,
                         target -> target != primary
                                 && target instanceof Enemy
@@ -215,7 +218,7 @@ public final class ThorHammerItem extends MaceItem {
             return;
         }
         lightning.setPos(position.x, position.y, position.z);
-        lightning.setDamage(ThorThunderRules.DAMAGE);
+        lightning.setDamage(AvoidMinerServerConfig.weaponDamage(ThorThunderRules.DAMAGE));
         if (player instanceof ServerPlayer serverPlayer) {
             lightning.setCause(serverPlayer);
         }

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MCM", "CAC", "MCM"],
+  "key": {
+    "M": "avoidminer:magnetite_ingot",
+    "C": "avoidminer:resonant_crystal",
+    "A": "minecraft:anvil"
+  },
+  "result": { "id": "avoidminer:resonant_repair_station", "count": 1 }
+}

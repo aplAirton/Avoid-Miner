@@ -1,5 +1,7 @@
 package com.airton.avoidminer.item;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.event.GlassSwordAttackManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -97,7 +99,8 @@ public class GlassSwordItem extends Item {
     }
 
     private void completeSpecialAttack(Player player, ItemStack stack) {
-        player.getCooldowns().addCooldown(stack, GlassSwordRules.SPECIAL_COOLDOWN_TICKS);
+        player.getCooldowns().addCooldown(stack,
+                AvoidMinerServerConfig.weaponCooldown(GlassSwordRules.SPECIAL_COOLDOWN_TICKS));
         stack.hurtAndBreak(1, player, player.getUsedItemHand());
         player.awardStat(Stats.ITEM_USED.get(this));
     }

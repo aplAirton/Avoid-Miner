@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "top": "avoidminer:block/lootr_top",
-    "front": "avoidminer:block/lootr_front_on",
-    "side": "avoidminer:block/lootr_side"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "lit=false": { "model": "avoidminer:block/avoid_lootr" },
-    "lit=true": { "model": "avoidminer:block/avoid_lootr_on" }
-  }
-}

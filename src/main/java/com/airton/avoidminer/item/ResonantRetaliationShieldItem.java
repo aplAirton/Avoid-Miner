@@ -1,5 +1,7 @@
 package com.airton.avoidminer.item;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.ModDataComponents;
 import com.airton.avoidminer.ResonantShieldRules;
 import net.minecraft.ChatFormatting;
@@ -122,7 +124,8 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
         Vec3 direction = player.getLookAngle().normalize();
         Vec3 source = player.getEyePosition().add(direction.scale(0.45));
         double minimumDot = Math.cos(Math.toRadians(ResonantShieldRules.BLAST_HALF_ANGLE_DEGREES));
-        AABB search = player.getBoundingBox().inflate(ResonantShieldRules.BLAST_RANGE);
+        AABB search = player.getBoundingBox().inflate(
+                AvoidMinerServerConfig.weaponRange(ResonantShieldRules.BLAST_RANGE));
 
         level.getEntitiesOfClass(LivingEntity.class, search,
                         target -> isValidTarget(player, target)
@@ -139,7 +142,8 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
     private static boolean isInsideCone(Vec3 source, Vec3 direction, Vec3 target, double minimumDot) {
         Vec3 delta = target.subtract(source);
         double distance = delta.length();
-        return distance > 0.0 && distance <= ResonantShieldRules.BLAST_RANGE
+        return distance > 0.0
+                && distance <= AvoidMinerServerConfig.weaponRange(ResonantShieldRules.BLAST_RANGE)
                 && delta.normalize().dot(direction) >= minimumDot;
     }
 
@@ -152,7 +156,8 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
     }
 
     private static void retaliateAgainst(ServerLevel level, Player player, LivingEntity target, Vec3 direction) {
-        target.hurtServer(level, level.damageSources().sonicBoom(player), ResonantShieldRules.BLAST_DAMAGE);
+        target.hurtServer(level, level.damageSources().sonicBoom(player),
+                AvoidMinerServerConfig.weaponDamage(ResonantShieldRules.BLAST_DAMAGE));
         target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,
                 ResonantShieldRules.STUN_TICKS, 6, false, true, true));
         target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,
@@ -166,7 +171,9 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
 
     private static void emitRetaliationCone(ServerLevel level, Vec3 source, Vec3 direction) {
         Vec3 side = horizontalSide(direction);
-        for (int distance = 1; distance <= (int) ResonantShieldRules.BLAST_RANGE; distance++) {
+        int range = Math.max(1, (int) Math.round(
+                AvoidMinerServerConfig.weaponRange(ResonantShieldRules.BLAST_RANGE)));
+        for (int distance = 1; distance <= range; distance++) {
             Vec3 center = source.add(direction.scale(distance));
             double halfWidth = 0.2 + distance * 0.32;
             for (int lane = -2; lane <= 2; lane++) {

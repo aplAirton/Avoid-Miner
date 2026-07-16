@@ -1,4 +1,0 @@
-{
-  "model": { "type": "model", "model": "avoidminer:item/range_upgrade_tier_1" },
-  "properties": { "hand_animation_on_swap": true }
-}

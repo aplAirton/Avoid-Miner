@@ -1,5 +1,7 @@
 package com.airton.avoidminer.block.entity;
 
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.LootrBlock;
@@ -165,7 +167,8 @@ public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
     }
 
     private int getEffectiveTicks() {
-        return Math.max(1, (int) (BASE_TICKS_PER_OPERATION / getSpeedMultiplier()));
+        int upgradedTicks = Math.max(1, (int) (BASE_TICKS_PER_OPERATION / getSpeedMultiplier()));
+        return AvoidMinerServerConfig.machineTicks(upgradedTicks);
     }
 
     private boolean hasValidCard() {
@@ -221,7 +224,9 @@ public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
         boolean canProcess = card != null && !outputFull;
 
         if (canProcess && be.energyBuffer > 0) {
-            float rawCostPerTick = ENERGY_PER_TICK_BASE * be.getSpeedMultiplier();
+            float rawCostPerTick = (float) (ENERGY_PER_TICK_BASE * be.getSpeedMultiplier()
+                    * AvoidMinerServerConfig.machineSpeedMultiplier()
+                    * AvoidMinerServerConfig.machineEnergyMultiplier());
             be.energyFraction += rawCostPerTick;
             int cost = (int) be.energyFraction;
             be.energyFraction -= cost;
@@ -280,7 +285,7 @@ public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
 
         List<MobCardType.LootEntry> drops = card.normalDrops();
         for (MobCardType.LootEntry entry : drops) {
-            if (rng.nextFloat() < entry.chance()) {
+            if (rng.nextFloat() < AvoidMinerServerConfig.lootChance(entry.chance())) {
                 int amount = entry.min() + (entry.max() > entry.min() ? rng.nextInt(entry.max() - entry.min() + 1) : 0);
                 if (entry.lootingScales() && lootingLevel > 0) {
                     amount += rng.nextInt(lootingLevel + 1);
@@ -295,7 +300,7 @@ public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
 
         if (rarity) {
             for (MobCardType.RareEntry rare : card.rareDrops()) {
-                if (rng.nextFloat() < rare.chance()) {
+                if (rng.nextFloat() < AvoidMinerServerConfig.lootChance(rare.chance())) {
                     placeInOutput(new ItemStack(rare.item(), 1));
                     producedAny = true;
                 }

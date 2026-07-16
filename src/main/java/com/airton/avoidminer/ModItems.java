@@ -10,6 +10,7 @@ import com.airton.avoidminer.item.MachineUpgradeItem;
 import com.airton.avoidminer.item.NightVisionHelmetItem;
 import com.airton.avoidminer.item.ResonantRetaliationShieldItem;
 import com.airton.avoidminer.item.ResonantPickaxeItem;
+import com.airton.avoidminer.item.ResonantScannerItem;
 import com.airton.avoidminer.item.SeismicPropulsionBootsItem;
 import com.airton.avoidminer.item.TemporalClockItem;
 import com.airton.avoidminer.item.TemporalCoreItem;
@@ -205,6 +206,18 @@ public class ModItems {
     public static final DeferredItem<BlockItem> MAGNETITE_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_ORE);
     public static final DeferredItem<BlockItem> RAW_MAGNETITE_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RAW_MAGNETITE_BLOCK);
     public static final DeferredItem<BlockItem> MAGNETITE_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.MAGNETITE_BLOCK);
+    public static final DeferredItem<BlockItem> RESONANT_CRYSTAL_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RESONANT_CRYSTAL_BLOCK);
+    public static final DeferredItem<BlockItem> BUDDING_RESONANT_CRYSTAL = ITEMS.registerSimpleBlockItem(ModBlocks.BUDDING_RESONANT_CRYSTAL);
+    public static final DeferredItem<BlockItem> RESONANT_CRYSTAL_CLUSTER = ITEMS.registerSimpleBlockItem(ModBlocks.RESONANT_CRYSTAL_CLUSTER);
+    public static final DeferredItem<BlockItem> LARGE_RESONANT_CRYSTAL_BUD = ITEMS.registerSimpleBlockItem(ModBlocks.LARGE_RESONANT_CRYSTAL_BUD);
+    public static final DeferredItem<BlockItem> MEDIUM_RESONANT_CRYSTAL_BUD = ITEMS.registerSimpleBlockItem(ModBlocks.MEDIUM_RESONANT_CRYSTAL_BUD);
+    public static final DeferredItem<BlockItem> SMALL_RESONANT_CRYSTAL_BUD = ITEMS.registerSimpleBlockItem(ModBlocks.SMALL_RESONANT_CRYSTAL_BUD);
+    public static final DeferredItem<Item> RESONANT_CRYSTAL = ITEMS.registerSimpleItem("resonant_crystal");
+    public static final DeferredItem<ResonantScannerItem> RESONANT_SCANNER = ITEMS.registerItem(
+            "resonant_scanner", ResonantScannerItem::new);
+    public static final DeferredItem<BlockItem> RESONANT_REPAIR_STATION = ITEMS.registerItem(
+            "resonant_repair_station",
+            props -> new BlockItem(ModBlocks.RESONANT_REPAIR_STATION.get(), props.stacksTo(1)));
     public static final DeferredItem<Item> RAW_MAGNETITE = ITEMS.registerSimpleItem("raw_magnetite");
     public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
     public static final DeferredItem<Item> MAGNETITE_NUGGET = ITEMS.registerSimpleItem("magnetite_nugget");

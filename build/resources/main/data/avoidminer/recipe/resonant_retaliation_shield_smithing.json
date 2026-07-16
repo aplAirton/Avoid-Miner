@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smithing_transform",
-  "template": "avoidminer:hypersonic_smithing_template",
-  "base": "minecraft:shield",
-  "addition": "avoidminer:magnetite_ingot",
-  "result": {
-    "id": "avoidminer:resonant_retaliation_shield"
-  }
-}

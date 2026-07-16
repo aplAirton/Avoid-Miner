@@ -1,4 +1,0 @@
-{
-  "model": { "type": "model", "model": "avoidminer:item/blank_upgrade_pattern" },
-  "properties": { "hand_animation_on_swap": true }
-}
