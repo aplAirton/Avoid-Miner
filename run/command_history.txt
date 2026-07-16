@@ -1,38 +1,3 @@
-/time set minecraft:day
-/fill
-/fill 235 71 753
-/fill 235 71 753 292 60 672 minecraft:deepslate_iron_ore
-/fill 235 71 753 292 62 672 minecraft:deepslate_iron_ore
-/fill 235 71 753 292 66 672 minecraft:deepslate_iron_ore
-/fill 235 71 753 292 66 672 minecraft:deepslate_gold_ore
-/fill 235 71 753 292 66 672 minecraft:deepslate_bricks
-/fill 235 71 753 292 66 672 minecraft:smooth_quartz
-/fill 235 71 753 292 66 672 minecraft:smooth_sandstone
-/fill 235 71 753 292 66 672 minecraft:polished_basalt
-/fill 235 71 753 292 66 672 minecraft:polished_blackstone
-/effect give @a minecraft:strength 5 infinite
-/effect give @a minecraft:strength infinite 244
-/time set minecraft:midnight
-/effect clear
-/summon minecraft:warden
-/time set minecraft:day
-/fill 272 71 676
-/fill 272 71 676 258 71 683 minecraft:blackstone
-/fill 317 72 721
-/fill 317 72 721 315 2 719 air
-/fill 318 72 722
-/fill 318 72 722 314 72 718 stone hollow
-/fill 318 72 722 314 -60 718 stone hollow
-/effect give @a minecraft:night_vision infinite
-/weather clear
-/fill 292 74 672
-/fill 292 74 672 292 74 753 minecraft:blackstone
-/fill 292 74 672 292 70 753 minecraft:blackstone
-/fill 292 74 672 292 70 753 minecraft:polished_deepslate
-/fill 291 74 753
-/fill 291 74 753 235 74 753 minecraft:polished_blackstone
-/fill 291 74 753 235 70 753 minecraft:polished_blackstone
-/fill 235 74 753
 /summon minecraft:husk 261.74 72.00
 /summon minecraft:husk 261.74 72.00 ~
 /weather clear
@@ -48,3 +13,38 @@
 /fill 291 71 672 259 71 731 minecraft:polished_deepslate
 /time set minecraft:night
 /time set minecraft:midnight
+/fill 247 71 724
+/fill 247 71 724 255 71 716 lava
+/effect give @a minecraft:night_vision
+/effect give @a minecraft:night_vision infinite
+/fill -52 4 104
+/fill -52 4 104 -61 19 159 air replace stone
+/fill -52 30 104 -61 0 159 air replace stone
+/fill -52 30 144 -61 0 159 air replace stone
+/fill -52 30 104 -61 0 159 air replace stone
+/fill -52 30 104 -61 0 0 air replace stone
+/fill -19 89 12
+/fill -19 89 12 -48 104 51 air
+/fill -19 89 12 -48 74 51 air
+/fill -19 59 12 -48 74 51 air
+/fill -19 59 12 -48 24 51 air
+/fill -19 59 12 -48 34 51 air
+/fill -19 30 12 -48 34 51 air
+/fill -19 30 12 -48 0 51 air replace stone
+/fill -19 30 12 -48 10 51 air replace stone
+/fill -19 30 12 -48 10 101 air replace stone
+/fill -19 0 12 -48 10 101 air replace stone
+/fill -19 0 12 -48 10 101 air replace granite
+/fill -19 0 12 -48 10 101 air replace diorite
+/fill -19 0 12 -48 10 101 air replace andesite
+/fill -19 0 12 -48 10 101 air replace deepslate
+/fill -19 0 12 -48 10 101 air replace water
+/fill -60 0 273
+/fill -60 0 273 -92 30 296 air replace avoidminer:magnetite_ore
+/tp 10000 20 10000
+/fill 9789 30 9880 9709 0 9800 air replace stone
+/fill 9789 30 9880 9709 0 9870 air replace stone
+/fill 9789 30 9860 9709 0 9870 air replace stone
+/fill 9789 30 9860 9709 0 9870 air replace andesite
+/fill 9789 30 9860 9709 0 9870 air replace diorite
+/fill 9789 30 9860 9709 0 9870 air replace granite

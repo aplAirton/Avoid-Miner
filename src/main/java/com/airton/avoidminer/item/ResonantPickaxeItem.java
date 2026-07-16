@@ -214,5 +214,7 @@ public final class ResonantPickaxeItem extends Item {
                 .withStyle(ChatFormatting.DARK_AQUA));
         builder.accept(Component.translatable("tooltip.avoidminer.resonant_pickaxe.use")
                 .withStyle(ChatFormatting.GRAY));
+        builder.accept(Component.translatable("tooltip.avoidminer.resonant_mining.lava")
+                .withStyle(ChatFormatting.GOLD));
     }
 }

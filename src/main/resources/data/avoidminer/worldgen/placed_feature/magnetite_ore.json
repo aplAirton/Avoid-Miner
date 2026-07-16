@@ -1,14 +1,14 @@
 {
   "feature": "avoidminer:magnetite_ore",
   "placement": [
-    { "type": "minecraft:count", "count": 2 },
+    { "type": "minecraft:count", "count": 8 },
     { "type": "minecraft:in_square" },
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:uniform",
-        "min_inclusive": { "absolute": -20 },
-        "max_inclusive": { "absolute": 0 }
+        "type": "minecraft:trapezoid",
+        "min_inclusive": { "absolute": 0 },
+        "max_inclusive": { "absolute": 30 }
       }
     },
     { "type": "minecraft:biome" }

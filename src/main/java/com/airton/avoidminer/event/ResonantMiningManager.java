@@ -23,13 +23,16 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -40,7 +43,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 @EventBusSubscriber(modid = AvoidMiner.MODID)
 public final class ResonantMiningManager {
-    private static final ResourceKey<Enchantment> RESONANT_MINER = ResourceKey.create(
+    public static final ResourceKey<Enchantment> RESONANT_MINER = ResourceKey.create(
             Registries.ENCHANTMENT,
             Identifier.fromNamespaceAndPath(AvoidMiner.MODID, "resonant_miner")
     );
@@ -210,8 +213,17 @@ public final class ResonantMiningManager {
                         SoundSource.PLAYERS, 2.0F, 1.15F);
             }
 
+            boolean extinguishedLava = false;
             for (BlockPos pos : planePositions(center, right, up)) {
                 if (stack.isEmpty() || !level.hasChunkAt(pos)) {
+                    continue;
+                }
+                FluidState fluidState = level.getFluidState(pos);
+                if (fluidState.is(FluidTags.LAVA)) {
+                    level.setBlock(pos, fluidState.isSource()
+                            ? Blocks.OBSIDIAN.defaultBlockState()
+                            : Blocks.AIR.defaultBlockState(), 3);
+                    extinguishedLava = true;
                     continue;
                 }
                 BlockState state = level.getBlockState(pos);
@@ -220,6 +232,10 @@ public final class ResonantMiningManager {
                     continue;
                 }
                 player.gameMode.destroyBlock(pos);
+            }
+            if (extinguishedLava) {
+                level.playSound(null, BlockPos.containing(center), SoundEvents.LAVA_EXTINGUISH,
+                        SoundSource.BLOCKS, 0.45F, 1.25F);
             }
 
             if (step >= forwardRange || stack.isEmpty()) {

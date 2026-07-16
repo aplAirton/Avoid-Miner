@@ -1,0 +1,29 @@
+{
+  "stats": {
+    "minecraft:dropped": {
+      "minecraft:wheat_seeds": 1
+    },
+    "minecraft:custom": {
+      "minecraft:time_since_rest": 44300,
+      "minecraft:walk_one_cm": 500,
+      "minecraft:leave_game": 2,
+      "minecraft:walk_under_water_one_cm": 720,
+      "minecraft:play_time": 22150,
+      "minecraft:jump": 4,
+      "minecraft:time_since_death": 22150,
+      "minecraft:drop": 1,
+      "minecraft:sprint_one_cm": 285,
+      "minecraft:total_world_time": 22282,
+      "minecraft:fly_one_cm": 272170,
+      "minecraft:walk_on_water_one_cm": 2099,
+      "minecraft:sneak_time": 1177
+    },
+    "minecraft:picked_up": {
+      "minecraft:wheat_seeds": 1
+    },
+    "minecraft:used": {
+      "minecraft:stone": 10
+    }
+  },
+  "DataVersion": 4790
+}
