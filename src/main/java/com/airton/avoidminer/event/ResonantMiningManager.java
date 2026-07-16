@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -177,7 +178,9 @@ public final class ResonantMiningManager {
         private final Vec3 direction;
         private final Vec3 right;
         private final Vec3 up;
+        private final Set<BlockPos> tunnelPositions = new LinkedHashSet<>();
         private int step;
+        private int lavaStabilizationTicks;
 
         private MiningWave(ResourceKey<Level> dimension, UUID playerId, Item sourceItem,
                            boolean resonantPickaxe, int enchantmentLevel, int forwardRange,
@@ -196,9 +199,20 @@ public final class ResonantMiningManager {
 
         private boolean advance(MinecraftServer server) {
             ServerLevel level = server.getLevel(dimension);
+            if (level == null) {
+                return false;
+            }
+            if (lavaStabilizationTicks > 0) {
+                if (lavaStabilizationTicks % ResonantMiningRules.LAVA_RECHECK_INTERVAL == 0) {
+                    stabilizeTunnelLava(level, tunnelPositions);
+                }
+                lavaStabilizationTicks--;
+                return lavaStabilizationTicks > 0;
+            }
+
             ServerPlayer player = server.getPlayerList().getPlayer(playerId);
             ItemStack stack = player == null ? ItemStack.EMPTY : player.getMainHandItem();
-            if (level == null || player == null || player.level() != level || stack.isEmpty()
+            if (player == null || player.level() != level || stack.isEmpty()
                     || !stack.is(sourceItem)
                     || getEnchantmentLevel(level, stack) != enchantmentLevel
                     || ResonantMiningRules.forwardRange(resonantPickaxe, enchantmentLevel) != forwardRange) {
@@ -213,35 +227,96 @@ public final class ResonantMiningManager {
                         SoundSource.PLAYERS, 2.0F, 1.15F);
             }
 
-            boolean extinguishedLava = false;
-            for (BlockPos pos : planePositions(center, right, up)) {
+            Set<BlockPos> waveFront = planePositions(center, right, up);
+            tunnelPositions.addAll(waveFront);
+            boolean extinguishedLava = containAdjacentLava(level, tunnelPositions);
+            for (BlockPos pos : waveFront) {
                 if (stack.isEmpty() || !level.hasChunkAt(pos)) {
                     continue;
                 }
                 FluidState fluidState = level.getFluidState(pos);
+                boolean sourceLava = false;
                 if (fluidState.is(FluidTags.LAVA)) {
-                    level.setBlock(pos, fluidState.isSource()
-                            ? Blocks.OBSIDIAN.defaultBlockState()
-                            : Blocks.AIR.defaultBlockState(), 3);
                     extinguishedLava = true;
-                    continue;
+                    if (fluidState.isSource()) {
+                        level.setBlock(pos, Blocks.OBSIDIAN.defaultBlockState(), 3);
+                        sourceLava = true;
+                    } else {
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                        continue;
+                    }
                 }
                 BlockState state = level.getBlockState(pos);
                 if (state.isAir() || !state.is(BlockTags.MINEABLE_WITH_PICKAXE)
                         || !stack.isCorrectToolForDrops(state)) {
+                    if (sourceLava) {
+                        level.destroyBlock(pos, false);
+                    }
                     continue;
                 }
                 player.gameMode.destroyBlock(pos);
             }
+            extinguishedLava |= clearTunnelLava(level, tunnelPositions);
             if (extinguishedLava) {
                 level.playSound(null, BlockPos.containing(center), SoundEvents.LAVA_EXTINGUISH,
                         SoundSource.BLOCKS, 0.45F, 1.25F);
             }
 
             if (step >= forwardRange || stack.isEmpty()) {
-                return false;
+                lavaStabilizationTicks = ResonantMiningRules.LAVA_STABILIZATION_TICKS;
             }
             return true;
+        }
+
+        private static boolean containAdjacentLava(ServerLevel level, Set<BlockPos> tunnel) {
+            boolean changed = false;
+            for (BlockPos pos : boundaryPositions(tunnel)) {
+                if (!level.hasChunkAt(pos)) {
+                    continue;
+                }
+                FluidState fluidState = level.getFluidState(pos);
+                if (!fluidState.is(FluidTags.LAVA)) {
+                    continue;
+                }
+                level.setBlock(pos, fluidState.isSource()
+                        ? Blocks.OBSIDIAN.defaultBlockState()
+                        : Blocks.AIR.defaultBlockState(), 3);
+                changed = true;
+            }
+            return changed;
+        }
+
+        private static void stabilizeTunnelLava(ServerLevel level, Set<BlockPos> tunnel) {
+            containAdjacentLava(level, tunnel);
+            clearTunnelLava(level, tunnel);
+        }
+
+        private static boolean clearTunnelLava(ServerLevel level, Set<BlockPos> tunnel) {
+            boolean changed = false;
+            for (BlockPos pos : tunnel) {
+                if (!level.hasChunkAt(pos)) {
+                    continue;
+                }
+                FluidState fluidState = level.getFluidState(pos);
+                if (fluidState.is(FluidTags.LAVA)) {
+                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    changed = true;
+                }
+            }
+            return changed;
+        }
+
+        private static Set<BlockPos> boundaryPositions(Set<BlockPos> tunnel) {
+            Set<BlockPos> boundary = new LinkedHashSet<>();
+            for (BlockPos pos : tunnel) {
+                for (Direction direction : Direction.values()) {
+                    BlockPos adjacent = pos.relative(direction);
+                    if (!tunnel.contains(adjacent)) {
+                        boundary.add(adjacent);
+                    }
+                }
+            }
+            return boundary;
         }
 
         private static Set<BlockPos> planePositions(Vec3 center, Vec3 right, Vec3 up) {

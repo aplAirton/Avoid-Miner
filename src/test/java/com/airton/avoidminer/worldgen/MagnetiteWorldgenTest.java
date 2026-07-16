@@ -9,12 +9,12 @@ import static org.junit.Assert.assertTrue;
 
 public class MagnetiteWorldgenTest {
     @Test
-    public void oreUsesDiamondSizedVeins() {
+    public void oreUsesTheConfiguredBalancedVeins() {
         String configured = readResource(
                 "data/avoidminer/worldgen/configured_feature/magnetite_ore.json");
 
-        assertContains(configured, "\"size\": 8");
-        assertContains(configured, "\"discard_chance_on_air_exposure\": 0.5");
+        assertContains(configured, "\"size\": 6");
+        assertContains(configured, "\"discard_chance_on_air_exposure\": 0.8");
         assertContains(configured, "minecraft:stone_ore_replaceables");
         assertContains(configured, "minecraft:deepslate_ore_replaceables");
     }
@@ -24,7 +24,7 @@ public class MagnetiteWorldgenTest {
         String placed = readResource(
                 "data/avoidminer/worldgen/placed_feature/magnetite_ore.json");
 
-        assertContains(placed, "\"type\": \"minecraft:count\", \"count\": 12");
+        assertContains(placed, "\"type\": \"minecraft:count\", \"count\": 8");
         assertContains(placed, "\"type\": \"minecraft:trapezoid\"");
         assertContains(placed, "\"min_inclusive\": { \"absolute\": 0 }");
         assertContains(placed, "\"max_inclusive\": { \"absolute\": 30 }");

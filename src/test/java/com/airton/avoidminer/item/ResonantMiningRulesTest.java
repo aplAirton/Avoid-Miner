@@ -29,6 +29,8 @@ public class ResonantMiningRulesTest {
     public void rangeAndDurabilityMatchTheSpecification() {
         assertEquals(2, ResonantMiningRules.SIDE_RADIUS);
         assertEquals(3_000, ResonantMiningRules.RESONANT_PICKAXE_DURABILITY);
+        assertEquals(40, ResonantMiningRules.LAVA_STABILIZATION_TICKS);
+        assertEquals(5, ResonantMiningRules.LAVA_RECHECK_INTERVAL);
     }
 
     @Test

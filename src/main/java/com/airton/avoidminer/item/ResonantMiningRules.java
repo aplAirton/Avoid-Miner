@@ -6,6 +6,8 @@ public final class ResonantMiningRules {
     public static final int SIDE_RADIUS = 2;
     public static final int CHARGE_TICKS = 20;
     public static final int COOLDOWN_TICKS = 40;
+    public static final int LAVA_STABILIZATION_TICKS = 40;
+    public static final int LAVA_RECHECK_INTERVAL = 5;
 
     private ResonantMiningRules() {
     }

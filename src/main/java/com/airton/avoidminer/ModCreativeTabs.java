@@ -47,6 +47,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RESONANT_PICKAXE.get());
                         output.accept(ModItems.RESONANT_RETALIATION_SHIELD.get());
                         output.accept(ModItems.SEISMIC_PROPULSION_BOOTS.get());
+                        output.accept(ModItems.NIGHT_VISION_HELMET.get());
                         output.accept(ModItems.THOR_HAMMER.get());
                         output.accept(ModItems.ELECTRIC_CORE.get());
                         output.accept(ModItems.MINING_CORE.get());

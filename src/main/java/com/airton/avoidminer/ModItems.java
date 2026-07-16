@@ -7,6 +7,7 @@ import com.airton.avoidminer.item.HypersonicCannonItem;
 import com.airton.avoidminer.item.HypersonicSmithingTemplateItem;
 import com.airton.avoidminer.item.TemporalClockCreativeItem;
 import com.airton.avoidminer.item.MachineUpgradeItem;
+import com.airton.avoidminer.item.NightVisionHelmetItem;
 import com.airton.avoidminer.item.ResonantRetaliationShieldItem;
 import com.airton.avoidminer.item.ResonantPickaxeItem;
 import com.airton.avoidminer.item.SeismicPropulsionBootsItem;
@@ -237,6 +238,8 @@ public class ModItems {
             "resonant_retaliation_shield", ResonantRetaliationShieldItem::new);
     public static final DeferredItem<SeismicPropulsionBootsItem> SEISMIC_PROPULSION_BOOTS = ITEMS.registerItem(
             "seismic_propulsion_boots", SeismicPropulsionBootsItem::new);
+    public static final DeferredItem<NightVisionHelmetItem> NIGHT_VISION_HELMET = ITEMS.registerItem(
+            "night_vision_helmet", NightVisionHelmetItem::new);
     public static final DeferredItem<ThorHammerItem> THOR_HAMMER = ITEMS.registerItem(
             "thor_hammer", ThorHammerItem::new);
     public static final DeferredItem<Item> ELECTRIC_CORE = ITEMS.registerItem("electric_core",

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.airton.avoidminer.block.entity.InputBalanceRulesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-15T23:12:31.655Z" hostname="MacBook-Air-de-Airton.local" time="0.0">
+<testsuite name="com.airton.avoidminer.block.entity.InputBalanceRulesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-16T11:34:16.482Z" hostname="MacBook-Air-de-Airton.local" time="0.0">
   <properties/>
   <testcase name="dividesStacksEvenlyWithoutLosingItems" classname="com.airton.avoidminer.block.entity.InputBalanceRulesTest" time="0.0"/>
   <testcase name="reportsTheCurrentMaximumLoad" classname="com.airton.avoidminer.block.entity.InputBalanceRulesTest" time="0.0"/>
