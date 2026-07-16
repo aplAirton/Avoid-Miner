@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "avoidminer:block/small_resonant_crystal_bud"
+  }
+}

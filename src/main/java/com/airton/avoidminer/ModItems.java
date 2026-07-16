@@ -214,7 +214,11 @@ public class ModItems {
     public static final DeferredItem<BlockItem> SMALL_RESONANT_CRYSTAL_BUD = ITEMS.registerSimpleBlockItem(ModBlocks.SMALL_RESONANT_CRYSTAL_BUD);
     public static final DeferredItem<Item> RESONANT_CRYSTAL = ITEMS.registerSimpleItem("resonant_crystal");
     public static final DeferredItem<ResonantScannerItem> RESONANT_SCANNER = ITEMS.registerItem(
-            "resonant_scanner", ResonantScannerItem::new);
+            "resonant_scanner", props -> new ResonantScannerItem(props, 1));
+    public static final DeferredItem<ResonantScannerItem> RESONANT_SCANNER_TIER_2 = ITEMS.registerItem(
+            "resonant_scanner_tier_2", props -> new ResonantScannerItem(props, 2));
+    public static final DeferredItem<ResonantScannerItem> RESONANT_SCANNER_TIER_3 = ITEMS.registerItem(
+            "resonant_scanner_tier_3", props -> new ResonantScannerItem(props, 3));
     public static final DeferredItem<BlockItem> RESONANT_REPAIR_STATION = ITEMS.registerItem(
             "resonant_repair_station",
             props -> new BlockItem(ModBlocks.RESONANT_REPAIR_STATION.get(), props.stacksTo(1)));
@@ -222,6 +226,9 @@ public class ModItems {
     public static final DeferredItem<Item> MAGNETITE_INGOT = ITEMS.registerSimpleItem("magnetite_ingot");
     public static final DeferredItem<Item> MAGNETITE_NUGGET = ITEMS.registerSimpleItem("magnetite_nugget");
     public static final DeferredItem<Item> MAGNETITE_POWDER = ITEMS.registerSimpleItem("magnetite_powder");
+    public static final DeferredItem<Item> IRON_POWDER = ITEMS.registerSimpleItem("iron_powder");
+    public static final DeferredItem<Item> GOLD_POWDER = ITEMS.registerSimpleItem("gold_powder");
+    public static final DeferredItem<Item> COPPER_POWDER = ITEMS.registerSimpleItem("copper_powder");
     public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON = ITEMS.registerItem("hypersonic_cannon",
             HypersonicCannonItem::new);
     public static final DeferredItem<HypersonicCannonItem> HYPERSONIC_CANNON_TIER_2 = ITEMS.registerItem("hypersonic_cannon_tier_2",

@@ -199,6 +199,9 @@
   "item.avoidminer.magnetite_block": "Block of Magnetite",
   "item.avoidminer.magnetite_nugget": "Magnetite Nugget",
   "item.avoidminer.magnetite_powder": "Magnetite Powder",
+  "item.avoidminer.iron_powder": "Iron Powder",
+  "item.avoidminer.gold_powder": "Gold Powder",
+  "item.avoidminer.copper_powder": "Copper Powder",
   "item.avoidminer.end_upgrade": "End Upgrade",
   "tooltip.avoidminer.end_upgrade.mode": "World mode: End",
   "tooltip.avoidminer.end_upgrade.output": "Generates end stone, chorus fruit, ender pearls, purpur blocks",
@@ -413,8 +416,14 @@
   "block.avoidminer.medium_resonant_crystal_bud": "Medium Resonant Crystal Bud",
   "block.avoidminer.small_resonant_crystal_bud": "Small Resonant Crystal Bud",
   "block.avoidminer.resonant_repair_station": "Resonant Repair Station",
+  "item.avoidminer.resonant_repair_station": "Resonant Repair Station",
   "container.avoidminer.resonant_repair_station": "Resonant Repair Station",
-  "item.avoidminer.resonant_scanner": "Resonant Scanner",
+  "item.avoidminer.resonant_scanner": "Resonant Scanner T1",
+  "item.avoidminer.resonant_scanner_tier_2": "Resonant Scanner T2",
+  "item.avoidminer.resonant_scanner_tier_3": "Resonant Scanner T3",
   "tooltip.avoidminer.resonant_scanner.desc": "Reveals nearby hidden structures without breaking blocks",
-  "tooltip.avoidminer.resonant_scanner.targets": "Gold: ores | Red: lava | Blue: water | Cyan: cavities"
+  "tooltip.avoidminer.resonant_scanner.tier_1.targets": "Detects only coal, copper, and lapis lazuli",
+  "tooltip.avoidminer.resonant_scanner.tier_2.targets": "Detects only gold, iron, and redstone",
+  "tooltip.avoidminer.resonant_scanner.tier_3.targets": "Detects only diamond and emerald",
+  "tooltip.avoidminer.resonant_scanner.environment": "Also outlines nearby lava, water, and cavities"
 }

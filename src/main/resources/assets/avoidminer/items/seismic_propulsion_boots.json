@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/netherite_boots"
+    "model": "avoidminer:item/seismic_propulsion_boots"
   }
 }

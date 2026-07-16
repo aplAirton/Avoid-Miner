@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "avoidminer:block/resonant_crystal_block",
+    "particle": "avoidminer:block/resonant_crystal_block"
+  }
+}

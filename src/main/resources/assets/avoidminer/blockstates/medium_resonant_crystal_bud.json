@@ -1,10 +1,10 @@
 {
   "variants": {
-    "facing=down": { "model": "minecraft:block/medium_amethyst_bud", "x": 180 },
-    "facing=east": { "model": "minecraft:block/medium_amethyst_bud", "x": 90, "y": 90 },
-    "facing=north": { "model": "minecraft:block/medium_amethyst_bud", "x": 90 },
-    "facing=south": { "model": "minecraft:block/medium_amethyst_bud", "x": 90, "y": 180 },
-    "facing=up": { "model": "minecraft:block/medium_amethyst_bud" },
-    "facing=west": { "model": "minecraft:block/medium_amethyst_bud", "x": 90, "y": 270 }
+    "facing=down": { "model": "avoidminer:block/medium_resonant_crystal_bud", "x": 180 },
+    "facing=east": { "model": "avoidminer:block/medium_resonant_crystal_bud", "x": 90, "y": 90 },
+    "facing=north": { "model": "avoidminer:block/medium_resonant_crystal_bud", "x": 90 },
+    "facing=south": { "model": "avoidminer:block/medium_resonant_crystal_bud", "x": 90, "y": 180 },
+    "facing=up": { "model": "avoidminer:block/medium_resonant_crystal_bud" },
+    "facing=west": { "model": "avoidminer:block/medium_resonant_crystal_bud", "x": 90, "y": 270 }
   }
 }

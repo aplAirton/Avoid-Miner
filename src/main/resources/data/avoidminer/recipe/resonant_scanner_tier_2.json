@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MCM", "KSK", "MNM"],
+  "key": {
+    "M": "avoidminer:magnetite_ingot",
+    "C": "avoidminer:resonant_crystal",
+    "K": "minecraft:sculk_shrieker",
+    "S": "avoidminer:resonant_scanner",
+    "N": "avoidminer:mining_core"
+  },
+  "result": { "id": "avoidminer:resonant_scanner_tier_2", "count": 1 }
+}

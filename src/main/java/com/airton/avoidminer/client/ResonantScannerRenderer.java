@@ -1,6 +1,7 @@
 package com.airton.avoidminer.client;
 
 import com.airton.avoidminer.AvoidMiner;
+import com.airton.avoidminer.item.ResonantScannerItem;
 import com.airton.avoidminer.network.ResonantScanPayload;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -64,7 +65,7 @@ public final class ResonantScannerRenderer {
                         int color = colorFor(target.category());
                         ShapeRenderer.renderShape(linePose, consumer, Shapes.block(),
                                 target.pos().getX(), target.pos().getY(), target.pos().getZ(),
-                                color, target.category() == 3 ? 1.0F : 2.0F);
+                                color, target.category() == ResonantScannerItem.CAVITY ? 1.0F : 2.0F);
                     }
                 });
         poseStack.popPose();
@@ -72,10 +73,18 @@ public final class ResonantScannerRenderer {
 
     private static int colorFor(byte category) {
         return switch (category) {
-            case 1 -> 0xEFFF4A22;
-            case 2 -> 0xDD2E9BFF;
-            case 3 -> 0x9968E0D5;
-            default -> 0xF0FFD447;
+            case ResonantScannerItem.COAL -> 0xF06B6B6B;
+            case ResonantScannerItem.COPPER -> 0xF0D77A4A;
+            case ResonantScannerItem.LAPIS -> 0xF03F63D8;
+            case ResonantScannerItem.GOLD -> 0xF0FFD447;
+            case ResonantScannerItem.IRON -> 0xF0E3DDD2;
+            case ResonantScannerItem.REDSTONE -> 0xF0F23838;
+            case ResonantScannerItem.DIAMOND -> 0xF04DE3E7;
+            case ResonantScannerItem.EMERALD -> 0xF043E36F;
+            case ResonantScannerItem.LAVA -> 0xEFFF4A22;
+            case ResonantScannerItem.WATER -> 0xDD2E9BFF;
+            case ResonantScannerItem.CAVITY -> 0x9968E0D5;
+            default -> 0xFFFFFFFF;
         };
     }
 }

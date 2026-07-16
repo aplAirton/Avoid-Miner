@@ -198,6 +198,9 @@
   "item.avoidminer.magnetite_block": "Bloco de Magnetita",
   "item.avoidminer.magnetite_nugget": "Pepita de Magnetita",
   "item.avoidminer.magnetite_powder": "Pó de Magnetita",
+  "item.avoidminer.iron_powder": "Pó de Ferro",
+  "item.avoidminer.gold_powder": "Pó de Ouro",
+  "item.avoidminer.copper_powder": "Pó de Cobre",
   "item.avoidminer.capacity_upgrade_tier_1": "Melhoria de Capacidade T1",
   "item.avoidminer.capacity_upgrade_tier_2": "Melhoria de Capacidade T2",
   "item.avoidminer.capacity_upgrade_tier_3": "Melhoria de Capacidade T3",
@@ -412,8 +415,14 @@
   "block.avoidminer.medium_resonant_crystal_bud": "Broto Médio de Cristal Ressonante",
   "block.avoidminer.small_resonant_crystal_bud": "Broto Pequeno de Cristal Ressonante",
   "block.avoidminer.resonant_repair_station": "Estação de Reparo Ressonante",
+  "item.avoidminer.resonant_repair_station": "Estação de Reparo Ressonante",
   "container.avoidminer.resonant_repair_station": "Estação de Reparo Ressonante",
-  "item.avoidminer.resonant_scanner": "Scanner Ressonante",
+  "item.avoidminer.resonant_scanner": "Scanner Ressonante T1",
+  "item.avoidminer.resonant_scanner_tier_2": "Scanner Ressonante T2",
+  "item.avoidminer.resonant_scanner_tier_3": "Scanner Ressonante T3",
   "tooltip.avoidminer.resonant_scanner.desc": "Revela estruturas ocultas próximas sem quebrar blocos",
-  "tooltip.avoidminer.resonant_scanner.targets": "Dourado: minérios | Vermelho: lava | Azul: água | Ciano: cavidades"
+  "tooltip.avoidminer.resonant_scanner.tier_1.targets": "Detecta exclusivamente carvão, cobre e lápis-lazúli",
+  "tooltip.avoidminer.resonant_scanner.tier_2.targets": "Detecta exclusivamente ouro, ferro e redstone",
+  "tooltip.avoidminer.resonant_scanner.tier_3.targets": "Detecta exclusivamente diamante e esmeralda",
+  "tooltip.avoidminer.resonant_scanner.environment": "Também contorna lava, água e cavidades próximas"
 }

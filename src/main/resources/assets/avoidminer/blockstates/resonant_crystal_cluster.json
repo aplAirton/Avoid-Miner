@@ -1,10 +1,10 @@
 {
   "variants": {
-    "facing=down": { "model": "minecraft:block/amethyst_cluster", "x": 180 },
-    "facing=east": { "model": "minecraft:block/amethyst_cluster", "x": 90, "y": 90 },
-    "facing=north": { "model": "minecraft:block/amethyst_cluster", "x": 90 },
-    "facing=south": { "model": "minecraft:block/amethyst_cluster", "x": 90, "y": 180 },
-    "facing=up": { "model": "minecraft:block/amethyst_cluster" },
-    "facing=west": { "model": "minecraft:block/amethyst_cluster", "x": 90, "y": 270 }
+    "facing=down": { "model": "avoidminer:block/resonant_crystal_cluster", "x": 180 },
+    "facing=east": { "model": "avoidminer:block/resonant_crystal_cluster", "x": 90, "y": 90 },
+    "facing=north": { "model": "avoidminer:block/resonant_crystal_cluster", "x": 90 },
+    "facing=south": { "model": "avoidminer:block/resonant_crystal_cluster", "x": 90, "y": 180 },
+    "facing=up": { "model": "avoidminer:block/resonant_crystal_cluster" },
+    "facing=west": { "model": "avoidminer:block/resonant_crystal_cluster", "x": 90, "y": 270 }
   }
 }

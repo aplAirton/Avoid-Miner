@@ -35,11 +35,16 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SMALL_RESONANT_CRYSTAL_BUD.get());
                         output.accept(ModItems.RESONANT_CRYSTAL.get());
                         output.accept(ModItems.RESONANT_SCANNER.get());
+                        output.accept(ModItems.RESONANT_SCANNER_TIER_2.get());
+                        output.accept(ModItems.RESONANT_SCANNER_TIER_3.get());
                         output.accept(ModItems.RESONANT_REPAIR_STATION.get());
                         output.accept(ModItems.RAW_MAGNETITE.get());
                         output.accept(ModItems.MAGNETITE_INGOT.get());
                         output.accept(ModItems.MAGNETITE_NUGGET.get());
                         output.accept(ModItems.MAGNETITE_POWDER.get());
+                        output.accept(ModItems.IRON_POWDER.get());
+                        output.accept(ModItems.GOLD_POWDER.get());
+                        output.accept(ModItems.COPPER_POWDER.get());
                         output.accept(ModItems.HYPERSONIC_CANNON.get());
                         output.accept(ModItems.HYPERSONIC_CANNON_TIER_2.get());
                         output.accept(ModItems.HYPERSONIC_CANNON_TIER_3.get());

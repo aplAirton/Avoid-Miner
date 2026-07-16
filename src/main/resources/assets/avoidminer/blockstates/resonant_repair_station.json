@@ -1,8 +1,8 @@
 {
   "variants": {
-    "facing=north": { "model": "minecraft:block/smithing_table" },
-    "facing=east": { "model": "minecraft:block/smithing_table", "y": 90 },
-    "facing=south": { "model": "minecraft:block/smithing_table", "y": 180 },
-    "facing=west": { "model": "minecraft:block/smithing_table", "y": 270 }
+    "facing=north": { "model": "avoidminer:block/resonant_repair_station" },
+    "facing=east": { "model": "avoidminer:block/resonant_repair_station", "y": 90 },
+    "facing=south": { "model": "avoidminer:block/resonant_repair_station", "y": 180 },
+    "facing=west": { "model": "avoidminer:block/resonant_repair_station", "y": 270 }
   }
 }

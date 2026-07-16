@@ -105,6 +105,9 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
                 new ItemStack(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get(), 9));
         RECIPES.put(com.airton.avoidminer.ModItems.RAW_MAGNETITE.get().asItem(),
                 new ItemStack(com.airton.avoidminer.ModItems.MAGNETITE_POWDER.get(), 2));
+        addRecipe(Items.RAW_IRON, com.airton.avoidminer.ModItems.IRON_POWDER.get(), 2);
+        addRecipe(Items.RAW_GOLD, com.airton.avoidminer.ModItems.GOLD_POWDER.get(), 2);
+        addRecipe(Items.RAW_COPPER, com.airton.avoidminer.ModItems.COPPER_POWDER.get(), 2);
     }
 
     private static void addRecipe(Item inputItem, Item outputItem, int outputCount) {

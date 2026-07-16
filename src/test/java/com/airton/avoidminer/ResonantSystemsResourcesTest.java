@@ -20,9 +20,21 @@ public class ResonantSystemsResourcesTest {
 
     @Test
     public void scannerAndRepairStationHaveRecipesAndModels() {
-        contains(read("data/avoidminer/recipe/resonant_scanner.json"), "avoidminer:resonant_scanner");
+        String tier1 = read("data/avoidminer/recipe/resonant_scanner.json");
+        String tier2 = read("data/avoidminer/recipe/resonant_scanner_tier_2.json");
+        String tier3 = read("data/avoidminer/recipe/resonant_scanner_tier_3.json");
+        contains(tier1, "avoidminer:resonant_scanner");
+        contains(tier1, "minecraft:sculk_shrieker");
+        contains(tier1, "avoidminer:mining_core");
+        assertTrue(!tier1.contains("minecraft:echo_shard"));
+        contains(tier2, "avoidminer:resonant_scanner");
+        contains(tier2, "avoidminer:resonant_scanner_tier_2");
+        contains(tier3, "avoidminer:resonant_scanner_tier_2");
+        contains(tier3, "avoidminer:resonant_scanner_tier_3");
         contains(read("data/avoidminer/recipe/resonant_repair_station.json"), "avoidminer:resonant_repair_station");
         contains(read("assets/avoidminer/items/resonant_scanner.json"), "minecraft:item/spyglass");
+        contains(read("assets/avoidminer/items/resonant_scanner_tier_2.json"), "minecraft:item/spyglass");
+        contains(read("assets/avoidminer/items/resonant_scanner_tier_3.json"), "minecraft:item/spyglass");
         contains(read("assets/avoidminer/items/resonant_repair_station.json"), "minecraft:item/smithing_table");
     }
 

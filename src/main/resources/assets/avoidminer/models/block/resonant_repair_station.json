@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "avoidminer:block/resonant_repair_station_bottom",
+    "up": "avoidminer:block/resonant_repair_station_top",
+    "north": "avoidminer:block/resonant_repair_station_front",
+    "south": "avoidminer:block/resonant_repair_station_side",
+    "east": "avoidminer:block/resonant_repair_station_side",
+    "west": "avoidminer:block/resonant_repair_station_side",
+    "particle": "avoidminer:block/resonant_repair_station_top"
+  }
+}
