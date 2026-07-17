@@ -3,6 +3,10 @@
   "values": [
     "avoidminer:resonant_echo",
     "avoidminer:dissonance",
-    "avoidminer:resonant_miner"
+    "avoidminer:resonant_miner",
+    "avoidminer:lumberjack_fortune",
+    "avoidminer:sonic_charge",
+    "avoidminer:ender",
+    "avoidminer:ghast_bomb"
   ]
 }

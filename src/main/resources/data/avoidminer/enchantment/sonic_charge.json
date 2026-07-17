@@ -1,10 +1,11 @@
 {
   "anvil_cost": 4,
   "description": { "translate": "enchantment.avoidminer.sonic_charge" },
-  "max_cost": { "base": 20, "per_level_above_first": 9 },
-  "max_level": 3,
-  "min_cost": { "base": 5, "per_level_above_first": 8 },
+  "exclusive_set": "#avoidminer:exclusive_set/sword_active_ability",
+  "max_cost": { "base": 45, "per_level_above_first": 0 },
+  "max_level": 1,
+  "min_cost": { "base": 15, "per_level_above_first": 0 },
   "slots": ["mainhand"],
   "supported_items": "#avoidminer:enchantable/sonic_charge",
-  "weight": 2
+  "weight": 3
 }

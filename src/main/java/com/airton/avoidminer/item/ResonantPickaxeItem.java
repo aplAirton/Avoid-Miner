@@ -104,15 +104,7 @@ public final class ResonantPickaxeItem extends Item {
         }
 
         int heldTicks = getUseDuration(stack, entity) - ticksRemaining;
-        if (heldTicks == ResonantMiningRules.CHARGE_TICKS) {
-            emitReadyBurst(serverLevel, player);
-            serverLevel.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME,
-                    SoundSource.PLAYERS, 0.55F, 1.55F);
-        } else if (heldTicks < ResonantMiningRules.CHARGE_TICKS && heldTicks % 2 == 0) {
-            emitChargingOrbit(serverLevel, player, heldTicks);
-        } else if (heldTicks > ResonantMiningRules.CHARGE_TICKS && heldTicks % 4 == 0) {
-            emitChargedHalo(serverLevel, player, heldTicks);
-        }
+        emitChargeFeedback(serverLevel, player, heldTicks, player.getUsedItemHand());
     }
 
     @Override
@@ -135,9 +127,23 @@ public final class ResonantPickaxeItem extends Item {
         return false;
     }
 
-    private static void emitChargingOrbit(ServerLevel level, Player player, int heldTicks) {
+    public static void emitChargeFeedback(ServerLevel level, Player player, int heldTicks,
+                                          InteractionHand hand) {
+        if (heldTicks == ResonantMiningRules.CHARGE_TICKS) {
+            emitReadyBurst(level, player, hand);
+            level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME,
+                    SoundSource.PLAYERS, 0.55F, 1.55F);
+        } else if (heldTicks < ResonantMiningRules.CHARGE_TICKS && heldTicks % 2 == 0) {
+            emitChargingOrbit(level, player, heldTicks, hand);
+        } else if (heldTicks > ResonantMiningRules.CHARGE_TICKS && heldTicks % 4 == 0) {
+            emitChargedHalo(level, player, heldTicks, hand);
+        }
+    }
+
+    private static void emitChargingOrbit(ServerLevel level, Player player, int heldTicks,
+                                          InteractionHand hand) {
         double progress = Math.min(1.0, heldTicks / (double) ResonantMiningRules.CHARGE_TICKS);
-        Vec3 anchor = chargeAnchor(player);
+        Vec3 anchor = chargeAnchor(player, hand);
         Vec3 side = horizontalSide(player);
         Vec3 look = player.getLookAngle().normalize();
         double radius = 0.32 - progress * 0.12;
@@ -156,8 +162,8 @@ public final class ResonantPickaxeItem extends Item {
                 focus.x, focus.y, focus.z, 1, 0.015, 0.015, 0.015, 0.0);
     }
 
-    private static void emitReadyBurst(ServerLevel level, Player player) {
-        Vec3 anchor = chargeAnchor(player);
+    private static void emitReadyBurst(ServerLevel level, Player player, InteractionHand hand) {
+        Vec3 anchor = chargeAnchor(player, hand);
         Vec3 look = player.getLookAngle().normalize();
         Vec3 side = horizontalSide(player);
         Vec3 up = side.cross(look).normalize();
@@ -173,8 +179,9 @@ public final class ResonantPickaxeItem extends Item {
                 anchor.x, anchor.y, anchor.z, 8, 0.16, 0.16, 0.16, 0.02);
     }
 
-    private static void emitChargedHalo(ServerLevel level, Player player, int heldTicks) {
-        Vec3 anchor = chargeAnchor(player);
+    private static void emitChargedHalo(ServerLevel level, Player player, int heldTicks,
+                                        InteractionHand hand) {
+        Vec3 anchor = chargeAnchor(player, hand);
         Vec3 side = horizontalSide(player);
         double pulse = 0.22 + Math.sin(heldTicks * 0.22) * 0.04;
         for (int i = 0; i < 6; i++) {
@@ -187,11 +194,11 @@ public final class ResonantPickaxeItem extends Item {
     }
 
     // Posição da mão que segura a picareta, abaixo da linha do olhar
-    private static Vec3 chargeAnchor(Player player) {
+    private static Vec3 chargeAnchor(Player player, InteractionHand hand) {
         Vec3 look = player.getLookAngle().normalize();
         Vec3 side = horizontalSide(player);
         boolean rightSide = (player.getMainArm() == HumanoidArm.RIGHT)
-                == (player.getUsedItemHand() == InteractionHand.MAIN_HAND);
+                == (hand == InteractionHand.MAIN_HAND);
         return player.getEyePosition()
                 .add(look.scale(0.55))
                 .add(side.scale(rightSide ? 0.45 : -0.45))

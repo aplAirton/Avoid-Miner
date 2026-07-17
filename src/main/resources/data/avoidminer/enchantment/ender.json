@@ -1,0 +1,11 @@
+{
+  "anvil_cost": 4,
+  "description": { "translate": "enchantment.avoidminer.ender" },
+  "exclusive_set": "#avoidminer:exclusive_set/sword_active_ability",
+  "max_cost": { "base": 50, "per_level_above_first": 10 },
+  "max_level": 3,
+  "min_cost": { "base": 15, "per_level_above_first": 10 },
+  "slots": ["mainhand"],
+  "supported_items": "#minecraft:swords",
+  "weight": 3
+}

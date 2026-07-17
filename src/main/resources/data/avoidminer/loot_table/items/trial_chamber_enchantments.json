@@ -50,6 +50,20 @@
           ]
         },
         {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:ender" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            { "function": "minecraft:enchant_randomly", "options": "avoidminer:ghast_bomb" }
+          ]
+        },
+        {
           "type": "minecraft:empty",
           "weight": 15
         }

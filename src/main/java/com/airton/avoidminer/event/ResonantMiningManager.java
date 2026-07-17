@@ -4,6 +4,7 @@ import com.airton.avoidminer.AvoidMiner;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.ModParticleTypes;
 import com.airton.avoidminer.item.ResonantMiningRules;
+import com.airton.avoidminer.item.ResonantPickaxeItem;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -30,12 +32,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.Unit;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -49,6 +53,7 @@ public final class ResonantMiningManager {
             Identifier.fromNamespaceAndPath(AvoidMiner.MODID, "resonant_miner")
     );
     private static final Map<UUID, MiningWave> ACTIVE_WAVES = new HashMap<>();
+    private static final Map<UUID, MiningCharge> ACTIVE_CHARGES = new HashMap<>();
 
     private ResonantMiningManager() {
     }
@@ -60,9 +65,6 @@ public final class ResonantMiningManager {
         }
 
         ItemStack stack = event.getEntity().getItemInHand(event.getHand());
-        // A Picareta Ressonante agora carrega segurando o uso (ver
-        // ResonantPickaxeItem); aqui fica só o caminho das picaretas comuns
-        // encantadas com Minerador Ressonante, que disparam na hora.
         if (stack.is(ModItems.RESONANT_PICKAXE.get())) {
             return;
         }
@@ -74,9 +76,46 @@ public final class ResonantMiningManager {
 
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
-        if (event.getEntity() instanceof ServerPlayer player
-                && !player.getCooldowns().isOnCooldown(stack)
-                && tryLaunch(player, stack)) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            beginCharge(player);
+        }
+    }
+
+    public static void handleChargeAction(ServerPlayer player, byte action) {
+        if (action == 0) {
+            beginCharge(player);
+        } else if (action == 1) {
+            finishCharge(player, true);
+        } else {
+            finishCharge(player, false);
+        }
+    }
+
+    private static void beginCharge(ServerPlayer player) {
+        ItemStack stack = player.getMainHandItem();
+        int enchantmentLevel = getEnchantmentLevel(player.level(), stack);
+        if (stack.is(ModItems.RESONANT_PICKAXE.get()) || enchantmentLevel <= 0
+                || player.getCooldowns().isOnCooldown(stack)
+                || ACTIVE_WAVES.containsKey(player.getUUID())) {
+            return;
+        }
+        ACTIVE_CHARGES.putIfAbsent(player.getUUID(), new MiningCharge(
+                stack.getItem(), enchantmentLevel, player.level().getGameTime()));
+    }
+
+    private static void finishCharge(ServerPlayer player, boolean release) {
+        MiningCharge charge = ACTIVE_CHARGES.remove(player.getUUID());
+        if (!release || charge == null) return;
+
+        ItemStack stack = player.getMainHandItem();
+        long heldTicks = player.level().getGameTime() - charge.startedAt();
+        if (heldTicks < ResonantMiningRules.CHARGE_TICKS
+                || !stack.is(charge.item())
+                || getEnchantmentLevel(player.level(), stack) != charge.enchantmentLevel()
+                || player.getCooldowns().isOnCooldown(stack)) {
+            return;
+        }
+        if (tryLaunch(player, stack)) {
             player.getCooldowns().addCooldown(stack, ResonantMiningRules.COOLDOWN_TICKS);
         }
     }
@@ -95,6 +134,7 @@ public final class ResonantMiningManager {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
+        tickCharges(event.getServer());
         Iterator<Map.Entry<UUID, MiningWave>> iterator = ACTIVE_WAVES.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<UUID, MiningWave> entry = iterator.next();
@@ -107,6 +147,7 @@ public final class ResonantMiningManager {
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         ACTIVE_WAVES.clear();
+        ACTIVE_CHARGES.clear();
     }
 
     private static void launch(ServerPlayer player, ItemStack stack, boolean resonantPickaxe,
@@ -130,11 +171,31 @@ public final class ResonantMiningManager {
         player.level().gameEvent(GameEvent.INSTRUMENT_PLAY, player.position(), GameEvent.Context.of(player));
     }
 
-    private static int getEnchantmentLevel(Level level, ItemStack stack) {
+    public static int getEnchantmentLevel(Level level, ItemStack stack) {
         return level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
                 .get(RESONANT_MINER)
                 .map(holder -> stack.getEnchantments().getLevel(holder))
                 .orElse(0);
+    }
+
+    private static void tickCharges(MinecraftServer server) {
+        Iterator<Map.Entry<UUID, MiningCharge>> iterator = ACTIVE_CHARGES.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, MiningCharge> entry = iterator.next();
+            ServerPlayer player = server.getPlayerList().getPlayer(entry.getKey());
+            MiningCharge charge = entry.getValue();
+            ItemStack stack = player == null ? ItemStack.EMPTY : player.getMainHandItem();
+            if (player == null || stack.isEmpty() || !stack.is(charge.item())
+                    || getEnchantmentLevel(player.level(), stack) != charge.enchantmentLevel()
+                    || player.getCooldowns().isOnCooldown(stack)) {
+                iterator.remove();
+                continue;
+            }
+            int heldTicks = (int) Math.min(Integer.MAX_VALUE,
+                    player.level().getGameTime() - charge.startedAt());
+            ResonantPickaxeItem.emitChargeFeedback(
+                    (ServerLevel) player.level(), player, heldTicks, InteractionHand.MAIN_HAND);
+        }
     }
 
     private static final DustParticleOptions GOLD_RING = new DustParticleOptions(0xFFC838, 1.6f);
@@ -181,6 +242,7 @@ public final class ResonantMiningManager {
         private final Set<BlockPos> tunnelPositions = new LinkedHashSet<>();
         private int step;
         private int lavaStabilizationTicks;
+        private int blocksTowardDurability;
 
         private MiningWave(ResourceKey<Level> dimension, UUID playerId, Item sourceItem,
                            boolean resonantPickaxe, int enchantmentLevel, int forwardRange,
@@ -230,31 +292,48 @@ public final class ResonantMiningManager {
             Set<BlockPos> waveFront = planePositions(center, right, up);
             tunnelPositions.addAll(waveFront);
             boolean extinguishedLava = containAdjacentLava(level, tunnelPositions);
-            for (BlockPos pos : waveFront) {
-                if (stack.isEmpty() || !level.hasChunkAt(pos)) {
-                    continue;
-                }
-                FluidState fluidState = level.getFluidState(pos);
-                boolean sourceLava = false;
-                if (fluidState.is(FluidTags.LAVA)) {
-                    extinguishedLava = true;
-                    if (fluidState.isSource()) {
-                        level.setBlock(pos, Blocks.OBSIDIAN.defaultBlockState(), 3);
-                        sourceLava = true;
-                    } else {
-                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            boolean alreadyUnbreakable = stack.has(DataComponents.UNBREAKABLE);
+            int brokenBlocks = 0;
+            if (!alreadyUnbreakable) stack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
+            try {
+                for (BlockPos pos : waveFront) {
+                    if (stack.isEmpty() || !level.hasChunkAt(pos)) {
                         continue;
                     }
-                }
-                BlockState state = level.getBlockState(pos);
-                if (state.isAir() || !state.is(BlockTags.MINEABLE_WITH_PICKAXE)
-                        || !stack.isCorrectToolForDrops(state)) {
-                    if (sourceLava) {
-                        level.destroyBlock(pos, false);
+                    FluidState fluidState = level.getFluidState(pos);
+                    boolean sourceLava = false;
+                    if (fluidState.is(FluidTags.LAVA)) {
+                        extinguishedLava = true;
+                        if (fluidState.isSource()) {
+                            level.setBlock(pos, Blocks.OBSIDIAN.defaultBlockState(), 3);
+                            sourceLava = true;
+                        } else {
+                            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                            continue;
+                        }
                     }
-                    continue;
+                    BlockState state = level.getBlockState(pos);
+                    if (state.isAir() || !state.is(BlockTags.MINEABLE_WITH_PICKAXE)
+                            || !stack.isCorrectToolForDrops(state)) {
+                        if (sourceLava) {
+                            level.destroyBlock(pos, false);
+                        }
+                        continue;
+                    }
+                    if (player.gameMode.destroyBlock(pos)) brokenBlocks++;
                 }
-                player.gameMode.destroyBlock(pos);
+            } finally {
+                if (!alreadyUnbreakable) stack.remove(DataComponents.UNBREAKABLE);
+            }
+
+            if (!alreadyUnbreakable && !player.hasInfiniteMaterials() && brokenBlocks > 0) {
+                blocksTowardDurability += brokenBlocks;
+                while (blocksTowardDurability >= ResonantMiningRules.BLOCKS_PER_DURABILITY
+                        && !stack.isEmpty()) {
+                    blocksTowardDurability -= ResonantMiningRules.BLOCKS_PER_DURABILITY;
+                    stack.hurtAndBreak(1, level, player,
+                            item -> player.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
+                }
             }
             extinguishedLava |= clearTunnelLava(level, tunnelPositions);
             if (extinguishedLava) {
@@ -333,4 +412,6 @@ public final class ResonantMiningManager {
             return positions;
         }
     }
+
+    private record MiningCharge(Item item, int enchantmentLevel, long startedAt) {}
 }

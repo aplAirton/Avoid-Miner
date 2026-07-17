@@ -2,6 +2,7 @@ package com.airton.avoidminer;
 
 import com.airton.avoidminer.event.ResonantMiningManager;
 import com.airton.avoidminer.client.ResonantScannerRenderer;
+import com.airton.avoidminer.network.ResonantMiningChargePayload;
 import com.airton.avoidminer.network.ResonantScanPayload;
 import com.airton.avoidminer.screen.AvoidMinerScreen;
 import com.airton.avoidminer.screen.BatteryScreen;
@@ -11,6 +12,7 @@ import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
 import com.airton.avoidminer.screen.ResonantRepairStationScreen;
 import net.minecraft.client.particle.SonicBoomParticle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -25,11 +27,16 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(modid = AvoidMiner.MODID, value = Dist.CLIENT)
 public class ClientModEvents {
+    private static boolean chargingEnchantedPickaxe;
+
     @SubscribeEvent
     public static void onRegisterClientPayloads(RegisterClientPayloadHandlersEvent event) {
         event.register(ResonantScanPayload.TYPE,
@@ -44,6 +51,46 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
         ResonantScannerRenderer.submit(event);
+    }
+
+    @SubscribeEvent
+    public static void onInteractionKey(InputEvent.InteractionKeyMappingTriggered event) {
+        if (!event.isUseItem() || event.getHand() != net.minecraft.world.InteractionHand.MAIN_HAND) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null) return;
+        ItemStack stack = minecraft.player.getMainHandItem();
+        if (stack.is(ModItems.RESONANT_PICKAXE.get())
+                || ResonantMiningManager.getEnchantmentLevel(minecraft.player.level(), stack) <= 0) {
+            return;
+        }
+
+        chargingEnchantedPickaxe = true;
+        ClientPacketDistributor.sendToServer(
+                new ResonantMiningChargePayload(ResonantMiningChargePayload.START));
+        event.setSwingHand(false);
+        event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        if (!chargingEnchantedPickaxe) return;
+
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null) {
+            chargingEnchantedPickaxe = false;
+            return;
+        }
+
+        ItemStack stack = minecraft.player.getMainHandItem();
+        boolean stillValid = !stack.is(ModItems.RESONANT_PICKAXE.get())
+                && ResonantMiningManager.getEnchantmentLevel(minecraft.player.level(), stack) > 0;
+        if (!minecraft.options.keyUse.isDown() || !stillValid) {
+            ClientPacketDistributor.sendToServer(new ResonantMiningChargePayload(
+                    stillValid ? ResonantMiningChargePayload.RELEASE : ResonantMiningChargePayload.CANCEL));
+            chargingEnchantedPickaxe = false;
+        }
     }
 
     @SubscribeEvent

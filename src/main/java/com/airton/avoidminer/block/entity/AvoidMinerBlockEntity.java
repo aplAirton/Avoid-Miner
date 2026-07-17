@@ -304,7 +304,11 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
                     new WeightedResource(new ItemStack(Items.DANDELION), 30),
                     new WeightedResource(new ItemStack(Items.POPPY), 25),
                     new WeightedResource(new ItemStack(Items.BLUE_ORCHID), 15),
-                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 10)
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 10),
+                    new WeightedResource(new ItemStack(Items.SUGAR_CANE), 20),
+                    new WeightedResource(new ItemStack(Items.CACTUS), 15),
+                    new WeightedResource(new ItemStack(Items.BROWN_MUSHROOM), 12),
+                    new WeightedResource(new ItemStack(Items.RED_MUSHROOM), 12)
                 );
                 case TIER_2 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 250),
@@ -324,7 +328,11 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
                     new WeightedResource(new ItemStack(Items.AZURE_BLUET), 12),
                     new WeightedResource(new ItemStack(Items.CORNFLOWER), 8),
                     new WeightedResource(new ItemStack(Items.OXEYE_DAISY), 8),
-                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 8)
+                    new WeightedResource(new ItemStack(Items.LILY_OF_THE_VALLEY), 8),
+                    new WeightedResource(new ItemStack(Items.SUGAR_CANE), 20),
+                    new WeightedResource(new ItemStack(Items.CACTUS), 15),
+                    new WeightedResource(new ItemStack(Items.BROWN_MUSHROOM), 15),
+                    new WeightedResource(new ItemStack(Items.RED_MUSHROOM), 15)
                 );
                 case TIER_3 -> () -> List.of(
                     new WeightedResource(new ItemStack(Items.OAK_LOG), 180),
@@ -365,7 +373,11 @@ public class AvoidMinerBlockEntity extends BlockEntity implements EnergyReceiver
                     new WeightedResource(new ItemStack(Items.LILAC), 6),
                     new WeightedResource(new ItemStack(Items.ROSE_BUSH), 6),
                     new WeightedResource(new ItemStack(Items.PEONY), 6),
-                    new WeightedResource(new ItemStack(Items.PINK_PETALS), 6)
+                    new WeightedResource(new ItemStack(Items.PINK_PETALS), 6),
+                    new WeightedResource(new ItemStack(Items.SUGAR_CANE), 25),
+                    new WeightedResource(new ItemStack(Items.CACTUS), 20),
+                    new WeightedResource(new ItemStack(Items.BROWN_MUSHROOM), 18),
+                    new WeightedResource(new ItemStack(Items.RED_MUSHROOM), 18)
                 );
             };
             this.netherResources = switch (this) {

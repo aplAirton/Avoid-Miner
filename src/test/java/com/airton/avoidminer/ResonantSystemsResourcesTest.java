@@ -32,10 +32,14 @@ public class ResonantSystemsResourcesTest {
         contains(tier3, "avoidminer:resonant_scanner_tier_2");
         contains(tier3, "avoidminer:resonant_scanner_tier_3");
         contains(read("data/avoidminer/recipe/resonant_repair_station.json"), "avoidminer:resonant_repair_station");
-        contains(read("assets/avoidminer/items/resonant_scanner.json"), "minecraft:item/spyglass");
-        contains(read("assets/avoidminer/items/resonant_scanner_tier_2.json"), "minecraft:item/spyglass");
-        contains(read("assets/avoidminer/items/resonant_scanner_tier_3.json"), "minecraft:item/spyglass");
-        contains(read("assets/avoidminer/items/resonant_repair_station.json"), "minecraft:item/smithing_table");
+        contains(read("assets/avoidminer/items/resonant_scanner.json"),
+                "avoidminer:item/resonant_scanner");
+        contains(read("assets/avoidminer/items/resonant_scanner_tier_2.json"),
+                "avoidminer:item/resonant_scanner_tier_2");
+        contains(read("assets/avoidminer/items/resonant_scanner_tier_3.json"),
+                "avoidminer:item/resonant_scanner_tier_3");
+        contains(read("assets/avoidminer/items/resonant_repair_station.json"),
+                "avoidminer:item/resonant_repair_station");
     }
 
     private static String read(String path) {
