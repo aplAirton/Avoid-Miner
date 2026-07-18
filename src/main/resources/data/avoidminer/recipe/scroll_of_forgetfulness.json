@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    " P ",
+    " A "
+  ],
+  "key": {
+    "B": "minecraft:book",
+    "P": "minecraft:paper",
+    "A": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "id": "avoidminer:scroll_of_forgetfulness",
+    "count": 1
+  }
+}

@@ -87,7 +87,7 @@ public final class ResonantRepairStationBlockEntity extends BlockEntity {
         if (be.progress >= AvoidMinerServerConfig.repairIntervalTicks()) {
             be.progress = 0;
             equipment.setDamageValue(Math.max(0,
-                    equipment.getDamageValue() - AvoidMinerServerConfig.repairPerCrystal()));
+                    equipment.getDamageValue() - 100));
             be.inventory.set(EQUIPMENT_SLOT, ItemResource.of(equipment), 1);
             int remaining = be.inventory.getAmountAsInt(CRYSTAL_SLOT) - 1;
             be.inventory.set(CRYSTAL_SLOT,

@@ -279,7 +279,7 @@
   "tooltip.avoidminer.temporal_clock.balance": "30 second cooldown | 100 uses",
   "tooltip.avoidminer.temporal_clock.heart": "Crafted with a Warden Heart (5% Warden drop)",
   "message.avoidminer.temporal_clock.already_frozen": "Time is already frozen",
-  "item.avoidminer.glass_sword": "Glass Sword",
+  "item.avoidminer.glass_sword": "Resonant Sword",
   "tooltip.avoidminer.glass_sword.wave": "Hold for 1 second and release",
   "item.avoidminer.hypersonic_smithing_template": "Hypersonic Smithing Template",
   "item.avoidminer.hypersonic_smithing_template.applies_to": "Netherite Sword, Pickaxe, Shield or Netherite Boots",
@@ -431,5 +431,12 @@
   "tooltip.avoidminer.resonant_scanner.tier_1.targets": "Detects only coal, copper, and lapis lazuli",
   "tooltip.avoidminer.resonant_scanner.tier_2.targets": "Detects only gold, iron, and redstone",
   "tooltip.avoidminer.resonant_scanner.tier_3.targets": "Detects only diamond and emerald",
-  "tooltip.avoidminer.resonant_scanner.environment": "Also outlines nearby lava, water, and cavities"
+  "tooltip.avoidminer.resonant_scanner.environment": "Also outlines nearby lava, water, and cavities",
+  "item.avoidminer.scroll_of_renewal": "Scroll of Renewal",
+  "tooltip.avoidminer.scroll_of_renewal.desc": "Resets all trades of a villager",
+  "item.avoidminer.hero_medallion": "Hero's Medallion",
+  "tooltip.avoidminer.hero_medallion.desc": "Permanent Hero of the Village effect",
+  "tooltip.avoidminer.hero_medallion.craft": "Crafted with a Totem of Undying",
+  "item.avoidminer.scroll_of_forgetfulness": "Scroll of Forgetfulness",
+  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Resets a villager's profession"
 }

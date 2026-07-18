@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "LEL",
+    " L "
+  ],
+  "key": {
+    "P": "minecraft:paper",
+    "L": "minecraft:lapis_lazuli",
+    "E": "minecraft:emerald"
+  },
+  "result": {
+    "id": "avoidminer:scroll_of_renewal",
+    "count": 1
+  }
+}

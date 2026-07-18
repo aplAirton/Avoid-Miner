@@ -41,9 +41,9 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
     public static final int UPGRADE_COUNT = 2;
 
     public enum Tier {
-        TIER_1(1, 4000, 200, 0.2F, 1),
-        TIER_2(3, 8000, 100, 0.8F, 2),
-        TIER_3(5, 12000, 50, 3.2F, 3);
+        TIER_1(1, 40000, 200, 0.2F, 1),
+        TIER_2(3, 80000, 100, 0.8F, 2),
+        TIER_3(5, 120000, 50, 3.2F, 3);
 
         public final int inputCount;
         public final int energyCapacity;

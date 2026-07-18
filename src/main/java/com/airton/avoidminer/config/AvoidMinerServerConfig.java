@@ -60,7 +60,7 @@ public final class AvoidMinerServerConfig {
         builder.pop();
 
         builder.push("resonantRepairStation");
-        REPAIR_PER_CRYSTAL = builder.defineInRange("durabilityPerCrystal", 20, 1, 10000);
+        REPAIR_PER_CRYSTAL = builder.defineInRange("durabilityPerCrystal", 100, 1, 10000);
         REPAIR_INTERVAL_TICKS = builder.defineInRange("operationTicks", 20, 1, 1200);
         builder.pop();
 

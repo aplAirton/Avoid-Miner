@@ -278,7 +278,7 @@
   "tooltip.avoidminer.temporal_clock.balance": "Recarga de 30 segundos | 100 usos",
   "tooltip.avoidminer.temporal_clock.heart": "Criado com um Coração do Warden (5% de drop)",
   "message.avoidminer.temporal_clock.already_frozen": "O tempo já está congelado",
-  "item.avoidminer.glass_sword": "Espada de Vidro",
+  "item.avoidminer.glass_sword": "Espada Ressonante",
   "tooltip.avoidminer.glass_sword.wave": "Ative o poder segurando o botao direito",
   "item.avoidminer.hypersonic_smithing_template": "Molde de Ferraria Hipersônico",
   "item.avoidminer.hypersonic_smithing_template.applies_to": "Espada, Picareta, Escudo ou Botas de Netherita",
@@ -430,5 +430,12 @@
   "tooltip.avoidminer.resonant_scanner.tier_1.targets": "Detecta exclusivamente carvão, cobre e lápis-lazúli",
   "tooltip.avoidminer.resonant_scanner.tier_2.targets": "Detecta exclusivamente ouro, ferro e redstone",
   "tooltip.avoidminer.resonant_scanner.tier_3.targets": "Detecta exclusivamente diamante e esmeralda",
-  "tooltip.avoidminer.resonant_scanner.environment": "Também contorna lava, água e cavidades próximas"
+  "tooltip.avoidminer.resonant_scanner.environment": "Também contorna lava, água e cavidades próximas",
+  "item.avoidminer.scroll_of_renewal": "Pergaminho da Renovação",
+  "tooltip.avoidminer.scroll_of_renewal.desc": "Reinicia todas as trocas de um aldeão",
+  "item.avoidminer.hero_medallion": "Medalhão do Herói",
+  "tooltip.avoidminer.hero_medallion.desc": "Efeito Herói da Vila permanente",
+  "tooltip.avoidminer.hero_medallion.craft": "Criado com um Totem da Imortalidade",
+  "item.avoidminer.scroll_of_forgetfulness": "Pergaminho do Esquecimento",
+  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Reseta a profissão de um aldeão"
 }

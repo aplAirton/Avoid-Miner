@@ -19,6 +19,9 @@ import com.airton.avoidminer.item.TemporalSlowClockCreativeItem;
 import com.airton.avoidminer.item.TemporalSlowClockItem;
 import com.airton.avoidminer.item.ThorHammerItem;
 import com.airton.avoidminer.item.WardenHeartItem;
+import com.airton.avoidminer.item.ScrollOfRenewalItem;
+import com.airton.avoidminer.item.HeroMedallionItem;
+import com.airton.avoidminer.item.ScrollOfForgetfulnessItem;
 import com.airton.avoidminer.item.ConfiguredTrialSpawnerItem;
 import com.airton.avoidminer.item.ConfiguredVaultItem;
 import com.airton.avoidminer.lootr.MobCardItem;
@@ -376,6 +379,13 @@ public class ModItems {
             SHULKER_CARD, ENDER_DRAGON_CARD, WARDEN_CARD, WITHER_CARD,
             BOGGED_CARD, DROWNED_CARD, HOGLIN_CARD, PHANTOM_CARD, PILLAGER_CARD, STRAY_CARD
     };
+
+    public static final DeferredItem<Item> SCROLL_OF_RENEWAL = ITEMS.registerItem("scroll_of_renewal",
+            props -> new ScrollOfRenewalItem(props.stacksTo(16)));
+    public static final DeferredItem<Item> HERO_MEDALLION = ITEMS.registerItem("hero_medallion",
+            props -> new HeroMedallionItem(props.stacksTo(1)));
+    public static final DeferredItem<Item> SCROLL_OF_FORGETFULNESS = ITEMS.registerItem("scroll_of_forgetfulness",
+            props -> new ScrollOfForgetfulnessItem(props.stacksTo(16)));
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
             props -> new GuideBookItem(props.stacksTo(1)));

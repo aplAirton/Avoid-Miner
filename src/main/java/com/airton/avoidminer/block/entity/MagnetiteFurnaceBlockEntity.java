@@ -40,9 +40,9 @@ public final class MagnetiteFurnaceBlockEntity extends BlockEntity implements En
     public static final int MAX_INPUTS = 5;
 
     public enum Tier {
-        TIER_1(1, 4_000, 200, 0.2F, 1),
-        TIER_2(3, 8_000, 100, 0.8F, 2),
-        TIER_3(5, 12_000, 50, 3.2F, 3);
+        TIER_1(1, 40_000, 200, 0.2F, 1),
+        TIER_2(3, 80_000, 100, 0.8F, 2),
+        TIER_3(5, 120_000, 50, 3.2F, 3);
 
         public final int inputCount;
         public final int energyCapacity;
