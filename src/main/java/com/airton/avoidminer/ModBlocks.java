@@ -172,8 +172,8 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> VILLAGER_HUB = BLOCKS.registerBlock(
             "villager_hub", VillagerHubBlock::new,
-            () -> BlockBehaviour.Properties.of().strength(4.0F, 8.0F)
-                    .requiresCorrectToolForDrops().noLootTable().sound(SoundType.AMETHYST));
+            () -> BlockBehaviour.Properties.of().strength(1.5F, 6.0F)
+                    .sound(SoundType.AMETHYST));
 
     public static final DeferredBlock<Block> CREATIVE_BATTERY = BLOCKS.registerBlock("creative_battery",
             CreativeBatteryBlock::new,

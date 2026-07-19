@@ -3,12 +3,26 @@
     "type": "minecraft:condition",
     "property": "minecraft:using_item",
     "on_false": {
-      "type": "model",
-      "model": "avoidminer:item/resonant_retaliation_shield"
+      "type": "minecraft:special",
+      "base": "avoidminer:item/resonant_retaliation_shield",
+      "model": {
+        "type": "avoidminer:resonant_shield",
+        "texture": "avoidminer:resonant_retaliation_shield_base"
+      }
     },
     "on_true": {
-      "type": "model",
-      "model": "avoidminer:item/resonant_retaliation_shield_blocking"
+      "type": "minecraft:special",
+      "base": "avoidminer:item/resonant_retaliation_shield_blocking",
+      "model": {
+        "type": "avoidminer:resonant_shield",
+        "texture": "avoidminer:resonant_retaliation_shield_base"
+      }
+    },
+    "transformation": {
+      "left_rotation": [0.0, 0.0, 0.0, 1.0],
+      "right_rotation": [0.0, 0.0, 0.0, 1.0],
+      "scale": [1.0, -1.0, -1.0],
+      "translation": [0.0, 0.0, 0.0]
     }
   }
 }

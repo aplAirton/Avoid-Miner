@@ -6,6 +6,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.item.ItemStack;
@@ -54,6 +56,24 @@ public class VillagerHubBlockEntity extends BlockEntity {
                     Component.translatable("message.avoidminer.villager_hub.no_villagers"));
             return;
         }
+        for (var v : activeVillagers) {
+            var rep = v.getPlayerReputation(player);
+            if (rep != 0) {
+                for (var offer : v.getOffers()) {
+                    offer.addToSpecialPriceDiff(-Mth.floor((float) rep * offer.getPriceMultiplier()));
+                }
+            }
+        }
+        if (player.hasEffect(MobEffects.HERO_OF_THE_VILLAGE)) {
+            var amp = player.getEffect(MobEffects.HERO_OF_THE_VILLAGE).getAmplifier();
+            var mult = 0.3 + 0.0625 * amp;
+            for (var v : activeVillagers) {
+                for (var offer : v.getOffers()) {
+                    var discount = Math.max(1, (int) Math.floor(mult * offer.getBaseCostA().getCount()));
+                    offer.addToSpecialPriceDiff(-discount);
+                }
+            }
+        }
         var merchant = new ConsolidatedMerchant(activeVillagers);
         merchant.setTradingPlayer(player);
         merchant.openTradingScreen(player,
@@ -66,11 +86,13 @@ public class VillagerHubBlockEntity extends BlockEntity {
     private record VillagerTrade(Villager villager, int index) {}
 
     private static class ConsolidatedMerchant implements Merchant {
+        private final List<Villager> villagers;
         private final Map<MerchantOffer, VillagerTrade> offerToVillager = new IdentityHashMap<>();
         private final MerchantOffers combinedOffers;
         private Player tradingPlayer;
 
         ConsolidatedMerchant(List<Villager> villagers) {
+            this.villagers = villagers;
             var scored = new ArrayList<ScoredOffer>();
             for (var v : villagers) {
                 var offers = v.getOffers();
@@ -90,6 +112,16 @@ public class VillagerHubBlockEntity extends BlockEntity {
         @Override
         public void setTradingPlayer(Player player) {
             this.tradingPlayer = player;
+            if (player == null) {
+                for (var v : villagers) {
+                    for (var offer : v.getOffers()) {
+                        offer.resetSpecialPriceDiff();
+                    }
+                }
+            }
+            for (var v : villagers) {
+                v.setTradingPlayer(player);
+            }
         }
 
         @Override

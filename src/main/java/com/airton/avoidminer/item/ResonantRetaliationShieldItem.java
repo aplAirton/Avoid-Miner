@@ -193,7 +193,7 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        return isReady(stack) || super.isFoil(stack);
+        return true;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.airton.avoidminer;
 
+import com.airton.avoidminer.client.ResonantShieldSpecialRenderer;
 import com.airton.avoidminer.event.ResonantMiningManager;
 import com.airton.avoidminer.client.ResonantScannerRenderer;
 import com.airton.avoidminer.network.ResonantMiningChargePayload;
@@ -26,6 +27,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
@@ -41,6 +43,14 @@ public class ClientModEvents {
     public static void onRegisterClientPayloads(RegisterClientPayloadHandlersEvent event) {
         event.register(ResonantScanPayload.TYPE,
                 (payload, context) -> ResonantScannerRenderer.accept(payload));
+    }
+
+    @SubscribeEvent
+    public static void onRegisterSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
+        event.register(
+                Identifier.fromNamespaceAndPath(AvoidMiner.MODID, "resonant_shield"),
+                ResonantShieldSpecialRenderer.Unbaked.MAP_CODEC
+        );
     }
 
     @SubscribeEvent
