@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "EEE",
-    "ECE",
-    "EEE"
+    "CEC",
+    "ESE",
+    "CEC"
   ],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "E": "minecraft:echo_shard",
-    "C": "avoidminer:xp_storage_core"
+    "S": "avoidminer:xp_storage_core"
   },
   "result": {
     "id": "avoidminer:xp_vault",

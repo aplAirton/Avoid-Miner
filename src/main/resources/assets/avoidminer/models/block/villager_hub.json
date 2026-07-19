@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "avoidminer:block/villager_hub_bottom",
+    "up": "avoidminer:block/villager_hub_top",
+    "north": "avoidminer:block/villager_hub_front",
+    "south": "avoidminer:block/villager_hub_side",
+    "east": "avoidminer:block/villager_hub_side",
+    "west": "avoidminer:block/villager_hub_side",
+    "particle": "avoidminer:block/villager_hub_top"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CRC",
+    "I S",
+    "CEC"
+  ],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "R": "minecraft:rotten_flesh",
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:fermented_spider_eye",
+    "E": "minecraft:emerald"
+  },
+  "result": {
+    "id": "avoidminer:zombie_poison",
+    "count": 2
+  }
+}

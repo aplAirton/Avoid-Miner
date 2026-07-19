@@ -1,10 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["LLL", "RDR", "LLL"],
+  "pattern": ["CLC", "RDR", "CLC"],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "L": "minecraft:paper",
-    "D": "avoidminer:magnetite_ingot",
-    "R": "minecraft:redstone"
+    "R": "minecraft:redstone",
+    "D": "avoidminer:magnetite_ingot"
   },
   "result": { "id": "avoidminer:blank_upgrade_pattern", "count": 1 }
 }

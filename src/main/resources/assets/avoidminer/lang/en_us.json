@@ -438,5 +438,14 @@
   "tooltip.avoidminer.hero_medallion.desc": "Permanent Hero of the Village effect",
   "tooltip.avoidminer.hero_medallion.craft": "Crafted with a Totem of Undying",
   "item.avoidminer.scroll_of_forgetfulness": "Scroll of Forgetfulness",
-  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Resets a villager's profession"
+  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Resets a villager's profession",
+  "item.avoidminer.zombie_poison": "Zombie Poison",
+  "tooltip.avoidminer.zombie_poison.desc": "Transforms a villager into a zombie villager",
+  "item.avoidminer.villager_lasso": "Villager Lasso",
+  "tooltip.avoidminer.villager_lasso.filled": "Contains a villager",
+  "tooltip.avoidminer.villager_lasso.empty": "Right-click a villager to capture",
+  "block.avoidminer.villager_hub": "Villager Hub",
+  "item.avoidminer.villager_hub": "Villager Hub",
+  "container.avoidminer.villager_hub": "Villager Hub",
+  "message.avoidminer.villager_hub.no_villagers": "No villagers nearby"
 }

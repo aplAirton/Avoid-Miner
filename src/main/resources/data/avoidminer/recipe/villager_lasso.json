@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CIC",
+    "L S",
+    "CBC"
+  ],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:lead",
+    "S": "minecraft:string",
+    "B": "minecraft:bundle"
+  },
+  "result": {
+    "id": "avoidminer:villager_lasso",
+    "count": 1
+  }
+}

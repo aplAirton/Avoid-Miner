@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CFC", "AES", "CLC"],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "F": "minecraft:fletching_table",
+    "A": "minecraft:blast_furnace",
+    "E": "minecraft:emerald_block",
+    "S": "minecraft:smithing_table",
+    "L": "minecraft:lectern"
+  },
+  "result": { "id": "avoidminer:villager_hub", "count": 1 }
+}

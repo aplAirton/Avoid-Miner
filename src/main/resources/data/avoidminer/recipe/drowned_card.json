@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["GMG", "RCR", "GKG"],
   "key": {
-    "G": "minecraft:gold_ingot",
+    "G": "avoidminer:resonant_crystal",
     "M": "avoidminer:magnetite_ingot",
     "R": "minecraft:rotten_flesh",
     "C": "minecraft:copper_ingot",

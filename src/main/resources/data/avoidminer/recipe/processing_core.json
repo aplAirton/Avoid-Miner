@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["MRM", "RBR", "MRM"],
+  "pattern": ["MRM", "CBC", "MRM"],
   "key": {
     "M": "avoidminer:magnetite_ingot",
     "R": "minecraft:redstone",
+    "C": "avoidminer:resonant_crystal",
     "B": "minecraft:blast_furnace"
   },
   "result": { "id": "avoidminer:processing_core", "count": 1 }

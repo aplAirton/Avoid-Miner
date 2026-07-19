@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["NBN", "BPB", "NBN"],
+  "pattern": ["NCN", "BPB", "NCN"],
   "key": {
     "N": "minecraft:netherite_scrap",
+    "C": "avoidminer:resonant_crystal",
     "B": "minecraft:diamond_block",
     "P": "avoidminer:mining_upgrade_tier_2"
   },

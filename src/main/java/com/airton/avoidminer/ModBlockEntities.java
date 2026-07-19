@@ -8,6 +8,7 @@ import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.XpVaultBlockEntity;
 import com.airton.avoidminer.block.entity.ResonantRepairStationBlockEntity;
+import com.airton.avoidminer.block.entity.VillagerHubBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -48,4 +49,8 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonantRepairStationBlockEntity>> RESONANT_REPAIR_STATION =
             BLOCK_ENTITIES.register("resonant_repair_station",
                     () -> new BlockEntityType<>(ResonantRepairStationBlockEntity::new, Collections.emptySet()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VillagerHubBlockEntity>> VILLAGER_HUB =
+            BLOCK_ENTITIES.register("villager_hub",
+                    () -> new BlockEntityType<>(VillagerHubBlockEntity::new, Collections.emptySet()));
 }

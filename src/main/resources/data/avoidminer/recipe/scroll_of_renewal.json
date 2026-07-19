@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " P ",
+    "CPC",
     "LEL",
-    " L "
+    "CLC"
   ],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "P": "minecraft:paper",
     "L": "minecraft:lapis_lazuli",
     "E": "minecraft:emerald"

@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["IDI", "DPD", "IDI"],
+  "pattern": ["ICI", "DPD", "ICI"],
   "key": {
     "I": "minecraft:iron_ingot",
+    "C": "avoidminer:resonant_crystal",
     "D": "minecraft:diamond",
     "P": "avoidminer:blank_upgrade_pattern"
   },

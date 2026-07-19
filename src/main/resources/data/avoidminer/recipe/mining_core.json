@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["DED", "SPS", "DAD"],
+  "pattern": ["DED", "SPS", "DCD"],
   "key": {
     "D": "avoidminer:magnetite_ingot",
     "E": "minecraft:redstone",
     "S": "minecraft:sculk_sensor",
     "P": "minecraft:diamond_pickaxe",
-    "A": "minecraft:amethyst_shard"
+    "C": "avoidminer:resonant_crystal"
   },
   "result": { "id": "avoidminer:mining_core", "count": 1 }
 }

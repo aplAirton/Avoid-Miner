@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["SGS", "DND", "SGS"],
+  "pattern": ["SCS", "DND", "SCS"],
   "key": {
     "S": "minecraft:diamond_sword",
-    "G": "minecraft:gold_ingot",
+    "C": "avoidminer:resonant_crystal",
     "D": "minecraft:diamond",
     "N": "minecraft:nether_star"
   },

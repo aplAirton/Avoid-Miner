@@ -63,6 +63,8 @@ public class AvoidMiner {
                 ModBlocks.MAGNETITE_BARREL.get());
         event.modify(ModBlockEntities.RESONANT_REPAIR_STATION.getKey(),
                 ModBlocks.RESONANT_REPAIR_STATION.get());
+        event.modify(ModBlockEntities.VILLAGER_HUB.getKey(),
+                ModBlocks.VILLAGER_HUB.get());
     }
 
     private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

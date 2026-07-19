@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["NPN", "SCA", "NBN"],
   "key": {
-    "N": "minecraft:bricks",
+    "N": "avoidminer:resonant_crystal_block",
     "P": "minecraft:diamond_pickaxe",
     "S": "minecraft:diamond_shovel",
     "C": "avoidminer:mining_core",

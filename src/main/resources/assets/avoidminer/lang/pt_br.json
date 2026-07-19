@@ -437,5 +437,14 @@
   "tooltip.avoidminer.hero_medallion.desc": "Efeito Herói da Vila permanente",
   "tooltip.avoidminer.hero_medallion.craft": "Criado com um Totem da Imortalidade",
   "item.avoidminer.scroll_of_forgetfulness": "Pergaminho do Esquecimento",
-  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Reseta a profissão de um aldeão"
+  "tooltip.avoidminer.scroll_of_forgetfulness.desc": "Reseta a profissão de um aldeão",
+  "item.avoidminer.zombie_poison": "Veneno de Zumbi",
+  "tooltip.avoidminer.zombie_poison.desc": "Transforma um aldeão em aldeão zumbi",
+  "item.avoidminer.villager_lasso": "Laço de Aldeão",
+  "tooltip.avoidminer.villager_lasso.filled": "Contém um aldeão",
+  "tooltip.avoidminer.villager_lasso.empty": "Clique direito em um aldeão para capturar",
+  "block.avoidminer.villager_hub": "Central de Aldeões",
+  "item.avoidminer.villager_hub": "Central de Aldeões",
+  "container.avoidminer.villager_hub": "Central de Aldeões",
+  "message.avoidminer.villager_hub.no_villagers": "Nenhum aldeão por perto"
 }

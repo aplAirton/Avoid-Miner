@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["GMG", "EBE", "GKG"],
   "key": {
-    "G": "minecraft:gold_ingot",
+    "G": "avoidminer:resonant_crystal",
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:ender_eye",
     "B": "minecraft:white_wool",

@@ -1,7 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [" E ", "GRG", " B "],
+  "pattern": ["CEC", "GRG", "CBC"],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "E": "minecraft:ender_pearl",
     "G": "minecraft:gold_ingot",
     "R": "minecraft:redstone",

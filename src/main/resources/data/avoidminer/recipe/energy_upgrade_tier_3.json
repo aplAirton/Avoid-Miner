@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["BCB", "CPC", "BCB"],
+  "pattern": ["BSB", "CPC", "BSB"],
   "key": {
     "B": "minecraft:redstone_block",
+    "S": "avoidminer:resonant_crystal",
     "C": "minecraft:copper_block",
     "P": "avoidminer:energy_upgrade_tier_2"
   },

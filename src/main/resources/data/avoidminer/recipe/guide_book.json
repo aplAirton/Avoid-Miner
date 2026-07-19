@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:book",
+    "avoidminer:resonant_crystal"
+  ],
+  "result": {
+    "id": "avoidminer:guide_book",
+    "count": 1
+  }
+}

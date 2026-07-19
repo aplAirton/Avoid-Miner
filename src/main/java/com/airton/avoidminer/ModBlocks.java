@@ -9,6 +9,7 @@ import com.airton.avoidminer.block.ProcessorBlock;
 import com.airton.avoidminer.block.XpVaultBlock;
 import com.airton.avoidminer.block.BuddingResonantCrystalBlock;
 import com.airton.avoidminer.block.ResonantRepairStationBlock;
+import com.airton.avoidminer.block.VillagerHubBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
@@ -166,6 +167,11 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> RESONANT_REPAIR_STATION = BLOCKS.registerBlock(
             "resonant_repair_station", ResonantRepairStationBlock::new,
+            () -> BlockBehaviour.Properties.of().strength(4.0F, 8.0F)
+                    .requiresCorrectToolForDrops().noLootTable().sound(SoundType.AMETHYST));
+
+    public static final DeferredBlock<Block> VILLAGER_HUB = BLOCKS.registerBlock(
+            "villager_hub", VillagerHubBlock::new,
             () -> BlockBehaviour.Properties.of().strength(4.0F, 8.0F)
                     .requiresCorrectToolForDrops().noLootTable().sound(SoundType.AMETHYST));
 

@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " B ",
+    "CBC",
     " P ",
-    " A "
+    "CAC"
   ],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "B": "minecraft:book",
     "P": "minecraft:paper",
     "A": "minecraft:amethyst_shard"

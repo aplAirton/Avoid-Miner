@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["RCR", "CPC", "RCR"],
+  "pattern": ["RSR", "CPC", "RSR"],
   "key": {
     "R": "minecraft:redstone",
+    "S": "avoidminer:resonant_crystal",
     "C": "minecraft:copper_nugget",
     "P": "avoidminer:blank_upgrade_pattern"
   },

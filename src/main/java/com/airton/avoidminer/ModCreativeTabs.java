@@ -116,6 +116,9 @@ public class ModCreativeTabs {
                         output.accept(ModItems.SCROLL_OF_RENEWAL.get());
                         output.accept(ModItems.HERO_MEDALLION.get());
                         output.accept(ModItems.SCROLL_OF_FORGETFULNESS.get());
+                        output.accept(ModItems.ZOMBIE_POISON.get());
+                        output.accept(ModItems.VILLAGER_LASSO.get());
+                        output.accept(ModItems.VILLAGER_HUB.get());
                         output.accept(ModItems.GUIDE_BOOK.get());
                     })
                     .build());

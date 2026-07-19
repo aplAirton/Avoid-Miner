@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["RIR", "IPI", "RIR"],
+  "pattern": ["RCR", "IPI", "RCR"],
   "key": {
     "R": "minecraft:redstone",
-    "I": "minecraft:iron_ingot",
+    "C": "avoidminer:resonant_crystal",
+    "I": "minecraft:iron_block",
     "P": "avoidminer:blank_upgrade_pattern"
   },
   "result": { "id": "avoidminer:capacity_upgrade_tier_1", "count": 1 }

@@ -22,6 +22,8 @@ import com.airton.avoidminer.item.WardenHeartItem;
 import com.airton.avoidminer.item.ScrollOfRenewalItem;
 import com.airton.avoidminer.item.HeroMedallionItem;
 import com.airton.avoidminer.item.ScrollOfForgetfulnessItem;
+import com.airton.avoidminer.item.VillagerLassoItem;
+import com.airton.avoidminer.item.ZombiePoisonItem;
 import com.airton.avoidminer.item.ConfiguredTrialSpawnerItem;
 import com.airton.avoidminer.item.ConfiguredVaultItem;
 import com.airton.avoidminer.lootr.MobCardItem;
@@ -386,6 +388,13 @@ public class ModItems {
             props -> new HeroMedallionItem(props.stacksTo(1)));
     public static final DeferredItem<Item> SCROLL_OF_FORGETFULNESS = ITEMS.registerItem("scroll_of_forgetfulness",
             props -> new ScrollOfForgetfulnessItem(props.stacksTo(16)));
+
+    public static final DeferredItem<Item> ZOMBIE_POISON = ITEMS.registerItem("zombie_poison",
+            props -> new ZombiePoisonItem(props.stacksTo(16)));
+    public static final DeferredItem<Item> VILLAGER_LASSO = ITEMS.registerItem("villager_lasso",
+            props -> new VillagerLassoItem(props));
+    public static final DeferredItem<BlockItem> VILLAGER_HUB = ITEMS.registerItem("villager_hub",
+            props -> new BlockItem(ModBlocks.VILLAGER_HUB.get(), props.stacksTo(1)));
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
             props -> new GuideBookItem(props.stacksTo(1)));

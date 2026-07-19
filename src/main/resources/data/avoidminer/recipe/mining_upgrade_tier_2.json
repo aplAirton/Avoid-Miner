@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["GEG", "EPE", "GEG"],
+  "pattern": ["GCG", "EPE", "GCG"],
   "key": {
     "G": "minecraft:gold_ingot",
+    "C": "avoidminer:resonant_crystal",
     "E": "minecraft:emerald_block",
     "P": "avoidminer:mining_upgrade_tier_1"
   },

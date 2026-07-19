@@ -1,7 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [" B ", "SgS", " L "],
+  "pattern": ["CBC", "SgS", "CLC"],
   "key": {
+    "C": "avoidminer:resonant_crystal",
     "B": "minecraft:bone_block",
     "S": "minecraft:string",
     "g": "minecraft:ghast_tear",
