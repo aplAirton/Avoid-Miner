@@ -5,6 +5,7 @@ import com.airton.avoidminer.block.entity.BatteryBlockEntity;
 import com.airton.avoidminer.block.entity.CreativeBatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
+import com.airton.avoidminer.block.entity.MinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.XpVaultBlockEntity;
 import com.airton.avoidminer.block.entity.ResonantRepairStationBlockEntity;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Collections;
+import java.util.Set;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AvoidMiner.MODID);
@@ -53,4 +55,7 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VillagerHubBlockEntity>> VILLAGER_HUB =
             BLOCK_ENTITIES.register("villager_hub",
                     () -> new BlockEntityType<>(VillagerHubBlockEntity::new, Collections.emptySet()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinerBlockEntity>> MINER = BLOCK_ENTITIES.register("miner",
+            () -> new BlockEntityType<>(MinerBlockEntity::new, Set.of(ModBlocks.MINER.get())));
 }

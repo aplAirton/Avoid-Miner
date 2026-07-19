@@ -10,7 +10,9 @@ import com.airton.avoidminer.block.XpVaultBlock;
 import com.airton.avoidminer.block.BuddingResonantCrystalBlock;
 import com.airton.avoidminer.block.ResonantRepairStationBlock;
 import com.airton.avoidminer.block.VillagerHubBlock;
+import com.airton.avoidminer.block.MinerBlock;
 import com.airton.avoidminer.block.entity.AvoidMinerBlockEntity;
+import com.airton.avoidminer.block.entity.MinerBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import net.minecraft.world.level.block.Block;
@@ -169,6 +171,13 @@ public class ModBlocks {
             "resonant_repair_station", ResonantRepairStationBlock::new,
             () -> BlockBehaviour.Properties.of().strength(4.0F, 8.0F)
                     .requiresCorrectToolForDrops().noLootTable().sound(SoundType.AMETHYST));
+
+    public static final DeferredBlock<Block> MINER = BLOCKS.registerBlock("miner",
+            p -> new MinerBlock(MinerBlockEntity.Tier.TIER_1, p),
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL));
 
     public static final DeferredBlock<Block> VILLAGER_HUB = BLOCKS.registerBlock(
             "villager_hub", VillagerHubBlock::new,

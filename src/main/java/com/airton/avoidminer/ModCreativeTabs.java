@@ -24,6 +24,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.AVOID_MINER_TIER_1.get());
                         output.accept(ModItems.AVOID_MINER_TIER_2.get());
                         output.accept(ModItems.AVOID_MINER_TIER_3.get());
+                        output.accept(ModItems.MINER.get());
                         output.accept(ModItems.MAGNETITE_ORE.get());
                         output.accept(ModItems.RAW_MAGNETITE_BLOCK.get());
                         output.accept(ModItems.MAGNETITE_BLOCK.get());
@@ -95,6 +96,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.RANGE_UPGRADE_TIER_3.get());
                         output.accept(ModItems.UPGRADE_TIER_2.get());
                         output.accept(ModItems.UPGRADE_TIER_3.get());
+                        output.accept(ModItems.RANGE_CARD.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_1.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_2.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_3.get());

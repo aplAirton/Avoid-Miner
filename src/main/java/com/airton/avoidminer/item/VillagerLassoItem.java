@@ -51,6 +51,7 @@ public class VillagerLassoItem extends Item {
                 tag.putString(KEY_CUSTOM_NAME, customName.getString());
             }
             stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            stack.hurtAndBreak(1, player, hand);
             villager.discard();
             player.level().playSound(null, villager.blockPosition(), SoundEvents.ITEM_PICKUP,
                     SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -92,7 +93,7 @@ public class VillagerLassoItem extends Item {
                 var pos = context.getClickedPos().relative(context.getClickedFace());
                 villager.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
                 level.addFreshEntity(villager);
-                stack.shrink(1);
+                stack.hurtAndBreak(1, player, player.getUsedItemHand());
                 level.playSound(null, pos, SoundEvents.ITEM_PICKUP,
                         SoundSource.PLAYERS, 1.0F, 1.0F);
                 return InteractionResult.SUCCESS;

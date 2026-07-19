@@ -6,6 +6,7 @@ import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import com.airton.avoidminer.menu.MagnetiteFurnaceMenu;
 import com.airton.avoidminer.menu.XpVaultMenu;
+import com.airton.avoidminer.menu.MinerMenu;
 import com.airton.avoidminer.menu.ResonantRepairStationMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
@@ -44,4 +45,7 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<ResonantRepairStationMenu>> RESONANT_REPAIR_STATION =
             MENUS.register("resonant_repair_station",
                     () -> new MenuType<>(ResonantRepairStationMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<MinerMenu>> MINER = MENUS.register("miner",
+            () -> new MenuType<>(MinerMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

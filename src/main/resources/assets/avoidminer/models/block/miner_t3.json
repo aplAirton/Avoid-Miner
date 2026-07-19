@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "avoidminer:block/miner_top",
+    "front": "avoidminer:block/miner_front_t3",
+    "side": "avoidminer:block/miner_side",
+    "bottom": "avoidminer:block/miner_bottom"
+  }
+}

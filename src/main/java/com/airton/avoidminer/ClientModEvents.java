@@ -1,5 +1,6 @@
 package com.airton.avoidminer;
 
+import com.airton.avoidminer.client.RangeCardOverlay;
 import com.airton.avoidminer.client.ResonantShieldSpecialRenderer;
 import com.airton.avoidminer.event.ResonantMiningManager;
 import com.airton.avoidminer.client.ResonantScannerRenderer;
@@ -11,6 +12,7 @@ import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
+import com.airton.avoidminer.screen.MinerScreen;
 import com.airton.avoidminer.screen.ResonantRepairStationScreen;
 import net.minecraft.client.particle.SonicBoomParticle;
 import net.minecraft.client.Minecraft;
@@ -56,6 +58,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
         ResonantScannerRenderer.registerPipeline(event);
+        RangeCardOverlay.registerPipeline(event);
     }
 
     @SubscribeEvent
@@ -123,6 +126,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.MAGNETITE_BARREL.get(), com.airton.avoidminer.screen.MagnetiteBarrelScreen::new);
         event.register(ModMenuTypes.XP_VAULT.get(), XpVaultScreen::new);
         event.register(ModMenuTypes.RESONANT_REPAIR_STATION.get(), ResonantRepairStationScreen::new);
+        event.register(ModMenuTypes.MINER.get(), MinerScreen::new);
     }
 
     @SubscribeEvent

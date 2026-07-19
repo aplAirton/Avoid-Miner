@@ -1,0 +1,234 @@
+package com.airton.avoidminer.screen;
+
+import com.airton.avoidminer.block.entity.MinerBlockEntity;
+import com.airton.avoidminer.client.RangeCardOverlay;
+import com.airton.avoidminer.menu.MinerMenu;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+
+public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
+    private static final int PANEL_FILL = 0xFFC6C6C6;
+    private static final int PANEL_BORDER = 0xFF555555;
+    private static final int SLOT_INNER = 0xFF8B8B8B;
+    private static final int SLOT_TOP_LEFT = 0xFF373737;
+    private static final int SLOT_BOTTOM_RIGHT = 0xFFFFFFFF;
+    private static final int TEXT_DARK = 0xFF404040;
+
+    private static final int COLOR_RUN = 0xFF55FF55;
+    private static final int COLOR_IDLE = 0xFFAAAAAA;
+    private static final int COLOR_ERR = 0xFFFF5555;
+
+    private static final int TOGGLE_X = 152;
+    private static final int TOGGLE_Y = 4;
+    private static final int TOGGLE_W = 20;
+    private static final int TOGGLE_H = 20;
+
+    private boolean overlayLocal;
+
+    public MinerScreen(MinerMenu menu, Inventory inv, Component title) {
+        super(menu, inv, title, 176, 166);
+        titleLabelX = 8;
+        titleLabelY = 6;
+        inventoryLabelY = 74;
+        overlayLocal = menu.isOverlayEnabled();
+    }
+
+    @Override
+    public void extractContents(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float partialTick) {
+        int gx = (width - imageWidth) / 2;
+        int gy = (height - imageHeight) / 2;
+
+        drawPanel(extractor, gx, gy);
+        drawRangeSlot(extractor, gx, gy);
+        drawPlayerSlots(extractor, gx, gy);
+        drawInfoPanel(extractor, gx, gy);
+        drawToggle(extractor, gx, gy, mouseX, mouseY);
+
+        super.extractContents(extractor, mouseX, mouseY, partialTick);
+    }
+
+    private void drawPanel(GuiGraphicsExtractor extractor, int gx, int gy) {
+        extractor.fill(gx, gy, gx + imageWidth, gy + imageHeight, PANEL_FILL);
+        extractor.fill(gx, gy, gx + imageWidth, gy + 1, PANEL_BORDER);
+        extractor.fill(gx, gy + imageHeight - 1, gx + imageWidth, gy + imageHeight, PANEL_BORDER);
+        extractor.fill(gx, gy, gx + 1, gy + imageHeight, PANEL_BORDER);
+        extractor.fill(gx + imageWidth - 1, gy, gx + imageWidth, gy + imageHeight, PANEL_BORDER);
+    }
+
+    private void drawVanillaSlot(GuiGraphicsExtractor extractor, int sx, int sy) {
+        extractor.fill(sx, sy, sx + 18, sy + 18, SLOT_INNER);
+        extractor.fill(sx, sy, sx + 18, sy + 1, SLOT_TOP_LEFT);
+        extractor.fill(sx, sy, sx + 1, sy + 18, SLOT_TOP_LEFT);
+        extractor.fill(sx + 17, sy + 1, sx + 18, sy + 18, SLOT_BOTTOM_RIGHT);
+        extractor.fill(sx + 1, sy + 17, sx + 18, sy + 18, SLOT_BOTTOM_RIGHT);
+    }
+
+    private void drawRangeSlot(GuiGraphicsExtractor extractor, int gx, int gy) {
+        drawVanillaSlot(extractor, gx + MinerMenu.RANGE_X, gy + MinerMenu.RANGE_Y);
+    }
+
+    private void drawPlayerSlots(GuiGraphicsExtractor extractor, int gx, int gy) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                drawVanillaSlot(extractor,
+                        gx + MinerMenu.PLAYER_X + col * MinerMenu.SLOT_SIZE,
+                        gy + MinerMenu.PLAYER_Y + row * MinerMenu.SLOT_SIZE);
+            }
+        }
+        for (int col = 0; col < 9; col++) {
+            drawVanillaSlot(extractor,
+                    gx + MinerMenu.PLAYER_X + col * MinerMenu.SLOT_SIZE,
+                    gy + MinerMenu.HOTBAR_Y);
+        }
+    }
+
+    private Component stateComponent() {
+        int status = menu.getStatus();
+        return switch (status) {
+            case 1 -> Component.translatable("screen.avoidminer.miner.state.running");
+            case 3 -> Component.translatable("status.avoidminer.miner.finished");
+            case 4 -> Component.translatable("screen.avoidminer.miner.state.no_redstone");
+            case 6 -> Component.translatable("screen.avoidminer.miner.state.no_range_card");
+            case 7 -> Component.translatable("screen.avoidminer.miner.state.invalid_range_card");
+            case 8 -> Component.translatable("screen.avoidminer.miner.state.no_container");
+            case 9 -> Component.translatable("screen.avoidminer.miner.state.container_full");
+            default -> Component.translatable("screen.avoidminer.miner.state.idle");
+        };
+    }
+
+    private int stateColor() {
+        int status = menu.getStatus();
+        return switch (status) {
+            case 1 -> COLOR_RUN;
+            case 6, 7, 8, 9 -> COLOR_ERR;
+            case 3, 4 -> COLOR_IDLE;
+            default -> COLOR_IDLE;
+        };
+    }
+
+    private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy) {
+        int centerX = gx + imageWidth / 2;
+
+        int totalBlocks = menu.getTotalBlocks();
+        int mined = menu.getTotalMined();
+        int pct = menu.getProgressPercent();
+
+        Component stateLabel = Component.translatable("screen.avoidminer.miner.state_label");
+        Component stateValue = stateComponent();
+        Component stateLine = stateLabel.copy().append(" ").append(stateValue);
+        extractor.text(font, stateLine,
+                centerX - font.width(stateLine) / 2, gy + 42, stateColor());
+
+        if (menu.isOperating()) {
+            Component progLine = Component.translatable("screen.avoidminer.miner.progress", pct);
+            extractor.text(font, progLine,
+                    centerX - font.width(progLine) / 2, gy + 52, COLOR_RUN);
+        }
+
+        Component blocksLine = Component.translatable(
+                "screen.avoidminer.miner.blocks", mined, totalBlocks);
+        extractor.text(font, blocksLine,
+                centerX - font.width(blocksLine) / 2, gy + 62, TEXT_DARK);
+    }
+
+    private void drawToggle(GuiGraphicsExtractor extractor, int gx, int gy, int mouseX, int mouseY) {
+        int bx = gx + TOGGLE_X;
+        int by = gy + TOGGLE_Y;
+        boolean hovered = mouseX >= bx && mouseX < bx + TOGGLE_W
+                && mouseY >= by && mouseY < by + TOGGLE_H;
+        boolean on = overlayLocal;
+
+        extractor.fill(bx + 1, by + 1, bx + TOGGLE_W - 1, by + TOGGLE_H - 1, SLOT_INNER);
+        extractor.fill(bx, by, bx + TOGGLE_W, by + 1,
+                hovered ? SLOT_BOTTOM_RIGHT : SLOT_TOP_LEFT);
+        extractor.fill(bx, by, bx + 1, by + TOGGLE_H,
+                hovered ? SLOT_BOTTOM_RIGHT : SLOT_TOP_LEFT);
+        extractor.fill(bx + TOGGLE_W - 1, by + 1, bx + TOGGLE_W, by + TOGGLE_H,
+                hovered ? SLOT_TOP_LEFT : SLOT_BOTTOM_RIGHT);
+        extractor.fill(bx + 1, by + TOGGLE_H - 1, bx + TOGGLE_W, by + TOGGLE_H,
+                hovered ? SLOT_TOP_LEFT : SLOT_BOTTOM_RIGHT);
+
+        int inner = bx + 5;
+        int innerY = by + 5;
+        int innerW = TOGGLE_W - 10;
+        int innerH = TOGGLE_H - 10;
+        extractor.fill(inner, innerY, inner + innerW, innerY + innerH,
+                on ? 0x6655FF55 : 0x448B8B8B);
+        extractor.fill(inner, innerY, inner + innerW, innerY + 1,
+                on ? COLOR_RUN : 0xFF555555);
+        extractor.fill(inner, innerY + innerH - 1, inner + innerW, innerY + innerH,
+                on ? COLOR_RUN : 0xFF555555);
+        extractor.fill(inner, innerY, inner + 1, innerY + innerH,
+                on ? COLOR_RUN : 0xFF555555);
+        extractor.fill(inner + innerW - 1, innerY, inner + innerW, innerY + innerH,
+                on ? COLOR_RUN : 0xFF555555);
+
+        if (!on) {
+            extractor.fill(inner + innerW / 2, innerY, inner + innerW / 2 + 1, innerY + innerH, 0xFFFF5555);
+            extractor.fill(inner, innerY + innerH / 2, inner + innerW, innerY + innerH / 2 + 1, 0xFFFF5555);
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (event.button() == 0) {
+            int gx = (width - imageWidth) / 2;
+            int gy = (height - imageHeight) / 2;
+            if (event.x() >= gx + TOGGLE_X && event.x() < gx + TOGGLE_X + TOGGLE_W
+                    && event.y() >= gy + TOGGLE_Y && event.y() < gy + TOGGLE_Y + TOGGLE_H) {
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, MinerMenu.OVERLAY_BUTTON);
+                overlayLocal = !overlayLocal;
+                syncOverlayBounds();
+                return true;
+            }
+        }
+        return super.mouseClicked(event, doubleClick);
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        syncOverlayBounds();
+    }
+
+    private void syncOverlayBounds() {
+        if (overlayLocal) {
+            var d = menu.getData();
+            int mx = d.get(MinerBlockEntity.DATA_MIN_X);
+            int Mx = d.get(MinerBlockEntity.DATA_MAX_X);
+            int my = d.get(MinerBlockEntity.DATA_MIN_Y);
+            int My = d.get(MinerBlockEntity.DATA_MAX_Y);
+            int mz = d.get(MinerBlockEntity.DATA_MIN_Z);
+            int Mz = d.get(MinerBlockEntity.DATA_MAX_Z);
+            RangeCardOverlay.setBounds(mx, Mx, my, My, mz, Mz);
+        } else {
+            RangeCardOverlay.clearBounds();
+        }
+    }
+
+    @Override
+    public void extractTooltip(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        super.extractTooltip(extractor, mouseX, mouseY);
+        int gx = (width - imageWidth) / 2;
+        int gy = (height - imageHeight) / 2;
+        if (mouseX >= gx + TOGGLE_X && mouseX < gx + TOGGLE_X + TOGGLE_W
+                && mouseY >= gy + TOGGLE_Y && mouseY < gy + TOGGLE_Y + TOGGLE_H) {
+            Component tip = Component.translatable(
+                    overlayLocal
+                            ? "screen.avoidminer.miner.toggle_overlay.on"
+                            : "screen.avoidminer.miner.toggle_overlay.off");
+            extractor.setTooltipForNextFrame(tip, mouseX, mouseY);
+            return;
+        }
+        int sx = gx + MinerMenu.RANGE_X;
+        int sy = gy + MinerMenu.RANGE_Y;
+        if (mouseX >= sx && mouseX < sx + 18 && mouseY >= sy && mouseY < sy + 18
+                && menu.getCarried().isEmpty() && !menu.getSlot(0).hasItem()) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("screen.avoidminer.miner.range_card"), mouseX, mouseY);
+        }
+    }
+}
