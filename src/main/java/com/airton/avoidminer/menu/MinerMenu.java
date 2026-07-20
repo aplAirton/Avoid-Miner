@@ -20,29 +20,61 @@ public class MinerMenu extends AbstractContainerMenu {
     public static final int SLOT_SIZE = 18;
     public static final int RANGE_X = 79;
     public static final int RANGE_Y = 22;
+    public static final int FILTER_X = 8;
+    public static final int FILTER_Y = 22;
+    public static final int UPGRADE_X = 43;
+    public static final int UPGRADE_Y = 22;
+    public static final int FILTER_GRID_X = 8;
+    public static final int FILTER_GRID_Y = 90;
+    public static final int FILTER_GRID_COLS = 9;
+    public static final int FILTER_GRID_ROWS = 2;
     public static final int PLAYER_X = 8;
-    public static final int PLAYER_Y = 84;
-    public static final int HOTBAR_Y = 142;
+    public static final int PLAYER_Y = 134;
+    public static final int HOTBAR_Y = 192;
     public static final int OVERLAY_BUTTON = 0;
+    public static final int FILTER_CLEAR_BUTTON = 1;
+    public static final int RESET_BUTTON = 2;
+    public static final int FILTER_REMOVE_BASE = 100;
+    public static final int FILTER_MAX_DISPLAY = 18;
 
     private final Runnable toggleOverlay;
+    private final MinerBlockEntity blockEntity;
+    private final ResourceHandler<ItemResource> handler;
 
     public MinerMenu(int id, Inventory playerInventory) {
-        this(id, playerInventory, new ItemStacksResourceHandler(MinerBlockEntity.TOTAL_SLOTS), new SimpleContainerData(16), () -> {});
+        this(id, playerInventory, new ItemStacksResourceHandler(MinerBlockEntity.TOTAL_SLOTS), new SimpleContainerData(16), () -> {}, null);
     }
 
     public MinerMenu(int id, Inventory playerInventory, MinerBlockEntity be) {
-        this(id, playerInventory, be.getItemHandler(), be.getContainerData(), be::toggleOverlay);
+        this(id, playerInventory, be.getItemHandler(), be.getContainerData(), be::toggleOverlay, be);
     }
 
-    public MinerMenu(int id, Inventory playerInventory, ResourceHandler<ItemResource> handler, ContainerData data, Runnable toggleOverlay) {
+    public MinerMenu(int id, Inventory playerInventory, ResourceHandler<ItemResource> handler, ContainerData data, Runnable toggleOverlay, MinerBlockEntity be) {
         super(ModMenuTypes.MINER.get(), id);
         this.data = data;
         this.toggleOverlay = toggleOverlay;
+        this.blockEntity = be;
+        this.handler = handler;
         addDataSlots(data);
 
         addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
                 MinerBlockEntity.RANGE_SLOT, RANGE_X, RANGE_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 1; }
+        });
+
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                MinerBlockEntity.FILTER_SLOT, FILTER_X, FILTER_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 1; }
+        });
+
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                MinerBlockEntity.UPGRADE_SLOT, UPGRADE_X, UPGRADE_Y) {
             @Override public boolean mayPlace(ItemStack stack) {
                 return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
             }
@@ -79,6 +111,18 @@ public class MinerMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player player, int id) {
         if (id == OVERLAY_BUTTON) {
             toggleOverlay.run();
+            return true;
+        }
+        if (id == FILTER_CLEAR_BUTTON) {
+            if (blockEntity != null) blockEntity.clearFilter();
+            return true;
+        }
+        if (id == RESET_BUTTON) {
+            if (blockEntity != null) blockEntity.resetMining();
+            return true;
+        }
+        if (id >= FILTER_REMOVE_BASE && id < FILTER_REMOVE_BASE + FILTER_MAX_DISPLAY) {
+            if (blockEntity != null) blockEntity.removeFilterEntry(id - FILTER_REMOVE_BASE);
             return true;
         }
         return false;

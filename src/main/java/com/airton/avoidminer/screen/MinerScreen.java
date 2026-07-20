@@ -2,12 +2,19 @@ package com.airton.avoidminer.screen;
 
 import com.airton.avoidminer.block.entity.MinerBlockEntity;
 import com.airton.avoidminer.client.RangeCardOverlay;
+import com.airton.avoidminer.item.FilterCardItem;
 import com.airton.avoidminer.menu.MinerMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
     private static final int PANEL_FILL = 0xFFC6C6C6;
@@ -17,22 +24,34 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
     private static final int SLOT_BOTTOM_RIGHT = 0xFFFFFFFF;
     private static final int TEXT_DARK = 0xFF404040;
 
-    private static final int COLOR_RUN = 0xFF55FF55;
-    private static final int COLOR_IDLE = 0xFFAAAAAA;
-    private static final int COLOR_ERR = 0xFFFF5555;
+    private static final int COLOR_RUN = 0xFF1B7A1B;
+    private static final int COLOR_IDLE = 0xFF404040;
+    private static final int COLOR_ERR = 0xFFAA2222;
 
     private static final int TOGGLE_X = 152;
     private static final int TOGGLE_Y = 4;
     private static final int TOGGLE_W = 20;
     private static final int TOGGLE_H = 20;
 
+    private static final int RESET_X = 126;
+    private static final int RESET_Y = 4;
+    private static final int RESET_W = 20;
+    private static final int RESET_H = 20;
+
+    private static final int INFO_STATE_Y = 44;
+    private static final int INFO_PROGRESS_Y = 54;
+    private static final int INFO_BLOCKS_Y = 64;
+    private static final int FILTER_LABEL_Y = 78;
+
     private boolean overlayLocal;
+    private List<ItemStack> filterDisplay = new ArrayList<>();
 
     public MinerScreen(MinerMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, 176, 166);
+        super(menu, inv, title, 176, 214);
         titleLabelX = 8;
         titleLabelY = 6;
-        inventoryLabelY = 74;
+        inventoryLabelX = 8;
+        inventoryLabelY = MinerMenu.PLAYER_Y - 11;
         overlayLocal = menu.isOverlayEnabled();
     }
 
@@ -41,11 +60,14 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
         int gx = (width - imageWidth) / 2;
         int gy = (height - imageHeight) / 2;
 
+        refreshFilterDisplay();
+
         drawPanel(extractor, gx, gy);
-        drawRangeSlot(extractor, gx, gy);
-        drawPlayerSlots(extractor, gx, gy);
+        drawSlots(extractor, gx, gy);
         drawInfoPanel(extractor, gx, gy);
+        drawFilterSection(extractor, gx, gy, mouseX, mouseY);
         drawToggle(extractor, gx, gy, mouseX, mouseY);
+        drawResetButton(extractor, gx, gy, mouseX, mouseY);
 
         super.extractContents(extractor, mouseX, mouseY, partialTick);
     }
@@ -66,11 +88,10 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
         extractor.fill(sx + 1, sy + 17, sx + 18, sy + 18, SLOT_BOTTOM_RIGHT);
     }
 
-    private void drawRangeSlot(GuiGraphicsExtractor extractor, int gx, int gy) {
+    private void drawSlots(GuiGraphicsExtractor extractor, int gx, int gy) {
         drawVanillaSlot(extractor, gx + MinerMenu.RANGE_X, gy + MinerMenu.RANGE_Y);
-    }
-
-    private void drawPlayerSlots(GuiGraphicsExtractor extractor, int gx, int gy) {
+        drawVanillaSlot(extractor, gx + MinerMenu.FILTER_X, gy + MinerMenu.FILTER_Y);
+        drawVanillaSlot(extractor, gx + MinerMenu.UPGRADE_X, gy + MinerMenu.UPGRADE_Y);
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 drawVanillaSlot(extractor,
@@ -82,6 +103,26 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
             drawVanillaSlot(extractor,
                     gx + MinerMenu.PLAYER_X + col * MinerMenu.SLOT_SIZE,
                     gy + MinerMenu.HOTBAR_Y);
+        }
+        for (int i = 0; i < MinerMenu.FILTER_MAX_DISPLAY; i++) {
+            drawVanillaSlot(extractor,
+                    gx + MinerMenu.FILTER_GRID_X + (i % MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE,
+                    gy + MinerMenu.FILTER_GRID_Y + (i / MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE);
+        }
+    }
+
+    private void refreshFilterDisplay() {
+        filterDisplay.clear();
+        ItemStack filterStack = menu.getSlot(1).getItem();
+        if (filterStack.isEmpty() || !(filterStack.getItem() instanceof FilterCardItem)) return;
+        for (Identifier id : FilterCardItem.getEntries(filterStack)) {
+            var block = BuiltInRegistries.BLOCK.getValue(id);
+            var item = block.asItem();
+            if (item == null || item.equals(net.minecraft.world.item.Items.AIR)) {
+                filterDisplay.add(ItemStack.EMPTY);
+            } else {
+                filterDisplay.add(new ItemStack(item));
+            }
         }
     }
 
@@ -104,34 +145,53 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
         return switch (status) {
             case 1 -> COLOR_RUN;
             case 6, 7, 8, 9 -> COLOR_ERR;
-            case 3, 4 -> COLOR_IDLE;
             default -> COLOR_IDLE;
         };
     }
 
     private void drawInfoPanel(GuiGraphicsExtractor extractor, int gx, int gy) {
         int centerX = gx + imageWidth / 2;
-
         int totalBlocks = menu.getTotalBlocks();
         int mined = menu.getTotalMined();
         int pct = menu.getProgressPercent();
 
         Component stateLabel = Component.translatable("screen.avoidminer.miner.state_label");
-        Component stateValue = stateComponent();
-        Component stateLine = stateLabel.copy().append(" ").append(stateValue);
+        Component stateLine = stateLabel.copy().append(" ").append(stateComponent());
         extractor.text(font, stateLine,
-                centerX - font.width(stateLine) / 2, gy + 42, stateColor());
+                centerX - font.width(stateLine) / 2, gy + INFO_STATE_Y, stateColor(), false);
 
         if (menu.isOperating()) {
             Component progLine = Component.translatable("screen.avoidminer.miner.progress", pct);
             extractor.text(font, progLine,
-                    centerX - font.width(progLine) / 2, gy + 52, COLOR_RUN);
+                    centerX - font.width(progLine) / 2, gy + INFO_PROGRESS_Y, COLOR_RUN, false);
         }
 
         Component blocksLine = Component.translatable(
                 "screen.avoidminer.miner.blocks", mined, totalBlocks);
         extractor.text(font, blocksLine,
-                centerX - font.width(blocksLine) / 2, gy + 62, TEXT_DARK);
+                centerX - font.width(blocksLine) / 2, gy + INFO_BLOCKS_Y, TEXT_DARK, false);
+    }
+
+    private void drawFilterSection(GuiGraphicsExtractor extractor, int gx, int gy, int mouseX, int mouseY) {
+        Component filterLabel = Component.translatable("screen.avoidminer.miner.filter_label");
+        extractor.text(font, filterLabel, gx + 8, gy + FILTER_LABEL_Y, TEXT_DARK, false);
+
+        if (filterDisplay.isEmpty()) {
+            Component empty = Component.translatable("tooltip.avoidminer.filter_card.empty");
+            extractor.text(font, empty,
+                    gx + imageWidth - font.width(empty) - 6, gy + FILTER_LABEL_Y, 0xFF707070, false);
+        }
+
+        for (int i = 0; i < filterDisplay.size() && i < MinerMenu.FILTER_MAX_DISPLAY; i++) {
+            int cx = gx + MinerMenu.FILTER_GRID_X + (i % MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+            int cy = gy + MinerMenu.FILTER_GRID_Y + (i / MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+            ItemStack stack = filterDisplay.get(i);
+            if (stack.isEmpty()) continue;
+            extractor.item(stack, cx + 1, cy + 1);
+            if (mouseX >= cx && mouseX < cx + 18 && mouseY >= cy && mouseY < cy + 18) {
+                extractor.fill(cx, cy, cx + 18, cy + 18, 0x44FF5555);
+            }
+        }
     }
 
     private void drawToggle(GuiGraphicsExtractor extractor, int gx, int gy, int mouseX, int mouseY) {
@@ -172,17 +232,60 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
         }
     }
 
+    private void drawResetButton(GuiGraphicsExtractor extractor, int gx, int gy, int mouseX, int mouseY) {
+        int bx = gx + RESET_X;
+        int by = gy + RESET_Y;
+        boolean hovered = mouseX >= bx && mouseX < bx + RESET_W
+                && mouseY >= by && mouseY < by + RESET_H;
+
+        extractor.fill(bx + 1, by + 1, bx + RESET_W - 1, by + RESET_H - 1, SLOT_INNER);
+        extractor.fill(bx, by, bx + RESET_W, by + 1,
+                hovered ? SLOT_BOTTOM_RIGHT : SLOT_TOP_LEFT);
+        extractor.fill(bx, by, bx + 1, by + RESET_H,
+                hovered ? SLOT_BOTTOM_RIGHT : SLOT_TOP_LEFT);
+        extractor.fill(bx + RESET_W - 1, by + 1, bx + RESET_W, by + RESET_H,
+                hovered ? SLOT_TOP_LEFT : SLOT_BOTTOM_RIGHT);
+        extractor.fill(bx + 1, by + RESET_H - 1, bx + RESET_W, by + RESET_H,
+                hovered ? SLOT_TOP_LEFT : SLOT_BOTTOM_RIGHT);
+
+        int cx = bx + RESET_W / 2;
+        int cy = by + RESET_H / 2;
+        extractor.fill(cx - 1, cy - 5, cx + 1, cy - 1, 0xFF222222);
+        extractor.fill(cx + 4, cy, cx + 6, cy + 2, 0xFF222222);
+        extractor.fill(cx + 4, cy - 4, cx + 6, cy - 1, 0xFF222222);
+        extractor.fill(cx + 2, cy - 1, cx + 6, cy + 1, 0xFF222222);
+        extractor.fill(cx + 2, cy - 3, cx + 4, cy + 1, 0xFF222222);
+    }
+
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         if (event.button() == 0) {
             int gx = (width - imageWidth) / 2;
             int gy = (height - imageHeight) / 2;
+
             if (event.x() >= gx + TOGGLE_X && event.x() < gx + TOGGLE_X + TOGGLE_W
                     && event.y() >= gy + TOGGLE_Y && event.y() < gy + TOGGLE_Y + TOGGLE_H) {
                 minecraft.gameMode.handleInventoryButtonClick(menu.containerId, MinerMenu.OVERLAY_BUTTON);
                 overlayLocal = !overlayLocal;
                 syncOverlayBounds();
                 return true;
+            }
+
+            if (event.x() >= gx + RESET_X && event.x() < gx + RESET_X + RESET_W
+                    && event.y() >= gy + RESET_Y && event.y() < gy + RESET_Y + RESET_H) {
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, MinerMenu.RESET_BUTTON);
+                return true;
+            }
+
+            for (int i = 0; i < filterDisplay.size() && i < MinerMenu.FILTER_MAX_DISPLAY; i++) {
+                int cx = gx + MinerMenu.FILTER_GRID_X + (i % MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+                int cy = gy + MinerMenu.FILTER_GRID_Y + (i / MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+                if (event.x() >= cx && event.x() < cx + 18
+                        && event.y() >= cy && event.y() < cy + 18) {
+                    minecraft.gameMode.handleInventoryButtonClick(menu.containerId,
+                            MinerMenu.FILTER_REMOVE_BASE + i);
+                    return true;
+                }
             }
         }
         return super.mouseClicked(event, doubleClick);
@@ -214,21 +317,58 @@ public class MinerScreen extends AbstractContainerScreen<MinerMenu> {
         super.extractTooltip(extractor, mouseX, mouseY);
         int gx = (width - imageWidth) / 2;
         int gy = (height - imageHeight) / 2;
+
         if (mouseX >= gx + TOGGLE_X && mouseX < gx + TOGGLE_X + TOGGLE_W
                 && mouseY >= gy + TOGGLE_Y && mouseY < gy + TOGGLE_Y + TOGGLE_H) {
-            Component tip = Component.translatable(
+            extractor.setTooltipForNextFrame(Component.translatable(
                     overlayLocal
                             ? "screen.avoidminer.miner.toggle_overlay.on"
-                            : "screen.avoidminer.miner.toggle_overlay.off");
-            extractor.setTooltipForNextFrame(tip, mouseX, mouseY);
+                            : "screen.avoidminer.miner.toggle_overlay.off"), mouseX, mouseY);
             return;
         }
-        int sx = gx + MinerMenu.RANGE_X;
-        int sy = gy + MinerMenu.RANGE_Y;
-        if (mouseX >= sx && mouseX < sx + 18 && mouseY >= sy && mouseY < sy + 18
+
+        if (mouseX >= gx + RESET_X && mouseX < gx + RESET_X + RESET_W
+                && mouseY >= gy + RESET_Y && mouseY < gy + RESET_Y + RESET_H) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("screen.avoidminer.miner.reset"), mouseX, mouseY);
+            return;
+        }
+
+        if (mouseX >= gx + MinerMenu.RANGE_X && mouseX < gx + MinerMenu.RANGE_X + 18
+                && mouseY >= gy + MinerMenu.RANGE_Y && mouseY < gy + MinerMenu.RANGE_Y + 18
                 && menu.getCarried().isEmpty() && !menu.getSlot(0).hasItem()) {
             extractor.setTooltipForNextFrame(
                     Component.translatable("screen.avoidminer.miner.range_card"), mouseX, mouseY);
+            return;
+        }
+
+        if (mouseX >= gx + MinerMenu.FILTER_X && mouseX < gx + MinerMenu.FILTER_X + 18
+                && mouseY >= gy + MinerMenu.FILTER_Y && mouseY < gy + MinerMenu.FILTER_Y + 18
+                && menu.getCarried().isEmpty() && !menu.getSlot(1).hasItem()) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("screen.avoidminer.miner.filter_card"), mouseX, mouseY);
+            return;
+        }
+
+        if (mouseX >= gx + MinerMenu.UPGRADE_X && mouseX < gx + MinerMenu.UPGRADE_X + 18
+                && mouseY >= gy + MinerMenu.UPGRADE_Y && mouseY < gy + MinerMenu.UPGRADE_Y + 18
+                && menu.getCarried().isEmpty() && !menu.getSlot(2).hasItem()) {
+            extractor.setTooltipForNextFrame(
+                    Component.translatable("screen.avoidminer.miner.upgrade"), mouseX, mouseY);
+            return;
+        }
+
+        for (int i = 0; i < filterDisplay.size() && i < MinerMenu.FILTER_MAX_DISPLAY; i++) {
+            int cx = gx + MinerMenu.FILTER_GRID_X + (i % MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+            int cy = gy + MinerMenu.FILTER_GRID_Y + (i / MinerMenu.FILTER_GRID_COLS) * MinerMenu.SLOT_SIZE;
+            if (mouseX >= cx && mouseX < cx + 18 && mouseY >= cy && mouseY < cy + 18) {
+                ItemStack stack = filterDisplay.get(i);
+                if (!stack.isEmpty()) {
+                    extractor.setTooltipForNextFrame(
+                            stack.getHoverName(), mouseX, mouseY);
+                }
+                return;
+            }
         }
     }
 }

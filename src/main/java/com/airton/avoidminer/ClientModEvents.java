@@ -8,9 +8,11 @@ import com.airton.avoidminer.network.ResonantMiningChargePayload;
 import com.airton.avoidminer.network.ResonantScanPayload;
 import com.airton.avoidminer.screen.AvoidMinerScreen;
 import com.airton.avoidminer.screen.BatteryScreen;
+import com.airton.avoidminer.screen.FilterCardScreen;
 import com.airton.avoidminer.screen.LootrScreen;
 import com.airton.avoidminer.screen.ProcessorScreen;
 import com.airton.avoidminer.screen.MagnetiteFurnaceScreen;
+import com.airton.avoidminer.screen.RangeCardScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
 import com.airton.avoidminer.screen.MinerScreen;
 import com.airton.avoidminer.screen.ResonantRepairStationScreen;
@@ -127,6 +129,8 @@ public class ClientModEvents {
         event.register(ModMenuTypes.XP_VAULT.get(), XpVaultScreen::new);
         event.register(ModMenuTypes.RESONANT_REPAIR_STATION.get(), ResonantRepairStationScreen::new);
         event.register(ModMenuTypes.MINER.get(), MinerScreen::new);
+        event.register(ModMenuTypes.FILTER_CARD.get(), FilterCardScreen::new);
+        event.register(ModMenuTypes.RANGE_CARD.get(), RangeCardScreen::new);
     }
 
     @SubscribeEvent

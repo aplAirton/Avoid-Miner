@@ -2,9 +2,11 @@ package com.airton.avoidminer;
 
 import com.airton.avoidminer.menu.AvoidMinerMenu;
 import com.airton.avoidminer.menu.BatteryMenu;
+import com.airton.avoidminer.menu.FilterCardMenu;
 import com.airton.avoidminer.menu.LootrMenu;
 import com.airton.avoidminer.menu.ProcessorMenu;
 import com.airton.avoidminer.menu.MagnetiteFurnaceMenu;
+import com.airton.avoidminer.menu.RangeCardMenu;
 import com.airton.avoidminer.menu.XpVaultMenu;
 import com.airton.avoidminer.menu.MinerMenu;
 import com.airton.avoidminer.menu.ResonantRepairStationMenu;
@@ -48,4 +50,10 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<MinerMenu>> MINER = MENUS.register("miner",
             () -> new MenuType<>(MinerMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<FilterCardMenu>> FILTER_CARD = MENUS.register("filter_card",
+            () -> new MenuType<>(FilterCardMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<RangeCardMenu>> RANGE_CARD = MENUS.register("range_card",
+            () -> new MenuType<>(RangeCardMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

@@ -23,6 +23,7 @@ import com.airton.avoidminer.item.ScrollOfRenewalItem;
 import com.airton.avoidminer.item.HeroMedallionItem;
 import com.airton.avoidminer.item.ScrollOfForgetfulnessItem;
 import com.airton.avoidminer.item.RangeCardItem;
+import com.airton.avoidminer.item.FilterCardItem;
 import com.airton.avoidminer.item.VillagerLassoItem;
 import com.airton.avoidminer.item.ZombiePoisonItem;
 import com.airton.avoidminer.item.ConfiguredTrialSpawnerItem;
@@ -161,6 +162,9 @@ public class ModItems {
 
     public static final DeferredItem<Item> RANGE_CARD = ITEMS.registerItem("range_card",
             RangeCardItem::new);
+
+    public static final DeferredItem<Item> FILTER_CARD = ITEMS.registerItem("filter_card",
+            FilterCardItem::new);
 
     public static final DeferredItem<Item> ENERGY_UPGRADE_TIER_1 = ITEMS.registerItem("energy_upgrade_tier_1",
             props -> new MachineUpgradeItem(props, "tooltip.avoidminer.energy_upgrade_tier_1"));
@@ -396,7 +400,7 @@ public class ModItems {
     public static final DeferredItem<Item> ZOMBIE_POISON = ITEMS.registerItem("zombie_poison",
             props -> new ZombiePoisonItem(props.stacksTo(16)));
     public static final DeferredItem<Item> VILLAGER_LASSO = ITEMS.registerItem("villager_lasso",
-            props -> new VillagerLassoItem(props.durability(4).stacksTo(1)));
+            props -> new VillagerLassoItem(props.durability(8).stacksTo(1)));
     public static final DeferredItem<BlockItem> MINER = ITEMS.registerItem("miner",
             props -> new BlockItem(ModBlocks.MINER.get(), props.stacksTo(1)));
 

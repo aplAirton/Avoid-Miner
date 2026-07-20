@@ -3,14 +3,16 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.MinerBlock;
+import com.airton.avoidminer.item.FilterCardItem;
 import com.airton.avoidminer.item.RangeCardItem;
 import com.airton.avoidminer.menu.MinerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -21,18 +23,20 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.List;
 
 public class MinerBlockEntity extends BlockEntity {
     public enum Tier {
-        TIER_1(1, 1),
-        TIER_2(3, 2),
-        TIER_3(3, 1);
+        TIER_1(1, 30),
+        TIER_2(3, 60),
+        TIER_3(3, 30);
 
         public final int blocksPerTick;
         public final int ticksPerBlock;
@@ -44,7 +48,9 @@ public class MinerBlockEntity extends BlockEntity {
     }
 
     public static final int RANGE_SLOT = 0;
-    public static final int TOTAL_SLOTS = 1;
+    public static final int FILTER_SLOT = 1;
+    public static final int UPGRADE_SLOT = 2;
+    public static final int TOTAL_SLOTS = 3;
 
     public static final int STATUS_IDLE = 0;
     public static final int STATUS_RUNNING = 1;
@@ -78,13 +84,22 @@ public class MinerBlockEntity extends BlockEntity {
             initialized = false;
             finished = false;
             breakAccumulator = 0;
+            if (slot == FILTER_SLOT) {
+                totalBlocks = 0;
+                totalMined = 0;
+            }
             setChanged();
         }
 
         @Override
         public boolean isValid(int slot, ItemResource resource) {
             if (resource.isEmpty()) return false;
-            return resource.getItem() instanceof RangeCardItem;
+            return switch (slot) {
+                case RANGE_SLOT -> resource.getItem() instanceof RangeCardItem;
+                case FILTER_SLOT -> resource.getItem() instanceof FilterCardItem;
+                case UPGRADE_SLOT -> isValidUpgrade(resource.getItem());
+                default -> false;
+            };
         }
     };
 
@@ -176,6 +191,18 @@ public class MinerBlockEntity extends BlockEntity {
 
     public void toggleOverlay() {
         overlayEnabled = !overlayEnabled;
+        setChanged();
+    }
+
+    public void resetMining() {
+        initialized = false;
+        finished = false;
+        breakAccumulator = 0;
+        scanY = 0;
+        scanX = 0;
+        scanZ = 0;
+        totalMined = 0;
+        totalBlocks = 0;
         setChanged();
     }
 
@@ -289,8 +316,9 @@ public class MinerBlockEntity extends BlockEntity {
                 for (int x = minX; x <= maxX; x++) {
                     for (int z = minZ; z <= maxZ; z++) {
                         if (Math.abs(x - mx) <= 1 && Math.abs(z - mz) <= 1) continue;
-                        BlockState bs = level.getBlockState(new BlockPos(x, y, z));
-                        if (!bs.isAir() && !bs.liquid()) {
+                        BlockPos target = new BlockPos(x, y, z);
+                        BlockState bs = level.getBlockState(target);
+                        if (isMineable(bs, target)) {
                             totalBlocks++;
                         }
                     }
@@ -300,6 +328,58 @@ public class MinerBlockEntity extends BlockEntity {
 
         if (totalBlocks <= 0) totalBlocks = 1;
         initialized = true;
+    }
+
+    private boolean isMineable(BlockState state, BlockPos pos) {
+        if (state.isAir()) return false;
+        if (state.getBlock().equals(Blocks.BEDROCK)) return false;
+        if (state.getDestroySpeed(level, pos) < 0) return false;
+        if (state.liquid()) return false;
+        return passesFilter(state);
+    }
+
+    private boolean passesFilter(BlockState state) {
+        List<Identifier> filter = getFilterEntries();
+        if (filter.isEmpty()) return true;
+        Identifier id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+        return filter.contains(id);
+    }
+
+    private List<Identifier> getFilterEntries() {
+        ItemResource filterResource = itemHandler.getResource(FILTER_SLOT);
+        if (filterResource.isEmpty()) return List.of();
+        ItemStack filterStack = filterResource.toStack(1);
+        return FilterCardItem.getEntries(filterStack);
+    }
+
+    public boolean removeFilterEntry(int index) {
+        ItemResource filterResource = itemHandler.getResource(FILTER_SLOT);
+        if (filterResource.isEmpty()) return false;
+        ItemStack filterStack = filterResource.toStack(1);
+        int before = FilterCardItem.getEntries(filterStack).size();
+        FilterCardItem.removeEntry(filterStack, index);
+        int after = FilterCardItem.getEntries(filterStack).size();
+        if (before == after) return false;
+        itemHandler.set(FILTER_SLOT, ItemResource.of(filterStack), filterStack.getCount());
+        initialized = false;
+        finished = false;
+        breakAccumulator = 0;
+        setChanged();
+        return true;
+    }
+
+    public boolean clearFilter() {
+        ItemResource filterResource = itemHandler.getResource(FILTER_SLOT);
+        if (filterResource.isEmpty()) return false;
+        ItemStack filterStack = filterResource.toStack(1);
+        if (FilterCardItem.getEntries(filterStack).isEmpty()) return false;
+        FilterCardItem.clearEntries(filterStack);
+        itemHandler.set(FILTER_SLOT, ItemResource.of(filterStack), filterStack.getCount());
+        initialized = false;
+        finished = false;
+        breakAccumulator = 0;
+        setChanged();
+        return true;
     }
 
     private boolean mineOneBlock(ServerLevel level, BlockPos minerPos, BlockState minerState) {
@@ -320,10 +400,11 @@ public class MinerBlockEntity extends BlockEntity {
 
                     boolean mineable = !targetState.isAir()
                             && !targetState.getBlock().equals(Blocks.BEDROCK)
-                            && targetState.getDestroySpeed(level, target) >= 0;
+                            && targetState.getDestroySpeed(level, target) >= 0
+                            && passesFilter(targetState);
 
                     if (mineable) {
-                        List<ItemStack> drops = Block.getDrops(targetState, level, target, level.getBlockEntity(target));
+                        List<ItemStack> drops = getDropsWithUpgrade(level, target, targetState);
                         level.destroyBlock(target, false);
                         for (ItemStack drop : drops) {
                             outputToAdjacentContainers(level, minerPos, minerState, drop);
@@ -343,12 +424,60 @@ public class MinerBlockEntity extends BlockEntity {
         return false;
     }
 
+    private List<ItemStack> getDropsWithUpgrade(ServerLevel level, BlockPos pos, BlockState state) {
+        List<ItemStack> drops = Block.getDrops(state, level, pos, level.getBlockEntity(pos));
+
+        if (hasUpgrade(ModItems.SILK_UPGRADE.get())) {
+            net.minecraft.world.item.Item blockItem = state.getBlock().asItem();
+            if (blockItem != net.minecraft.world.item.Items.AIR) {
+                drops = List.of(new ItemStack(blockItem));
+            }
+        }
+
+        if (hasUpgrade(ModItems.FORTUNE_UPGRADE.get())) {
+            List<ItemStack> multiplied = new java.util.ArrayList<>();
+            net.minecraft.util.RandomSource random = level.getRandom();
+            for (ItemStack drop : drops) {
+                multiplied.add(drop);
+                net.minecraft.world.item.Item item = drop.getItem();
+                if (item == net.minecraft.world.item.Items.RAW_IRON
+                        || item == net.minecraft.world.item.Items.RAW_COPPER
+                        || item == net.minecraft.world.item.Items.RAW_GOLD
+                        || item == net.minecraft.world.item.Items.REDSTONE
+                        || item == net.minecraft.world.item.Items.LAPIS_LAZULI
+                        || item == net.minecraft.world.item.Items.DIAMOND
+                        || item == net.minecraft.world.item.Items.EMERALD
+                        || item == net.minecraft.world.item.Items.COAL
+                        || item == net.minecraft.world.item.Items.QUARTZ
+                        || item == net.minecraft.world.item.Items.NETHERITE_SCRAP
+                        || item == net.minecraft.world.item.Items.GLOWSTONE_DUST) {
+                    int bonus = random.nextInt(4);
+                    if (bonus > 0) {
+                        multiplied.add(new ItemStack(item, bonus));
+                    }
+                }
+            }
+            drops = multiplied;
+        }
+
+        return drops;
+    }
+
+    private boolean isValidUpgrade(net.minecraft.world.item.Item item) {
+        return item == ModItems.FORTUNE_UPGRADE.get() || item == ModItems.SILK_UPGRADE.get();
+    }
+
+    private boolean hasUpgrade(net.minecraft.world.item.Item upgrade) {
+        ItemResource res = itemHandler.getResource(UPGRADE_SLOT);
+        return !res.isEmpty() && res.getItem() == upgrade;
+    }
+
     private boolean hasAdjacentContainer(Level level, BlockPos pos, BlockState state) {
         Direction front = state.getValue(MinerBlock.FACING);
-        if (level.getBlockEntity(pos.above()) instanceof Container) return true;
+        if (isContainerAt(level, pos.above())) return true;
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             if (dir == front) continue;
-            if (level.getBlockEntity(pos.relative(dir)) instanceof Container) return true;
+            if (isContainerAt(level, pos.relative(dir))) return true;
         }
         return false;
     }
@@ -358,15 +487,8 @@ public class MinerBlockEntity extends BlockEntity {
         Direction[] sides = {Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
         for (Direction dir : sides) {
             if (dir == front) continue;
-            BlockEntity be = level.getBlockEntity(pos.relative(dir));
-            if (be instanceof Container container) {
-                for (int i = 0; i < container.getContainerSize(); i++) {
-                    ItemStack slot = container.getItem(i);
-                    if (slot.isEmpty() || slot.getCount() < slot.getMaxStackSize()) {
-                        return true;
-                    }
-                }
-            }
+            BlockPos target = pos.relative(dir);
+            if (hasSpaceAt(level, target)) return true;
         }
         return false;
     }
@@ -379,12 +501,10 @@ public class MinerBlockEntity extends BlockEntity {
         Direction[] sides = {Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
         for (Direction dir : sides) {
             if (dir == front) continue;
-            BlockEntity be = level.getBlockEntity(pos.relative(dir));
-            if (be instanceof Container container) {
-                ItemStack remainder = insertIntoContainer(container, new ItemStack(stack.getItem(), remaining));
-                remaining = remainder.getCount();
-                if (remaining <= 0) return;
-            }
+            BlockPos target = pos.relative(dir);
+            int before = remaining;
+            remaining = outputToAt(level, target, new ItemStack(stack.getItem(), remaining));
+            if (remaining <= 0) return;
         }
 
         if (remaining > 0) {
@@ -392,7 +512,68 @@ public class MinerBlockEntity extends BlockEntity {
         }
     }
 
-    private static ItemStack insertIntoContainer(Container container, ItemStack stack) {
+    private static boolean isContainerAt(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be == null) return false;
+        if (be instanceof net.minecraft.world.Container) return true;
+        return Capabilities.Item.BLOCK.getCapability(level, pos, null, be, null) != null;
+    }
+
+    private static boolean hasSpaceAt(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be == null) return false;
+
+        if (be instanceof net.minecraft.world.Container container) {
+            for (int i = 0; i < container.getContainerSize(); i++) {
+                ItemStack slot = container.getItem(i);
+                if (slot.isEmpty() || slot.getCount() < slot.getMaxStackSize()) return true;
+            }
+        }
+
+        ResourceHandler<ItemResource> handler = Capabilities.Item.BLOCK.getCapability(level, pos, null, be, null);
+        if (handler instanceof ItemStacksResourceHandler stacks) {
+            for (int i = 0; i < stacks.size(); i++) {
+                ItemResource res = stacks.getResource(i);
+                int count = stacks.getAmountAsInt(i);
+                if (res.isEmpty() || count < res.getItem().getDefaultMaxStackSize()) return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int outputToAt(Level level, BlockPos pos, ItemStack stack) {
+        if (stack.isEmpty()) return 0;
+        int remaining = stack.getCount();
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof net.minecraft.world.Container container) {
+            ItemStack result = insertIntoContainer(container, new ItemStack(stack.getItem(), remaining));
+            remaining = result.getCount();
+        }
+        if (remaining <= 0) return 0;
+
+        if (be != null) {
+            ResourceHandler<ItemResource> handler = Capabilities.Item.BLOCK.getCapability(level, pos, null, be, null);
+            if (handler != null) {
+                int slots = handler instanceof ItemStacksResourceHandler h ? h.size() : 0;
+                for (int slot = 0; slot < slots && remaining > 0; slot++) {
+                    try (Transaction tx = Transaction.openRoot()) {
+                        int inserted = handler.insert(slot,
+                                ItemResource.of(new ItemStack(stack.getItem(), remaining)), remaining, tx);
+                        if (inserted > 0) {
+                            tx.commit();
+                            remaining -= inserted;
+                        }
+                    }
+                }
+            }
+        }
+
+        return remaining;
+    }
+
+    private static ItemStack insertIntoContainer(net.minecraft.world.Container container, ItemStack stack) {
         if (stack.isEmpty()) return ItemStack.EMPTY;
         ItemStack remaining = stack.copy();
         for (int i = 0; i < container.getContainerSize() && !remaining.isEmpty(); i++) {

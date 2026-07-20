@@ -97,6 +97,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.UPGRADE_TIER_2.get());
                         output.accept(ModItems.UPGRADE_TIER_3.get());
                         output.accept(ModItems.RANGE_CARD.get());
+                        output.accept(ModItems.FILTER_CARD.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_1.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_2.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_3.get());

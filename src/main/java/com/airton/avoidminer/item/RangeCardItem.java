@@ -1,6 +1,7 @@
 package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.block.entity.MinerBlockEntity;
+import com.airton.avoidminer.menu.RangeCardMenu;
 import net.minecraft.ChatFormatting;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -8,10 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -166,17 +169,36 @@ public class RangeCardItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide()) {
-            ItemStack stack = player.getItemInHand(hand);
-            clearData(stack);
-            player.sendSystemMessage(Component.translatable("msg.avoidminer.range_card.cleared"));
-            level.playSound(null, player, SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 0.3f, 0.5f);
+        if (player.isShiftKeyDown()) {
+            if (!level.isClientSide()) {
+                ItemStack stack = player.getItemInHand(hand);
+                clearData(stack);
+                player.sendSystemMessage(Component.translatable("msg.avoidminer.range_card.cleared"));
+                level.playSound(null, player, SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 0.3f, 0.5f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(new SimpleMenuProvider(
+                    (id, inv, p) -> new RangeCardMenu(id, inv),
+                    Component.translatable("screen.avoidminer.range_card")), buf -> {});
         }
         return InteractionResult.SUCCESS;
     }
 
-    private static void clearData(ItemStack stack) {
+    public static void clearData(ItemStack stack) {
         stack.set(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+    }
+
+    public static void setAllCoords(ItemStack stack, int x1, int y1, int z1, int x2, int y2, int z2) {
+        updateTag(stack, tag -> {
+            tag.putInt(X1_KEY, x1);
+            tag.putInt(Y1_KEY, y1);
+            tag.putInt(Z1_KEY, z1);
+            tag.putInt(X2_KEY, x2);
+            tag.putInt(Y2_KEY, y2);
+            tag.putInt(Z2_KEY, z2);
+        });
     }
 
     private static void updateTag(ItemStack stack, Consumer<CompoundTag> updater) {
