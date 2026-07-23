@@ -48,7 +48,7 @@ public class ResonantRetaliationShieldItem extends ShieldItem {
 
     public ResonantRetaliationShieldItem(Properties properties) {
         super(properties
-                .durability(336)
+                .durability(3000)
                 .component(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY)
                 .repairable(ItemTags.WOODEN_TOOL_MATERIALS)
                 .equippableUnswappable(EquipmentSlot.OFFHAND)

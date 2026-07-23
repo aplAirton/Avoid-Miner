@@ -1,7 +1,7 @@
 package com.airton.avoidminer.enchantment;
 
 public final class ResonanceEnchantmentRules {
-    public static final int ECHO_DURATION_TICKS = 60;
+    public static final int ECHO_DURATION_TICKS = 180;
     public static final double ECHO_RADIUS = 24.0;
     public static final int DISSONANCE_TICKS_PER_LEVEL = 50;
     public static final int DISSONANCE_MAX_LEVEL = 2;

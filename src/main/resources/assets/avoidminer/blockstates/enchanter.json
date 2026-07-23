@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "avoidminer:block/enchanter" },
+    "facing=east":  { "model": "avoidminer:block/enchanter", "y": 90 },
+    "facing=south": { "model": "avoidminer:block/enchanter", "y": 180 },
+    "facing=west":  { "model": "avoidminer:block/enchanter", "y": 270 }
+  }
+}

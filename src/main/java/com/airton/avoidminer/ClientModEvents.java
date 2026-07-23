@@ -16,6 +16,7 @@ import com.airton.avoidminer.screen.RangeCardScreen;
 import com.airton.avoidminer.screen.XpVaultScreen;
 import com.airton.avoidminer.screen.MinerScreen;
 import com.airton.avoidminer.screen.ResonantRepairStationScreen;
+import com.airton.avoidminer.screen.MobGrinderScreen;
 import net.minecraft.client.particle.SonicBoomParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.ChatFormatting;
@@ -131,6 +132,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.MINER.get(), MinerScreen::new);
         event.register(ModMenuTypes.FILTER_CARD.get(), FilterCardScreen::new);
         event.register(ModMenuTypes.RANGE_CARD.get(), RangeCardScreen::new);
+        event.register(ModMenuTypes.MOB_GRINDER.get(), MobGrinderScreen::new);
     }
 
     @SubscribeEvent
@@ -138,8 +140,14 @@ public class ClientModEvents {
         if (event.getEntity() == null) return;
 
         var tooltip = event.getToolTip();
-        var lookup = event.getEntity().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         ItemStack stack = event.getItemStack();
+
+        if (stack.is(ModItems.MINER.get())) {
+            tooltip.add(Component.translatable("tooltip.avoidminer.miner")
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        var lookup = event.getEntity().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 
         var allComponents = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         var storedComponents = stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);

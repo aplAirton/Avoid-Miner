@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" C ", "NAN", " C "],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "N": "minecraft:nether_star",
+    "A": "avoidminer:attraction_card_tier_2"
+  },
+  "result": { "id": "avoidminer:attraction_card_tier_3", "count": 1 }
+}

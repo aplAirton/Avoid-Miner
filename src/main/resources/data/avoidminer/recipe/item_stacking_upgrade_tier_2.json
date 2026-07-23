@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["NCN", "CSC", "NCN"],
+  "key": {
+    "N": "minecraft:netherite_ingot",
+    "C": "avoidminer:magnetite_block",
+    "S": "avoidminer:item_stacking_upgrade"
+  },
+  "result": { "id": "avoidminer:item_stacking_upgrade_tier_2", "count": 1 }
+}

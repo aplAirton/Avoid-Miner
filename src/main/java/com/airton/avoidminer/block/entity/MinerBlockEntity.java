@@ -3,27 +3,39 @@ package com.airton.avoidminer.block.entity;
 import com.airton.avoidminer.ModBlockEntities;
 import com.airton.avoidminer.ModItems;
 import com.airton.avoidminer.block.MinerBlock;
+import com.airton.avoidminer.config.AvoidMinerServerConfig;
+import com.airton.avoidminer.energy.EnergyReceiver;
+import com.airton.avoidminer.item.EnergyLinkItem;
 import com.airton.avoidminer.item.FilterCardItem;
 import com.airton.avoidminer.item.RangeCardItem;
 import com.airton.avoidminer.menu.MinerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
@@ -32,25 +44,30 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.List;
 
-public class MinerBlockEntity extends BlockEntity {
+public class MinerBlockEntity extends BlockEntity implements EnergyReceiver, IEnergyStorage {
     public enum Tier {
-        TIER_1(1, 30),
-        TIER_2(3, 60),
-        TIER_3(3, 30);
+        TIER_1(1, 30, 20000),
+        TIER_2(3, 60, 40000),
+        TIER_3(3, 30, 80000);
 
         public final int blocksPerTick;
         public final int ticksPerBlock;
+        public final int energyCapacity;
 
-        Tier(int blocksPerTick, int ticksPerBlock) {
+        Tier(int blocksPerTick, int ticksPerBlock, int energyCapacity) {
             this.blocksPerTick = blocksPerTick;
             this.ticksPerBlock = ticksPerBlock;
+            this.energyCapacity = energyCapacity;
         }
     }
 
     public static final int RANGE_SLOT = 0;
     public static final int FILTER_SLOT = 1;
     public static final int UPGRADE_SLOT = 2;
-    public static final int TOTAL_SLOTS = 3;
+    public static final int FUEL_SLOT = 3;
+    public static final int SPEED_UPGRADE_SLOT = 4;
+    public static final int ENERGY_UPGRADE_SLOT = 5;
+    public static final int TOTAL_SLOTS = 6;
 
     public static final int STATUS_IDLE = 0;
     public static final int STATUS_RUNNING = 1;
@@ -60,6 +77,7 @@ public class MinerBlockEntity extends BlockEntity {
     public static final int STATUS_INVALID_RANGE_CARD = 7;
     public static final int STATUS_NO_CONTAINER = 8;
     public static final int STATUS_CONTAINER_FULL = 9;
+    public static final int STATUS_TOO_FAR = 10;
 
     public static final int DATA_STATUS = 0;
     public static final int DATA_MINED = 1;
@@ -74,6 +92,9 @@ public class MinerBlockEntity extends BlockEntity {
     public static final int DATA_MAX_Y = 10;
     public static final int DATA_MIN_Z = 11;
     public static final int DATA_MAX_Z = 12;
+    public static final int DATA_ENERGY = 13;
+    public static final int DATA_ENERGY_CAPACITY = 14;
+    public static final int DATA_AUTO_SHUTDOWN = 15;
 
     private Tier tier;
     private int tierId;
@@ -98,6 +119,10 @@ public class MinerBlockEntity extends BlockEntity {
                 case RANGE_SLOT -> resource.getItem() instanceof RangeCardItem;
                 case FILTER_SLOT -> resource.getItem() instanceof FilterCardItem;
                 case UPGRADE_SLOT -> isValidUpgrade(resource.getItem());
+                case FUEL_SLOT -> (level != null && resource.toStack(1).getBurnTime(RecipeType.SMELTING, level.fuelValues()) > 0)
+                        || resource.getItem() == ModItems.ENERGY_LINK.get();
+                case SPEED_UPGRADE_SLOT -> isValidSpeedUpgrade(resource.getItem());
+                case ENERGY_UPGRADE_SLOT -> isValidEnergyUpgrade(resource.getItem());
                 default -> false;
             };
         }
@@ -113,6 +138,11 @@ public class MinerBlockEntity extends BlockEntity {
     private boolean finished;
     private int status;
     private boolean overlayEnabled;
+    private boolean autoShutdown;
+
+    private int energyBuffer;
+    private float energyFraction;
+    private static final float ENERGY_PER_TICK = 16.0F;
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -131,6 +161,9 @@ public class MinerBlockEntity extends BlockEntity {
                 case DATA_MAX_Y -> maxY;
                 case DATA_MIN_Z -> minZ;
                 case DATA_MAX_Z -> maxZ;
+                case DATA_ENERGY -> energyBuffer;
+                case DATA_ENERGY_CAPACITY -> getEnergyCapacity();
+                case DATA_AUTO_SHUTDOWN -> autoShutdown ? 1 : 0;
                 default -> 0;
             };
         }
@@ -140,7 +173,7 @@ public class MinerBlockEntity extends BlockEntity {
         }
 
         @Override
-        public int getCount() { return 16; }
+        public int getCount() { return 19; }
     };
 
     public MinerBlockEntity(BlockPos pos, BlockState state) {
@@ -158,6 +191,7 @@ public class MinerBlockEntity extends BlockEntity {
     public int getStatus() { return status; }
     public int getTierOrdinal() { return tier.ordinal(); }
     public boolean isOverlayEnabled() { return overlayEnabled; }
+    public boolean isAutoShutdown() { return autoShutdown; }
     public boolean hasRange() {
         ItemResource r = itemHandler.getResource(RANGE_SLOT);
         if (r.isEmpty()) return false;
@@ -194,6 +228,11 @@ public class MinerBlockEntity extends BlockEntity {
         setChanged();
     }
 
+    public void toggleAutoShutdown() {
+        autoShutdown = !autoShutdown;
+        setChanged();
+    }
+
     public void resetMining() {
         initialized = false;
         finished = false;
@@ -204,6 +243,56 @@ public class MinerBlockEntity extends BlockEntity {
         totalMined = 0;
         totalBlocks = 0;
         setChanged();
+    }
+
+    public int getEnergyStored() { return energyBuffer; }
+    public int getEnergyCapacity() { return tier.energyCapacity; }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int capacity = getEnergyCapacity();
+        int space = capacity - energyBuffer;
+        int received = Math.min(maxReceive, space);
+        if (!simulate && received > 0) {
+            energyBuffer += received;
+            setChanged();
+        }
+        return received;
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) { return 0; }
+
+    @Override
+    public int getMaxEnergyStored() { return tier.energyCapacity; }
+
+    @Override
+    public boolean canExtract() { return false; }
+
+    @Override
+    public boolean canReceive() { return true; }
+
+    private static void spawnTeleportEffect(ServerLevel level, BlockPos pos) {
+        level.sendParticles(ParticleTypes.PORTAL,
+                pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                12, 0.4, 0.6, 0.4, 0.1);
+    }
+
+    private void restoreTier() {
+        Tier newTier = switch (tierId) {
+            case 1 -> Tier.TIER_2;
+            case 2 -> Tier.TIER_3;
+            default -> Tier.TIER_1;
+        };
+        if (this.tier != newTier) {
+            this.tier = newTier;
+            if (level != null && !level.isClientSide()) {
+                BlockState state = getBlockState();
+                if (state.hasProperty(MinerBlock.TIER)) {
+                    level.setBlock(worldPosition, state.setValue(MinerBlock.TIER, tierId + 1), 3);
+                }
+            }
+        }
     }
 
     private int getProgressPercent() {
@@ -238,7 +327,8 @@ public class MinerBlockEntity extends BlockEntity {
         }
 
         if (be.finished) {
-            be.setStatus(STATUS_FINISHED, state);
+            if (be.autoShutdown) be.setStatus(STATUS_IDLE, state);
+            else be.setStatus(STATUS_FINISHED, state);
             return;
         }
 
@@ -258,10 +348,19 @@ public class MinerBlockEntity extends BlockEntity {
             return;
         }
 
-        be.breakAccumulator += be.tier.blocksPerTick;
+        be.handleFuel(level);
+        be.consumeEnergy();
 
-        while (be.breakAccumulator >= be.tier.ticksPerBlock) {
-            be.breakAccumulator -= be.tier.ticksPerBlock;
+        if (be.energyBuffer <= 0) {
+            be.setStatus(STATUS_IDLE, state);
+            return;
+        }
+
+        be.breakAccumulator += be.tier.blocksPerTick;
+        int effectiveTicks = Math.max(1, (int) (be.tier.ticksPerBlock / be.getSpeedMultiplier()));
+
+        while (be.breakAccumulator >= effectiveTicks) {
+            be.breakAccumulator -= effectiveTicks;
             be.setStatus(STATUS_RUNNING, state);
 
             if (!be.mineOneBlock(serverLevel, pos, state)) {
@@ -303,30 +402,35 @@ public class MinerBlockEntity extends BlockEntity {
         maxZ = Math.max(z1, z2);
         minY = Math.min(y1, y2);
         maxY = Math.max(y1, y2);
-        scanY = maxY;
-        scanX = minX;
-        scanZ = minZ;
 
-        int mx = pos.getX();
-        int mz = pos.getZ();
-
+        int dx = Math.max(Math.abs(minX - pos.getX()), Math.abs(maxX - pos.getX()));
+        int dy = Math.max(Math.abs(minY - pos.getY()), Math.abs(maxY - pos.getY()));
+        int dz = Math.max(Math.abs(minZ - pos.getZ()), Math.abs(maxZ - pos.getZ()));
         totalBlocks = 0;
         if (level != null) {
             for (int y = maxY; y >= minY; y--) {
                 for (int x = minX; x <= maxX; x++) {
                     for (int z = minZ; z <= maxZ; z++) {
-                        if (Math.abs(x - mx) <= 1 && Math.abs(z - mz) <= 1) continue;
+                        if (Math.abs(x - pos.getX()) <= 1 && Math.abs(z - pos.getZ()) <= 1) continue;
                         BlockPos target = new BlockPos(x, y, z);
                         BlockState bs = level.getBlockState(target);
-                        if (isMineable(bs, target)) {
-                            totalBlocks++;
-                        }
+                        if (isMineable(bs, target)) totalBlocks++;
                     }
                 }
             }
         }
-
         if (totalBlocks <= 0) totalBlocks = 1;
+
+        if (dx > 300 || dy > 300 || dz > 300) {
+            setStatus(STATUS_TOO_FAR, level.getBlockState(worldPosition));
+            initialized = true;
+            return;
+        }
+
+        scanY = maxY;
+        scanX = minX;
+        scanZ = minZ;
+
         initialized = true;
     }
 
@@ -382,6 +486,49 @@ public class MinerBlockEntity extends BlockEntity {
         return true;
     }
 
+    private void consumeEnergy() {
+        if (energyBuffer <= 0) return;
+        float cost = ENERGY_PER_TICK * getEnergyMultiplier() * getSpeedMultiplier()
+                * (float) AvoidMinerServerConfig.machineEnergyMultiplier();
+        energyFraction += cost;
+        int deduct = (int) energyFraction;
+        energyFraction -= deduct;
+        energyBuffer = Math.max(0, energyBuffer - deduct);
+        if (deduct > 0) setChanged();
+    }
+
+    private void handleFuel(Level level) {
+        if (energyBuffer > tier.energyCapacity - 1) return;
+        ItemResource fuelResource = itemHandler.getResource(FUEL_SLOT);
+        int fuelAmount = itemHandler.getAmountAsInt(FUEL_SLOT);
+        if (fuelResource.isEmpty() || fuelAmount <= 0) return;
+        ItemStack fuelStack = fuelResource.toStack(1);
+        if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
+            int space = tier.energyCapacity - energyBuffer;
+            if (space > 0) {
+                int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, Math.min(space, EnergyLinkItem.TRANSFER_PER_TICK));
+                if (pulled > 0) {
+                    energyBuffer += pulled;
+                    setChanged();
+                }
+            }
+            return;
+        }
+        int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
+        if (burnTime > 0) {
+            int energy = Math.max(1, burnTime / 5);
+            if (energy > 0 && energyBuffer + energy <= tier.energyCapacity) {
+                energyBuffer += energy;
+                if (fuelStack.is(Items.LAVA_BUCKET)) {
+                    itemHandler.set(FUEL_SLOT, ItemResource.of(Items.BUCKET), 1);
+                } else {
+                    itemHandler.set(FUEL_SLOT, fuelResource, fuelAmount - 1);
+                }
+                setChanged();
+            }
+        }
+    }
+
     private boolean mineOneBlock(ServerLevel level, BlockPos minerPos, BlockState minerState) {
         int mx = minerPos.getX();
         int mz = minerPos.getZ();
@@ -406,6 +553,7 @@ public class MinerBlockEntity extends BlockEntity {
                     if (mineable) {
                         List<ItemStack> drops = getDropsWithUpgrade(level, target, targetState);
                         level.destroyBlock(target, false);
+                        spawnTeleportEffect(level, target);
                         for (ItemStack drop : drops) {
                             outputToAdjacentContainers(level, minerPos, minerState, drop);
                         }
@@ -467,9 +615,39 @@ public class MinerBlockEntity extends BlockEntity {
         return item == ModItems.FORTUNE_UPGRADE.get() || item == ModItems.SILK_UPGRADE.get();
     }
 
+    private boolean isValidSpeedUpgrade(net.minecraft.world.item.Item item) {
+        return item == ModItems.SPEED_UPGRADE_TIER_1.get()
+                || item == ModItems.SPEED_UPGRADE_TIER_2.get()
+                || item == ModItems.SPEED_UPGRADE_TIER_3.get();
+    }
+
+    private boolean isValidEnergyUpgrade(net.minecraft.world.item.Item item) {
+        return item == ModItems.ENERGY_UPGRADE_TIER_1.get()
+                || item == ModItems.ENERGY_UPGRADE_TIER_2.get()
+                || item == ModItems.ENERGY_UPGRADE_TIER_3.get();
+    }
+
     private boolean hasUpgrade(net.minecraft.world.item.Item upgrade) {
         ItemResource res = itemHandler.getResource(UPGRADE_SLOT);
         return !res.isEmpty() && res.getItem() == upgrade;
+    }
+
+    private float getSpeedMultiplier() {
+        ItemResource res = itemHandler.getResource(SPEED_UPGRADE_SLOT);
+        if (res.isEmpty()) return 1.0f;
+        if (res.getItem() == ModItems.SPEED_UPGRADE_TIER_1.get()) return 1.5f;
+        if (res.getItem() == ModItems.SPEED_UPGRADE_TIER_2.get()) return 1.7f;
+        if (res.getItem() == ModItems.SPEED_UPGRADE_TIER_3.get()) return 2.0f;
+        return 1.0f;
+    }
+
+    private float getEnergyMultiplier() {
+        ItemResource res = itemHandler.getResource(ENERGY_UPGRADE_SLOT);
+        if (res.isEmpty()) return 1.0f;
+        if (res.getItem() == ModItems.ENERGY_UPGRADE_TIER_1.get()) return 0.8f;
+        if (res.getItem() == ModItems.ENERGY_UPGRADE_TIER_2.get()) return 0.7f;
+        if (res.getItem() == ModItems.ENERGY_UPGRADE_TIER_3.get()) return 0.6f;
+        return 1.0f;
     }
 
     private boolean hasAdjacentContainer(Level level, BlockPos pos, BlockState state) {
@@ -614,8 +792,11 @@ public class MinerBlockEntity extends BlockEntity {
         output.putBoolean("initialized", initialized);
         output.putBoolean("finished", finished);
         output.putBoolean("overlayEnabled", overlayEnabled);
+        output.putBoolean("autoShutdown", autoShutdown);
         output.putInt("status", status);
         output.putInt("breakAccumulator", breakAccumulator);
+        output.putInt("Energy", energyBuffer);
+        output.putFloat("EnergyFraction", energyFraction);
         itemHandler.serialize(output.child("Inventory"));
     }
 
@@ -637,8 +818,11 @@ public class MinerBlockEntity extends BlockEntity {
         initialized = input.getBooleanOr("initialized", false);
         finished = input.getBooleanOr("finished", false);
         overlayEnabled = input.getBooleanOr("overlayEnabled", false);
+        autoShutdown = input.getBooleanOr("autoShutdown", false);
         status = input.getIntOr("status", STATUS_IDLE);
         breakAccumulator = input.getIntOr("breakAccumulator", 0);
+        energyBuffer = input.getIntOr("Energy", 0);
+        energyFraction = input.getFloatOr("EnergyFraction", 0.0f);
         ItemStacksResourceHandler tmp = new ItemStacksResourceHandler(TOTAL_SLOTS);
         tmp.deserialize(input.childOrEmpty("Inventory"));
         for (int i = 0; i < Math.min(tmp.size(), TOTAL_SLOTS); i++) {
@@ -648,5 +832,6 @@ public class MinerBlockEntity extends BlockEntity {
                 itemHandler.set(i, r, a);
             }
         }
+        restoreTier();
     }
 }

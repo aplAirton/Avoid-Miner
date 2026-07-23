@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" C ", "CHC", " C "],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "H": "minecraft:hopper"
+  },
+  "result": { "id": "avoidminer:filter_card", "count": 1 }
+}

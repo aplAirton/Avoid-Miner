@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" C ", "CSC", " C "],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "S": "minecraft:iron_sword"
+  },
+  "result": { "id": "avoidminer:damage_card_tier_1", "count": 1 }
+}

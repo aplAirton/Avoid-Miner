@@ -6,10 +6,12 @@ import com.airton.avoidminer.block.entity.CreativeBatteryBlockEntity;
 import com.airton.avoidminer.block.entity.LootrBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import com.airton.avoidminer.block.entity.MinerBlockEntity;
+import com.airton.avoidminer.block.entity.MobGrinderBlockEntity;
 import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.XpVaultBlockEntity;
 import com.airton.avoidminer.block.entity.ResonantRepairStationBlockEntity;
 import com.airton.avoidminer.block.entity.VillagerHubBlockEntity;
+import com.airton.avoidminer.block.entity.EnchanterBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -58,4 +60,10 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinerBlockEntity>> MINER = BLOCK_ENTITIES.register("miner",
             () -> new BlockEntityType<>(MinerBlockEntity::new, Set.of(ModBlocks.MINER.get())));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MobGrinderBlockEntity>> MOB_GRINDER = BLOCK_ENTITIES.register("mob_grinder",
+            () -> new BlockEntityType<>(MobGrinderBlockEntity::new, Set.of(ModBlocks.MOB_GRINDER.get())));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnchanterBlockEntity>> ENCHANTER = BLOCK_ENTITIES.register("enchanter",
+            () -> new BlockEntityType<>(EnchanterBlockEntity::new, Set.of(ModBlocks.ENCHANTER.get())));
 }

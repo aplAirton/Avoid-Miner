@@ -36,6 +36,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import com.airton.avoidminer.item.AttractionCardItem;
+import com.airton.avoidminer.item.DamageCardItem;
+import com.airton.avoidminer.item.MobGrinderRangeCardItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -165,6 +168,31 @@ public class ModItems {
 
     public static final DeferredItem<Item> FILTER_CARD = ITEMS.registerItem("filter_card",
             FilterCardItem::new);
+
+    public static final DeferredItem<Item> DAMAGE_CARD_TIER_1 = ITEMS.registerItem("damage_card_tier_1",
+            props -> new DamageCardItem(DamageCardItem.Tier.TIER_1, props));
+    public static final DeferredItem<Item> DAMAGE_CARD_TIER_2 = ITEMS.registerItem("damage_card_tier_2",
+            props -> new DamageCardItem(DamageCardItem.Tier.TIER_2, props));
+    public static final DeferredItem<Item> DAMAGE_CARD_TIER_3 = ITEMS.registerItem("damage_card_tier_3",
+            props -> new DamageCardItem(DamageCardItem.Tier.TIER_3, props));
+
+    public static final DeferredItem<Item> GRINDER_RANGE_1 = ITEMS.registerItem("grinder_range_1",
+            props -> new MobGrinderRangeCardItem(1, props));
+    public static final DeferredItem<Item> GRINDER_RANGE_2 = ITEMS.registerItem("grinder_range_2",
+            props -> new MobGrinderRangeCardItem(2, props));
+    public static final DeferredItem<Item> GRINDER_RANGE_3 = ITEMS.registerItem("grinder_range_3",
+            props -> new MobGrinderRangeCardItem(3, props));
+    public static final DeferredItem<Item> GRINDER_RANGE_4 = ITEMS.registerItem("grinder_range_4",
+            props -> new MobGrinderRangeCardItem(4, props));
+    public static final DeferredItem<Item> GRINDER_RANGE_5 = ITEMS.registerItem("grinder_range_5",
+            props -> new MobGrinderRangeCardItem(5, props));
+
+    public static final DeferredItem<Item> ATTRACTION_CARD_TIER_1 = ITEMS.registerItem("attraction_card_tier_1",
+            props -> new AttractionCardItem(AttractionCardItem.Tier.TIER_1, props));
+    public static final DeferredItem<Item> ATTRACTION_CARD_TIER_2 = ITEMS.registerItem("attraction_card_tier_2",
+            props -> new AttractionCardItem(AttractionCardItem.Tier.TIER_2, props));
+    public static final DeferredItem<Item> ATTRACTION_CARD_TIER_3 = ITEMS.registerItem("attraction_card_tier_3",
+            props -> new AttractionCardItem(AttractionCardItem.Tier.TIER_3, props));
 
     public static final DeferredItem<Item> ENERGY_UPGRADE_TIER_1 = ITEMS.registerItem("energy_upgrade_tier_1",
             props -> new MachineUpgradeItem(props, "tooltip.avoidminer.energy_upgrade_tier_1"));
@@ -400,12 +428,18 @@ public class ModItems {
     public static final DeferredItem<Item> ZOMBIE_POISON = ITEMS.registerItem("zombie_poison",
             props -> new ZombiePoisonItem(props.stacksTo(16)));
     public static final DeferredItem<Item> VILLAGER_LASSO = ITEMS.registerItem("villager_lasso",
-            props -> new VillagerLassoItem(props.durability(8).stacksTo(1)));
+            props -> new VillagerLassoItem(props.durability(16).stacksTo(1)));
     public static final DeferredItem<BlockItem> MINER = ITEMS.registerItem("miner",
             props -> new BlockItem(ModBlocks.MINER.get(), props.stacksTo(1)));
 
     public static final DeferredItem<BlockItem> VILLAGER_HUB = ITEMS.registerItem("villager_hub",
             props -> new BlockItem(ModBlocks.VILLAGER_HUB.get(), props.stacksTo(1)));
+
+    public static final DeferredItem<BlockItem> MOB_GRINDER = ITEMS.registerItem("mob_grinder",
+            props -> new BlockItem(ModBlocks.MOB_GRINDER.get(), props.stacksTo(1)));
+
+    public static final DeferredItem<BlockItem> ENCHANTER = ITEMS.registerItem("enchanter",
+            props -> new BlockItem(ModBlocks.ENCHANTER.get(), props.stacksTo(1)));
 
     public static final DeferredItem<Item> GUIDE_BOOK = ITEMS.registerItem("guide_book",
             props -> new GuideBookItem(props.stacksTo(1)));
@@ -498,6 +532,10 @@ public class ModItems {
 
     public static final DeferredItem<Item> ITEM_STACKING_UPGRADE = ITEMS.registerItem("item_stacking_upgrade",
             props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_stacking_upgrade"));
+    public static final DeferredItem<Item> ITEM_STACKING_UPGRADE_TIER_2 = ITEMS.registerItem("item_stacking_upgrade_tier_2",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_stacking_upgrade_tier_2"));
+    public static final DeferredItem<Item> ITEM_STACKING_UPGRADE_TIER_3 = ITEMS.registerItem("item_stacking_upgrade_tier_3",
+            props -> new MachineUpgradeItem(props, "tooltip.avoidminer.item_stacking_upgrade_tier_3"));
 
     public static final DeferredItem<Item> ENERGY_LINK = ITEMS.registerItem("energy_link",
             com.airton.avoidminer.item.EnergyLinkItem::new);

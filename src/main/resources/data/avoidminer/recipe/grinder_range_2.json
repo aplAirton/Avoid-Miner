@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" V ", "EAE", " V "],
+  "key": {
+    "A": "avoidminer:grinder_range_1",
+    "E": "minecraft:ender_eye",
+    "V": "minecraft:amethyst_shard"
+  },
+  "result": { "id": "avoidminer:grinder_range_2", "count": 1 }
+}

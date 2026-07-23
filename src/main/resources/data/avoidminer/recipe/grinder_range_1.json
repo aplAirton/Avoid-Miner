@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" V ", "EME", " V "],
+  "key": {
+    "M": "minecraft:map",
+    "E": "minecraft:ender_eye",
+    "V": "minecraft:ender_eye"
+  },
+  "result": { "id": "avoidminer:grinder_range_1", "count": 1 }
+}

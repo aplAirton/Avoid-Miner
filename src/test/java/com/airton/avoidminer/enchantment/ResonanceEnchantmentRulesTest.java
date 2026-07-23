@@ -6,8 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ResonanceEnchantmentRulesTest {
     @Test
-    public void resonantEchoLastsThreeSeconds() {
-        assertEquals(60, ResonanceEnchantmentRules.ECHO_DURATION_TICKS);
+    public void resonantEchoLastsNineSeconds() {
+        assertEquals(180, ResonanceEnchantmentRules.ECHO_DURATION_TICKS);
     }
 
     @Test

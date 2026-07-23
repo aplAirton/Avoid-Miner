@@ -246,10 +246,13 @@ public class LootrBlockEntity extends BlockEntity implements EnergyReceiver {
             if (!fuelRes.isEmpty() && fuelAmt > 0) {
                 ItemStack fuelStack = fuelRes.toStack(1);
                 if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
-                    int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, EnergyLinkItem.TRANSFER_PER_TICK);
-                    if (pulled > 0) {
-                        be.energyBuffer = Math.min(be.energyBuffer + pulled, ENERGY_CAPACITY);
-                        dirty = true;
+                    int space = ENERGY_CAPACITY - be.energyBuffer;
+                    if (space > 0) {
+                        int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, Math.min(space, EnergyLinkItem.TRANSFER_PER_TICK));
+                        if (pulled > 0) {
+                            be.energyBuffer += pulled;
+                            dirty = true;
+                        }
                     }
                 } else {
                     int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());

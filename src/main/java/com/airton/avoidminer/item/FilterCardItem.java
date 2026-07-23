@@ -121,7 +121,11 @@ public class FilterCardItem extends Item {
     private static void updateEntries(ItemStack stack, java.util.function.Consumer<ListTag> mutator) {
         CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         stack.set(DataComponents.CUSTOM_DATA, data.update(tag -> {
-            ListTag list = tag.getListOrEmpty(ENTRIES_KEY).copy();
+            ListTag list = new ListTag();
+            ListTag existing = tag.getListOrEmpty(ENTRIES_KEY);
+            for (int i = 0; i < existing.size(); i++) {
+                list.add(existing.get(i));
+            }
             mutator.accept(list);
             tag.put(ENTRIES_KEY, list);
         }));

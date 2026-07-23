@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MSM", "CBC", "MAM"],
+  "key": {
+    "M": "avoidminer:magnetite_block",
+    "S": "minecraft:diamond_sword",
+    "A": "minecraft:diamond_axe",
+    "C": "avoidminer:resonant_crystal",
+    "B": "avoidminer:battery"
+  },
+  "result": { "id": "avoidminer:mob_grinder", "count": 1 }
+}

@@ -18,22 +18,29 @@ public class MinerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public static final int SLOT_SIZE = 18;
-    public static final int RANGE_X = 79;
+    public static final int RANGE_X = 85;
     public static final int RANGE_Y = 22;
-    public static final int FILTER_X = 8;
+    public static final int FILTER_X = 43;
     public static final int FILTER_Y = 22;
-    public static final int UPGRADE_X = 43;
+    public static final int UPGRADE_X = 61;
     public static final int UPGRADE_Y = 22;
+    public static final int SPEED_UPGRADE_X = 109;
+    public static final int SPEED_UPGRADE_Y = 22;
+    public static final int ENERGY_UPGRADE_X = 127;
+    public static final int ENERGY_UPGRADE_Y = 22;
+    public static final int FUEL_X = 150;
+    public static final int FUEL_Y = 70;
     public static final int FILTER_GRID_X = 8;
-    public static final int FILTER_GRID_Y = 90;
+    public static final int FILTER_GRID_Y = 84;
     public static final int FILTER_GRID_COLS = 9;
     public static final int FILTER_GRID_ROWS = 2;
     public static final int PLAYER_X = 8;
-    public static final int PLAYER_Y = 134;
-    public static final int HOTBAR_Y = 192;
+    public static final int PLAYER_Y = 130;
+    public static final int HOTBAR_Y = 188;
     public static final int OVERLAY_BUTTON = 0;
     public static final int FILTER_CLEAR_BUTTON = 1;
     public static final int RESET_BUTTON = 2;
+    public static final int AUTO_SHUTDOWN_BUTTON = 3;
     public static final int FILTER_REMOVE_BASE = 100;
     public static final int FILTER_MAX_DISPLAY = 18;
 
@@ -81,6 +88,30 @@ public class MinerMenu extends AbstractContainerMenu {
             @Override public int getMaxStackSize() { return 1; }
         });
 
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                MinerBlockEntity.FUEL_SLOT, FUEL_X, FUEL_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 64; }
+        });
+
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                MinerBlockEntity.SPEED_UPGRADE_SLOT, SPEED_UPGRADE_X, SPEED_UPGRADE_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 1; }
+        });
+
+        addSlot(new ResourceHandlerSlot(handler, handler instanceof ItemStacksResourceHandler h ? h::set : this::noopSet,
+                MinerBlockEntity.ENERGY_UPGRADE_SLOT, ENERGY_UPGRADE_X, ENERGY_UPGRADE_Y) {
+            @Override public boolean mayPlace(ItemStack stack) {
+                return handler.isValid(this.getSlotIndex(), ItemResource.of(stack));
+            }
+            @Override public int getMaxStackSize() { return 1; }
+        });
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(playerInventory, col + row * 9 + 9,
@@ -105,6 +136,9 @@ public class MinerMenu extends AbstractContainerMenu {
         long pct = (long) getTotalMined() * 100 / total;
         return (int) Math.min(100, Math.max(0, pct));
     }
+    public int getEnergyStored() { return data.get(MinerBlockEntity.DATA_ENERGY); }
+    public int getEnergyCapacity() { return data.get(MinerBlockEntity.DATA_ENERGY_CAPACITY); }
+    public boolean isAutoShutdown() { return data.get(MinerBlockEntity.DATA_AUTO_SHUTDOWN) == 1; }
     public boolean isOperating() { return getStatus() == MinerBlockEntity.STATUS_RUNNING; }
 
     @Override
@@ -119,6 +153,10 @@ public class MinerMenu extends AbstractContainerMenu {
         }
         if (id == RESET_BUTTON) {
             if (blockEntity != null) blockEntity.resetMining();
+            return true;
+        }
+        if (id == AUTO_SHUTDOWN_BUTTON) {
+            if (blockEntity != null) blockEntity.toggleAutoShutdown();
             return true;
         }
         if (id >= FILTER_REMOVE_BASE && id < FILTER_REMOVE_BASE + FILTER_MAX_DISPLAY) {

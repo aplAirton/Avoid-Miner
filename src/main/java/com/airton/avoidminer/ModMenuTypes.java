@@ -10,6 +10,7 @@ import com.airton.avoidminer.menu.RangeCardMenu;
 import com.airton.avoidminer.menu.XpVaultMenu;
 import com.airton.avoidminer.menu.MinerMenu;
 import com.airton.avoidminer.menu.ResonantRepairStationMenu;
+import com.airton.avoidminer.menu.MobGrinderMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -56,4 +57,7 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<RangeCardMenu>> RANGE_CARD = MENUS.register("range_card",
             () -> new MenuType<>(RangeCardMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<MobGrinderMenu>> MOB_GRINDER = MENUS.register("mob_grinder",
+            () -> new MenuType<>(MobGrinderMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

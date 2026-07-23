@@ -6,7 +6,7 @@ public final class ResonantShieldRules {
     public static final double BLAST_RANGE = 13.0;
     public static final double BLAST_HALF_ANGLE_DEGREES = 32.0;
     public static final int STUN_TICKS = 50;
-    public static final float BLAST_DAMAGE = 6.0F;
+    public static final float BLAST_DAMAGE = 12.0F;
 
     private ResonantShieldRules() {
     }

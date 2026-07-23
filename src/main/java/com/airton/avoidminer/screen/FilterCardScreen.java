@@ -2,7 +2,6 @@ package com.airton.avoidminer.screen;
 
 import com.airton.avoidminer.item.FilterCardItem;
 import com.airton.avoidminer.menu.FilterCardMenu;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -63,10 +62,10 @@ public class FilterCardScreen extends AbstractContainerScreen<FilterCardMenu> {
     }
 
     private void refreshFilterEntries() {
-        filterEntries.clear();
+        filterEntries = new ArrayList<>();
         ItemStack filterCard = findFilterCard();
         if (!filterCard.isEmpty()) {
-            filterEntries = FilterCardItem.getEntries(filterCard);
+            filterEntries.addAll(FilterCardItem.getEntries(filterCard));
         }
     }
 
@@ -274,14 +273,8 @@ public class FilterCardScreen extends AbstractContainerScreen<FilterCardMenu> {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (searchBox.isFocused()) {
-            if (searchBox.keyPressed(event)) {
-                return true;
-            }
-            if (minecraft.options.keyInventory.getKey().getValue() == event.key()
-                    && minecraft.options.keyInventory.getKey().getType() == InputConstants.Type.KEYSYM) {
-                return true;
-            }
+        if (searchBox.isFocused() && searchBox.keyPressed(event)) {
+            return true;
         }
         return super.keyPressed(event);
     }

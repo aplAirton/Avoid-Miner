@@ -63,7 +63,8 @@ public final class ResonantRepairStationBlockEntity extends BlockEntity {
     public static boolean isSupportedEquipment(ItemStack stack) {
         return stack.is(ModItems.RESONANT_PICKAXE.get())
                 || stack.is(ModItems.GLASS_SWORD.get())
-                || stack.is(ModItems.THOR_HAMMER.get());
+                || stack.is(ModItems.THOR_HAMMER.get())
+                || stack.is(ModItems.RESONANT_RETALIATION_SHIELD.get());
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state,

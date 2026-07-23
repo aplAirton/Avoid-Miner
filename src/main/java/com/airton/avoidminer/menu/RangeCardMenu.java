@@ -9,11 +9,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class RangeCardMenu extends AbstractContainerMenu {
     public static final int IMAGE_WIDTH = 176;
-    public static final int IMAGE_HEIGHT = 204;
+    public static final int IMAGE_HEIGHT = 220;
 
     public static final int PLAYER_INV_X = 8;
-    public static final int PLAYER_INV_Y = 114;
-    public static final int HOTBAR_Y = 172;
+    public static final int PLAYER_INV_Y = 138;
+    public static final int HOTBAR_Y = 196;
 
     public RangeCardMenu(int id, Inventory inv) {
         super(ModMenuTypes.RANGE_CARD.get(), id);

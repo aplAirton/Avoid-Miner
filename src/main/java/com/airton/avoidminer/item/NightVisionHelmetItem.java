@@ -31,13 +31,13 @@ public final class NightVisionHelmetItem extends Item {
     );
     private static final ArmorMaterial MATERIAL = new ArmorMaterial(
             NightVisionHelmetRules.DURABILITY_MULTIPLIER,
-            ArmorMaterials.IRON.defense(),
+            ArmorMaterials.DIAMOND.defense(),
             10,
-            SoundEvents.ARMOR_EQUIP_IRON,
+            SoundEvents.ARMOR_EQUIP_DIAMOND,
             NightVisionHelmetRules.TOUGHNESS,
             0.0F,
             REPAIR_INGREDIENTS,
-            EquipmentAssets.IRON
+            EquipmentAssets.DIAMOND
     );
 
     public NightVisionHelmetItem(Properties properties) {

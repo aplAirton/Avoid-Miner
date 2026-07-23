@@ -48,6 +48,14 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
     public static final double ABSORB_RADIUS = 8.0;
     public static final int STACK_MULTIPLIER = 4;
 
+    private int getStackMultiplier() {
+        ItemResource r = itemHandler.getResource(UPG_STACK_SLOT);
+        if (r.isEmpty()) return 1;
+        if (r.getItem() == ModItems.ITEM_STACKING_UPGRADE_TIER_2.get()) return 8;
+        if (r.getItem() == ModItems.ITEM_STACKING_UPGRADE_TIER_3.get()) return 16;
+        return 4;
+    }
+
     // XP em pontos excede 16 bits, então sincroniza em duas metades
     public static final int DATA_XP_LO = 0;
     public static final int DATA_XP_HI = 1;
@@ -66,7 +74,9 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
             if (resource.isEmpty()) return false;
             ItemStack stack = resource.toStack(1);
             if (slot == UPG_XP_SLOT) return stack.is(ModItems.XP_ABSORB_UPGRADE.get());
-            if (slot == UPG_STACK_SLOT) return stack.is(ModItems.ITEM_STACKING_UPGRADE.get());
+            if (slot == UPG_STACK_SLOT) return stack.is(ModItems.ITEM_STACKING_UPGRADE.get())
+                    || stack.is(ModItems.ITEM_STACKING_UPGRADE_TIER_2.get())
+                    || stack.is(ModItems.ITEM_STACKING_UPGRADE_TIER_3.get());
             if (slot == UPG_ITEM_SLOT) return stack.is(ModItems.ITEM_ABSORB_UPGRADE.get());
             return slot >= STORAGE_START && slot < STORAGE_START + STORAGE_COUNT;
         }
@@ -74,8 +84,26 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
         @Override
         public long getCapacityAsLong(int slot, ItemResource resource) {
             if (slot >= UPG_XP_SLOT) return 1;
-            long base = super.getCapacityAsLong(slot, resource);
-            return hasStackUpgrade() ? base * STACK_MULTIPLIER : base;
+            return super.getCapacityAsLong(slot, resource);
+        }
+
+        @Override
+        protected int getCapacity(int slot, ItemResource resource) {
+            if (slot >= UPG_XP_SLOT) return 1;
+            int base = super.getCapacity(slot, resource);
+            return hasStackUpgrade() ? base * getStackMultiplier() : base;
+        }
+
+        @Override
+        public int extract(int slot, ItemResource resource, int amount, TransactionContext transaction) {
+            if (slot == UPG_STACK_SLOT) {
+                for (int i = STORAGE_START; i < STORAGE_START + STORAGE_COUNT; i++) {
+                    if (itemHandler.getAmountAsInt(i) > resource.getItem().getDefaultMaxStackSize()) {
+                        return 0;
+                    }
+                }
+            }
+            return super.extract(slot, resource, amount, transaction);
         }
     };
 
@@ -85,7 +113,9 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
         @Override public long getAmountAsLong(int index) { return itemHandler.getAmountAsLong(index); }
         @Override public long getCapacityAsLong(int index, ItemResource resource) { return itemHandler.getCapacityAsLong(index, resource); }
         @Override public boolean isValid(int index, ItemResource resource) { return itemHandler.isValid(index, resource); }
-        @Override public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) { return 0; }
+        @Override public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+            return itemHandler.insert(index, resource, amount, transaction);
+        }
         @Override public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
             if (index >= STORAGE_START && index < STORAGE_START + STORAGE_COUNT) {
                 return itemHandler.extract(index, resource, amount, transaction);
@@ -128,7 +158,10 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
 
     public boolean hasStackUpgrade() {
         ItemResource r = itemHandler.getResource(UPG_STACK_SLOT);
-        return !r.isEmpty() && r.toStack(1).is(ModItems.ITEM_STACKING_UPGRADE.get());
+        if (r.isEmpty()) return false;
+        return r.getItem() == ModItems.ITEM_STACKING_UPGRADE.get()
+                || r.getItem() == ModItems.ITEM_STACKING_UPGRADE_TIER_2.get()
+                || r.getItem() == ModItems.ITEM_STACKING_UPGRADE_TIER_3.get();
     }
 
     public boolean hasItemUpgrade() {
@@ -234,7 +267,7 @@ public class MagnetiteBarrelBlockEntity extends BlockEntity {
             @Override public int size() { return itemHandler.size(); }
             @Override public ItemResource getResource(int index) { return itemHandler.getResource(index); }
             @Override public long getAmountAsLong(int index) { return itemHandler.getAmountAsLong(index); }
-            @Override public long getCapacityAsLong(int index, ItemResource resource) { return itemHandler.getCapacityAsLong(index, resource); }
+        @Override public long getCapacityAsLong(int index, ItemResource resource) { return itemHandler.getCapacityAsLong(index, resource); }
             @Override public boolean isValid(int index, ItemResource resource) {
                 return upgradeSlot(index) && itemHandler.isValid(index, resource);
             }

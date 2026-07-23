@@ -10,11 +10,11 @@ import static org.junit.Assert.assertTrue;
 
 public class NightVisionHelmetRulesTest {
     @Test
-    public void durabilityStaysBetweenIronAndDiamond() {
-        assertEquals(198, NightVisionHelmetRules.HELMET_DURABILITY);
-        assertTrue(NightVisionHelmetRules.HELMET_DURABILITY > 165);
-        assertTrue(NightVisionHelmetRules.HELMET_DURABILITY < 363);
-        assertEquals(0.5F, NightVisionHelmetRules.TOUGHNESS, 0.0F);
+    public void durabilityStaysBetweenDiamondAndNetherite() {
+        assertEquals(385, NightVisionHelmetRules.HELMET_DURABILITY);
+        assertTrue(NightVisionHelmetRules.HELMET_DURABILITY > 363);
+        assertTrue(NightVisionHelmetRules.HELMET_DURABILITY < 407);
+        assertEquals(2.5F, NightVisionHelmetRules.TOUGHNESS, 0.0F);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class NightVisionHelmetRulesTest {
             assertTrue(recipe.contains("\"GHG\""));
             assertTrue(recipe.contains("\"M\": \"avoidminer:magnetite_ingot\""));
             assertTrue(recipe.contains("\"G\": \"minecraft:glowstone_dust\""));
-            assertTrue(recipe.contains("\"H\": \"minecraft:iron_helmet\""));
+            assertTrue(recipe.contains("\"H\": \"minecraft:diamond_helmet\""));
         }
     }
 }

@@ -34,6 +34,7 @@ public class RangeCardItem extends Item {
     private static final String X2_KEY = "x2";
     private static final String Y2_KEY = "y2";
     private static final String Z2_KEY = "z2";
+    public static final int MAX_VOLUME = 3000000;
 
     public RangeCardItem(Properties properties) {
         super(properties.stacksTo(1));
@@ -91,14 +92,18 @@ public class RangeCardItem extends Item {
             setZ1(stack, clicked.getZ());
             player.sendSystemMessage(Component.translatable("msg.avoidminer.range_card.pos1", clicked.getX(), clicked.getY(), clicked.getZ()));
         } else {
+            int x1 = getX1(stack), y1 = getY1(stack), z1 = getZ1(stack);
+            int vol = getVolume(x1, y1, z1, clicked.getX(), clicked.getY(), clicked.getZ());
+            if (vol > MAX_VOLUME) {
+                player.sendSystemMessage(Component.translatable("msg.avoidminer.range_card.too_large", vol, MAX_VOLUME)
+                        .withStyle(ChatFormatting.RED));
+                return InteractionResult.SUCCESS;
+            }
             setX2(stack, clicked.getX());
             setY2(stack, clicked.getY());
             setZ2(stack, clicked.getZ());
-            int x1 = getX1(stack);
-            int z1 = getZ1(stack);
             int x2 = getX2(stack);
             int z2 = getZ2(stack);
-            int y1 = getY1(stack);
             int y2 = getY2(stack);
             int depth = Math.abs(y2 - y1);
             player.sendSystemMessage(Component.translatable("msg.avoidminer.range_card.complete",
@@ -111,6 +116,20 @@ public class RangeCardItem extends Item {
     private static boolean hasData(ItemStack stack) {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         return tag.contains(X1_KEY);
+    }
+
+    public static int getVolume(int x1, int y1, int z1, int x2, int y2, int z2) {
+        long dx = (long) Math.abs(x2 - x1) + 1;
+        long dy = (long) Math.abs(y2 - y1) + 1;
+        long dz = (long) Math.abs(z2 - z1) + 1;
+        long vol = dx * dy * dz;
+        return vol > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) vol;
+    }
+
+    public static int getVolume(ItemStack stack) {
+        if (!hasCompleteData(stack)) return 0;
+        return getVolume(getX1(stack), getY1(stack), getZ1(stack),
+                getX2(stack), getY2(stack), getZ2(stack));
     }
 
     public static boolean hasCompleteData(ItemStack stack) {
@@ -218,9 +237,12 @@ public class RangeCardItem extends Item {
             int y1 = getY1(stack);
             int y2 = getY2(stack);
             int depth = Math.abs(y2 - y1);
+            int vol = getVolume(stack);
             builder.accept(Component.translatable("tooltip.avoidminer.range_card.set",
                     Math.min(x1, x2), Math.min(z1, z2), Math.max(x1, x2), Math.max(z1, z2), depth)
                     .withStyle(ChatFormatting.GREEN));
+            builder.accept(Component.translatable("tooltip.avoidminer.range_card.volume", vol, MAX_VOLUME)
+                    .withStyle(vol > MAX_VOLUME ? ChatFormatting.RED : ChatFormatting.GRAY));
         } else if (hasData(stack)) {
             builder.accept(Component.translatable("tooltip.avoidminer.range_card.pos1_only",
                     getX1(stack), getY1(stack), getZ1(stack)).withStyle(ChatFormatting.YELLOW));

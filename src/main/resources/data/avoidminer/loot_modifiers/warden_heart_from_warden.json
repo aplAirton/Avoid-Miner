@@ -7,7 +7,7 @@
     },
     {
       "condition": "minecraft:random_chance",
-      "chance": 0.05
+      "chance": 1.0
     }
   ],
   "table": "avoidminer:items/warden_heart"

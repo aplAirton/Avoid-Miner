@@ -1,6 +1,7 @@
 package com.airton.avoidminer.item;
 
 import com.airton.avoidminer.block.entity.BatteryBlockEntity;
+import com.airton.avoidminer.block.entity.CreativeBatteryBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -46,7 +47,7 @@ public class EnergyLinkItem extends Item {
         Level level = context.getLevel();
         BlockEntity be = level.getBlockEntity(context.getClickedPos());
 
-        if (be instanceof BatteryBlockEntity) {
+        if (be instanceof BatteryBlockEntity || be instanceof CreativeBatteryBlockEntity) {
             if (player == null || !player.isSecondaryUseActive()) return InteractionResult.PASS;
             if (level.isClientSide()) return InteractionResult.SUCCESS;
 
@@ -100,6 +101,9 @@ public class EnergyLinkItem extends Item {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof BatteryBlockEntity battery) {
             return battery.extractEnergy(amount);
+        }
+        if (be instanceof CreativeBatteryBlockEntity) {
+            return amount;
         }
         return 0;
     }

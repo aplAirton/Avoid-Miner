@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MPM", "SCR", "MHM"],
+  "key": {
+    "M": "avoidminer:magnetite_block",
+    "P": "minecraft:diamond_pickaxe",
+    "C": "avoidminer:resonant_crystal_block",
+    "S": "minecraft:diamond_shovel",
+    "R": "minecraft:diamond_axe",
+    "H": "minecraft:diamond_hoe"
+  },
+  "result": { "id": "avoidminer:miner", "count": 1 }
+}

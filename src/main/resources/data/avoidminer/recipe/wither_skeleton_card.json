@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["GMG", "ECE", "GKG"],
   "key": {
-    "G": "minecraft:netherite_ingot",
+    "G": "avoidminer:resonant_crystal",
     "M": "avoidminer:magnetite_ingot",
     "E": "minecraft:ender_eye",
     "C": "minecraft:wither_skeleton_skull",

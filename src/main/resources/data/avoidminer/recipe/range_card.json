@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" C ", "CPC", " C "],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "P": "minecraft:paper"
+  },
+  "result": { "id": "avoidminer:range_card", "count": 1 }
+}

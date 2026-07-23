@@ -25,9 +25,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.LinkedHashMap;
@@ -391,10 +393,13 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
             if (!fuelResource.isEmpty() && fuelAmount > 0) {
                 ItemStack fuelStack = fuelResource.toStack(1);
                 if (fuelStack.is(ModItems.ENERGY_LINK.get())) {
-                    int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, EnergyLinkItem.TRANSFER_PER_TICK);
-                    if (pulled > 0) {
-                        be.energyBuffer = Math.min(be.energyBuffer + pulled, tier.energyCapacity);
-                        dirty = true;
+                    int space = tier.energyCapacity - be.energyBuffer;
+                    if (space > 0) {
+                        int pulled = EnergyLinkItem.drawEnergy(level, fuelStack, Math.min(space, EnergyLinkItem.TRANSFER_PER_TICK));
+                        if (pulled > 0) {
+                            be.energyBuffer += pulled;
+                            dirty = true;
+                        }
                     }
                 } else {
                     int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING, level.fuelValues());
@@ -420,6 +425,79 @@ public class ProcessorBlockEntity extends BlockEntity implements EnergyReceiver 
         }
 
         if (dirty) be.setChanged();
+
+        be.pullFromLeft(level, pos, state, tier);
+        be.pushToRightAndDown(level, pos, state, tier);
+    }
+
+    private void pullFromLeft(Level level, BlockPos pos, BlockState state, Tier tier) {
+        Direction left = state.getValue(ProcessorBlock.FACING).getCounterClockWise();
+        BlockPos target = pos.relative(left);
+        ResourceHandler<ItemResource> src = getAdjacentHandler(level, target);
+        if (src == null) return;
+
+        for (int i = 0; i < tier.inputCount; i++) {
+            int slot = tier.getInputStart() + i;
+            ItemResource existing = itemHandler.getResource(slot);
+            int existingAmt = itemHandler.getAmountAsInt(slot);
+            if (!existing.isEmpty() && existingAmt >= existing.getItem().getDefaultMaxStackSize()) continue;
+
+            for (int s = 0; s < src.size(); s++) {
+                ItemResource res = src.getResource(s);
+                if (res == null || res.isEmpty()) continue;
+                if (!itemHandler.isValid(slot, res)) continue;
+                if (!existing.isEmpty() && !existing.equals(res)) continue;
+                try (Transaction tx = Transaction.openRoot()) {
+                    int extracted = src.extract(s, res, 1, tx);
+                    if (extracted > 0) {
+                        int inserted = itemHandler.insert(slot, res, extracted, tx);
+                        if (inserted > 0) {
+                            tx.commit();
+                            setChanged();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void pushToRightAndDown(Level level, BlockPos pos, BlockState state, Tier tier) {
+        Direction facing = state.getValue(ProcessorBlock.FACING);
+        for (Direction dir : Direction.values()) {
+            if (dir == facing) continue;
+            if (dir == Direction.UP) continue;
+            ResourceHandler<ItemResource> dest = getAdjacentHandler(level, pos.relative(dir));
+            if (dest == null) continue;
+
+            for (int i = 0; i < tier.inputCount; i++) {
+                int outSlot = tier.getOutputStart() + i;
+                ItemResource res = itemHandler.getResource(outSlot);
+                int amt = itemHandler.getAmountAsInt(outSlot);
+                if (res.isEmpty() || amt <= 0) continue;
+
+                try (Transaction tx = Transaction.openRoot()) {
+                    int extracted = itemHandler.extract(outSlot, res, 1, tx);
+                    if (extracted > 0) {
+                        int slots = dest instanceof ItemStacksResourceHandler h ? h.size() : 0;
+                    int inserted = 0;
+                    for (int s = 0; s < slots && inserted <= 0; s++) {
+                        inserted = dest.insert(s, res, extracted, tx);
+                    }
+                    if (inserted > 0) {
+                        tx.commit();
+                        setChanged();
+                    }
+                    }
+                }
+            }
+        }
+    }
+
+    private static ResourceHandler<ItemResource> getAdjacentHandler(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be == null) return null;
+        return Capabilities.Item.BLOCK.getCapability(level, pos, null, be, null);
     }
 
     private void processOneInput(int inputSlot, int outputSlot, ItemStack result) {

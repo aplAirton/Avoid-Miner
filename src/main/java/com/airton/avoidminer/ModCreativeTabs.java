@@ -25,6 +25,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.AVOID_MINER_TIER_2.get());
                         output.accept(ModItems.AVOID_MINER_TIER_3.get());
                         output.accept(ModItems.MINER.get());
+                        output.accept(ModItems.MOB_GRINDER.get());
+                        output.accept(ModItems.ENCHANTER.get());
                         output.accept(ModItems.MAGNETITE_ORE.get());
                         output.accept(ModItems.RAW_MAGNETITE_BLOCK.get());
                         output.accept(ModItems.MAGNETITE_BLOCK.get());
@@ -88,6 +90,8 @@ public class ModCreativeTabs {
                         output.accept(ModItems.ITEM_ABSORB_UPGRADE.get());
                         output.accept(ModItems.XP_ABSORB_UPGRADE.get());
                         output.accept(ModItems.ITEM_STACKING_UPGRADE.get());
+                        output.accept(ModItems.ITEM_STACKING_UPGRADE_TIER_2.get());
+                        output.accept(ModItems.ITEM_STACKING_UPGRADE_TIER_3.get());
                         output.accept(ModItems.CAPACITY_UPGRADE_TIER_1.get());
                         output.accept(ModItems.CAPACITY_UPGRADE_TIER_2.get());
                         output.accept(ModItems.CAPACITY_UPGRADE_TIER_3.get());
@@ -98,6 +102,17 @@ public class ModCreativeTabs {
                         output.accept(ModItems.UPGRADE_TIER_3.get());
                         output.accept(ModItems.RANGE_CARD.get());
                         output.accept(ModItems.FILTER_CARD.get());
+                        output.accept(ModItems.DAMAGE_CARD_TIER_1.get());
+                        output.accept(ModItems.DAMAGE_CARD_TIER_2.get());
+                        output.accept(ModItems.DAMAGE_CARD_TIER_3.get());
+                        output.accept(ModItems.GRINDER_RANGE_1.get());
+                        output.accept(ModItems.GRINDER_RANGE_2.get());
+                        output.accept(ModItems.GRINDER_RANGE_3.get());
+                        output.accept(ModItems.GRINDER_RANGE_4.get());
+                        output.accept(ModItems.GRINDER_RANGE_5.get());
+                        output.accept(ModItems.ATTRACTION_CARD_TIER_1.get());
+                        output.accept(ModItems.ATTRACTION_CARD_TIER_2.get());
+                        output.accept(ModItems.ATTRACTION_CARD_TIER_3.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_1.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_2.get());
                         output.accept(ModItems.MINING_UPGRADE_TIER_3.get());

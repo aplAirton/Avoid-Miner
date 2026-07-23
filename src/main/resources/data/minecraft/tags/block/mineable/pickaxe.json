@@ -22,6 +22,9 @@
     "avoidminer:large_resonant_crystal_bud",
     "avoidminer:medium_resonant_crystal_bud",
     "avoidminer:small_resonant_crystal_bud",
-    "avoidminer:resonant_repair_station"
+    "avoidminer:resonant_repair_station",
+    "avoidminer:miner",
+    "avoidminer:mob_grinder",
+    "avoidminer:enchanter"
   ]
 }

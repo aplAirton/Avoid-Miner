@@ -17,6 +17,8 @@ import com.airton.avoidminer.block.entity.ProcessorBlockEntity;
 import com.airton.avoidminer.block.entity.MagnetiteFurnaceBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import com.airton.avoidminer.block.MobGrinderBlock;
+import com.airton.avoidminer.block.EnchanterBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.AmethystBlock;
 import net.minecraft.world.level.block.AmethystClusterBlock;
@@ -190,4 +192,18 @@ public class ModBlocks {
                     .strength(-1.0f, 3600000.0f)
                     .noLootTable()
                     .sound(SoundType.COPPER));
+
+    public static final DeferredBlock<Block> MOB_GRINDER = BLOCKS.registerBlock("mob_grinder",
+            MobGrinderBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL));
+
+    public static final DeferredBlock<Block> ENCHANTER = BLOCKS.registerBlock("enchanter",
+            EnchanterBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .strength(5.0f)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL));
 }

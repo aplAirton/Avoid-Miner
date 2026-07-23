@@ -65,6 +65,8 @@ public class AvoidMiner {
                 ModBlocks.RESONANT_REPAIR_STATION.get());
         event.modify(ModBlockEntities.VILLAGER_HUB.getKey(),
                 ModBlocks.VILLAGER_HUB.get());
+        event.modify(ModBlockEntities.ENCHANTER.getKey(),
+                ModBlocks.ENCHANTER.get());
     }
 
     private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

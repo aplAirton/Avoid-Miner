@@ -3,12 +3,14 @@ package com.airton.avoidminer.screen;
 import com.airton.avoidminer.item.RangeCardItem;
 import com.airton.avoidminer.menu.RangeCardMenu;
 import com.airton.avoidminer.network.RangeCardUpdatePayload;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -37,9 +39,9 @@ public class RangeCardScreen extends AbstractContainerScreen<RangeCardMenu> {
     private static final int POS2_Y = 68;
     private static final int POS2_INPUT_Y = 80;
 
-    private static final int SAVE_X = 80;
-    private static final int CLR_X = 122;
-    private static final int BTN_Y = 22;
+    private static final int SAVE_X = 48;
+    private static final int CLR_X = 90;
+    private static final int BTN_Y = 112;
     private static final int BTN_W = 38;
     private static final int BTN_H = 14;
 
@@ -113,10 +115,12 @@ public class RangeCardScreen extends AbstractContainerScreen<RangeCardMenu> {
     }
 
     private void saveCoords() {
+        int x1 = parseInt(x1Box), y1 = parseInt(y1Box), z1 = parseInt(z1Box);
+        int x2 = parseInt(x2Box), y2 = parseInt(y2Box), z2 = parseInt(z2Box);
+        int vol = RangeCardItem.getVolume(x1, y1, z1, x2, y2, z2);
+        if (vol > RangeCardItem.MAX_VOLUME) return;
         ClientPacketDistributor.sendToServer(new RangeCardUpdatePayload(
-                RangeCardUpdatePayload.SAVE,
-                parseInt(x1Box), parseInt(y1Box), parseInt(z1Box),
-                parseInt(x2Box), parseInt(y2Box), parseInt(z2Box)));
+                RangeCardUpdatePayload.SAVE, x1, y1, z1, x2, y2, z2));
     }
 
     private void clearCoords() {
@@ -180,9 +184,6 @@ public class RangeCardScreen extends AbstractContainerScreen<RangeCardMenu> {
         Component pos2Label = Component.translatable("screen.avoidminer.range_card.pos2");
         extractor.text(font, pos2Label, gx + LABEL_X, gy + POS2_Y, TEXT_DARK, false);
 
-        int lineY = gy + POS2_INPUT_Y + INPUT_H + 6;
-        extractor.fill(gx + 8, lineY, gx + imageWidth - 8, lineY + 1, SECTION_LINE);
-
         Component lblX = Component.literal("X");
         Component lblY = Component.literal("Y");
         Component lblZ = Component.literal("Z");
@@ -207,6 +208,13 @@ public class RangeCardScreen extends AbstractContainerScreen<RangeCardMenu> {
         drawButton(extractor, gx + CLR_X, gy + BTN_Y, BTN_W, BTN_H,
                 Component.translatable("screen.avoidminer.range_card.clear"),
                 mouseX, mouseY, true);
+
+        int vol = RangeCardItem.getVolume(
+                parseInt(x1Box), parseInt(y1Box), parseInt(z1Box),
+                parseInt(x2Box), parseInt(y2Box), parseInt(z2Box));
+        int color = vol > RangeCardItem.MAX_VOLUME ? 0xFFFF5555 : TEXT_DARK;
+        Component volText = Component.translatable("screen.avoidminer.range_card.volume", vol, RangeCardItem.MAX_VOLUME);
+        extractor.text(font, volText, gx + LABEL_X, gy + POS2_Y + 30, color, false);
     }
 
     private void drawButton(GuiGraphicsExtractor extractor, int bx, int by, int bw, int bh,
@@ -233,10 +241,12 @@ public class RangeCardScreen extends AbstractContainerScreen<RangeCardMenu> {
 
             if (isOverButton((int) event.x(), (int) event.y(), gx + SAVE_X, gy + BTN_Y, BTN_W, BTN_H)) {
                 saveCoords();
+                minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1.0f);
                 return true;
             }
             if (isOverButton((int) event.x(), (int) event.y(), gx + CLR_X, gy + BTN_Y, BTN_W, BTN_H)) {
                 clearCoords();
+                minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1.0f);
                 return true;
             }
         }

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CSC", "ENE", "CSC"],
+  "key": {
+    "C": "avoidminer:resonant_crystal",
+    "S": "minecraft:sculk_sensor",
+    "E": "minecraft:ender_eye",
+    "N": "minecraft:nether_star"
+  },
+  "result": { "id": "avoidminer:attraction_card_tier_1", "count": 1 }
+}
